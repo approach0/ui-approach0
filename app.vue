@@ -2,7 +2,10 @@
   <Toolbar class="topbar">
     <template v-slot:left>
       <img :src="logo32" class="p-mx-3"/>
-      <h3>Approach Zero</h3>
+      <div class="p-d-flex p-flex-column">
+        <span class="logo-text">Approach Zero</span>
+        <div class="logo-text">A math-aware search engine.</div>
+      </div>
     </template>
 
     <template v-slot:right>
@@ -86,6 +89,21 @@ body {
   background-repeat: no-repeat;
 }
 
+.logo-text {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.logo-text:first-child {
+  font-size: 1.2rem;
+}
+
+.logo-text:last-child {
+  font-size: 0.8rem;
+}
+
 .topbar {
   position: fixed;
   top: 0;
@@ -102,6 +120,6 @@ body {
 
 /* line awesome */
 .las,.lab {
-  font-size: 1.5em;
+  font-size: 1.5rem;
 }
 </style>
