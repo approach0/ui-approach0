@@ -1,5 +1,5 @@
 <template>
-  <div class="topbar p-component p-toolbar p-grid">
+  <div class="topbar p-component p-toolbar p-grid flex-wrap-reverse">
     <div class="p-d-flex p-ai-center p-md-6 p-sm-12 p-xsm-12">
       <img :src="logo32" class="p-mx-3"/>
       <div class="p-d-flex p-flex-column">
@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="p-d-flex p-jc-end p-ai-center p-md-6 p-sm-12 p-xsm-12 p-my-4">
+    <div class="p-d-flex p-jc-end p-ai-center p-md-6 p-sm-12 p-xsm-12 p-my-2">
       <i class="las la-sun"></i>
       <InputSwitch v-model="nightTheme" class="p-mx-3"/>
       <i class="las la-moon"></i>
@@ -142,5 +142,9 @@ body {
   .p-xsm-12 {
     width: 100%;
   }
+}
+
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse !important;
 }
 </style>
