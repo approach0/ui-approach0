@@ -10,9 +10,6 @@ const app = createApp(App)
 import InputSwitch from 'primevue/inputswitch'
 app.component('InputSwitch', InputSwitch)
 
-import InputText from 'primevue/inputtext'
-app.component('InputText', InputText)
-
 import Button from 'primevue/button'
 app.component('Button', Button)
 

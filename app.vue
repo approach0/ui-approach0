@@ -28,6 +28,28 @@
     );
   </css-doodle>
 
+  <div class="p-d-flex p-ai-center p-jc-center p-flex-column" style="height: 80vh;">
+    <div class="p-grid p-d-flex p-jc-center" style="width: 50%;">
+
+      <div class="p-d-flex p-lg-8 p-md-12 p-sm-12 p-p-2 p-card p-ai-center sm-full" style="height: 3rem; margin: 0.5rem 0 0.5rem 0; max-width: 600px;">
+        <input placeholder="Enter query keywords here, type $ for math formula." class="qrybox-editor">
+      </div>
+      <div class="p-d-flex p-md-4 p-lg-4 p-sm-12 md-full">
+        <Button label="Search" class="p-button-raised a0-color md-full"/>
+      </div>
+
+      <div class="p-d-flex p-lg-8 p-md-12 p-sm-12 p-jc-end" style="flex-grow: 1; max-width: 600px;">
+        <Button label="example" icon="las la-lightbulb" class="p-button-secondary p-button-text p-button-sm"/>
+        <Button label="clear" icon="las la-times" class="p-button-secondary p-button-text p-button-sm"/>
+      </div>
+      <div class="p-d-flex p-md-4 p-lg-4 p-sm-12">
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background-color: grey; height: 1800px; width: 2px"></div>
+
 </template>
 
 <script>
@@ -52,7 +74,8 @@ module.exports = {
   data: function() {
     return {
       logo32: require('./resource/logo32.png'),
-      nightTheme: false
+      nightTheme: false,
+      inputBox: '',
     }
   },
 
@@ -78,7 +101,6 @@ module.exports = {
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
 
 body {
@@ -87,6 +109,7 @@ body {
   background-image: url("./resource/stars.png");
   background-size: cover;
   background-repeat: no-repeat;
+  overflow-x: hidden;
 }
 
 .logo-text {
@@ -105,9 +128,10 @@ body {
 }
 
 .topbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
+  z-index: 999;
 }
 
 /* CSS doodle */
@@ -121,5 +145,34 @@ body {
 /* line awesome */
 .las,.lab {
   font-size: 1.5rem;
+}
+
+.a0-color {
+  background-color: #54c6c0 !important;
+}
+
+@media screen and (max-width: 992px) {
+  .md-full {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sm-full {
+    width: 100% !important;
+  }
+}
+
+.qrybox-editor {
+  caret-color: var(--text-color);
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background-color: var(--surface-e);
+}
+
+.p-button {
+  max-height: 3rem;
 }
 </style>
