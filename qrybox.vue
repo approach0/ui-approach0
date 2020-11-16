@@ -1,10 +1,10 @@
 <template>
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card" style="height: 3rem; margin: 0.5rem 0 0.5rem 0; max-width: 600px; flex-grow: 1">
-      <input placeholder="Enter query keywords here, type $ for math formula." class="qrybox-editor" v-model="inputval">
+      <input placeholder="Enter query keywords here, type $ for math formula." class="qrybox-editor" :value="editing_val" @input="$emit('update:editing_val', $event.target.value)">
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
-      <Button label="Search" class="p-button-raised a0-color" style="width: 100%;"/>
+      <Button label="Search" class="p-button-raised a0-color" style="width: 100%;" @click="onClickSearch()"/>
     </div>
   </div>
 
@@ -21,6 +21,10 @@
 
 <script>
 export default {
+  props : {
+    editing_val: String
+  },
+
   mounted: function() {
   },
 
@@ -29,11 +33,13 @@ export default {
 
   data: function() {
     return {
-      inputval: '',
     }
   },
 
   methods: {
+    onClickSearch() {
+      console.log(this.editing_val)
+    }
   }
 }
 </script>
