@@ -13,7 +13,4 @@ app.component('InputSwitch', InputSwitch)
 import Button from 'primevue/button'
 app.component('Button', Button)
 
-import Toolbar from 'primevue/toolbar'
-app.component('Toolbar', Toolbar)
-
 app.mount('#app')
