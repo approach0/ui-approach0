@@ -29,23 +29,24 @@
   </css-doodle>
 
   <div class="p-d-flex p-ai-center p-jc-center p-flex-column" style="height: 80vh;">
-    <div class="p-grid p-d-flex p-jc-center" style="width: 50%;">
-
-      <div class="p-d-flex p-lg-8 p-md-12 p-sm-12 p-p-2 p-card p-ai-center sm-full" style="height: 3rem; margin: 0.5rem 0 0.5rem 0; max-width: 600px;">
+    <div class="p-grid p-d-flex p-jc-center" style="width: 50%">
+      <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card" style="height: 3rem; margin: 0.5rem 0 0.5rem 0; max-width: 600px; flex-grow: 1">
         <input placeholder="Enter query keywords here, type $ for math formula." class="qrybox-editor">
       </div>
-      <div class="p-d-flex p-md-4 p-lg-4 p-sm-12 md-full">
-        <Button label="Search" class="p-button-raised a0-color md-full"/>
+      <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
+        <Button label="Search" class="p-button-raised a0-color" style="width: 100%;"/>
       </div>
+    </div>
 
-      <div class="p-d-flex p-lg-8 p-md-12 p-sm-12 p-jc-end" style="flex-grow: 1; max-width: 600px;">
+    <div class="p-grid p-d-flex p-jc-center" style="width: 50%">
+      <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-jc-end" style="max-width: 600px; flex-grow: 1">
         <Button label="example" icon="las la-lightbulb" class="p-button-secondary p-button-text p-button-sm"/>
         <Button label="clear" icon="las la-times" class="p-button-secondary p-button-text p-button-sm"/>
       </div>
-      <div class="p-d-flex p-md-4 p-lg-4 p-sm-12">
+      <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       </div>
-
     </div>
+
   </div>
 
   <div style="background-color: grey; height: 1800px; width: 2px"></div>
@@ -149,18 +150,6 @@ body {
 
 .a0-color {
   background-color: #54c6c0 !important;
-}
-
-@media screen and (max-width: 992px) {
-  .md-full {
-    width: 100% !important;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .sm-full {
-    width: 100% !important;
-  }
 }
 
 .qrybox-editor {
