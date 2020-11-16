@@ -1,18 +1,28 @@
 <template>
-  <div class="topbar p-component p-toolbar p-grid flex-wrap-reverse">
-    <div class="p-d-flex p-ai-center p-md-6 p-sm-12 p-xsm-12">
-      <img :src="logo32" class="p-mx-3"/>
+  <div class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid">
+
+    <div class="p-d-flex p-ai-center">
+      <img :src="logo32" class="p-m-3" @click="onClickIcon"/>
       <div class="p-d-flex p-flex-column">
         <span class="logo-text">Approach Zero</span>
         <div class="logo-text">A math-aware search engine.</div>
       </div>
     </div>
 
-    <div class="p-d-flex p-jc-end p-ai-center p-md-6 p-sm-12 p-xsm-12 p-my-2">
+    <div class="topbar-qrybox-first p-col p-mx-4" v-if="!sinking_qrybox">
+      <qrybox/>
+    </div>
+
+    <div class="p-d-flex p-jc-end p-ai-center">
       <i class="las la-sun"></i>
-      <InputSwitch v-model="nightTheme" class="p-mx-3"/>
+      <InputSwitch v-model="nightTheme" class="p-m-3"/>
       <i class="las la-moon"></i>
     </div>
+
+    <div class="topbar-qrybox-second p-col-12 p-mx-4" v-if="!sinking_qrybox">
+      <qrybox/>
+    </div>
+
   </div>
 
   <css-doodle class="doodle rellax" data-rellax-speed="6">
@@ -28,13 +38,13 @@
     );
   </css-doodle>
 
-  <div class="p-d-flex p-jc-center p-ai-end" style="height: 50vh;">
+  <div class="p-d-flex p-jc-center p-ai-end" style="height: 50vh;" v-if="sinking_qrybox">
     <div style="width: 90%">
       <qrybox/>
     </div>
   </div>
 
-  <div style="background-color: grey; height: 1800px; width: 2px"></div>
+  <div style="background-color: red; height: 1800px; width: 2px"></div>
 
 </template>
 
@@ -63,7 +73,7 @@ export default {
     return {
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
-      inputBox: '',
+      sinking_qrybox: false,
     }
   },
 
@@ -80,6 +90,10 @@ export default {
       theme.id = "theme"
       theme.href = 'light.css' /* default */
       document.head.appendChild(theme)
+    },
+
+    onClickIcon() {
+      this.sinking_qrybox = !this.sinking_qrybox
     }
   }
 }
@@ -138,13 +152,25 @@ body {
   background-color: #54c6c0 !important;
 }
 
+/* query box layout media CSS */
 @media screen and (max-width: 576px) {
-  .p-xsm-12 {
+  .p-sm-12 {
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    padding: 0.5rem;
     width: 100%;
   }
 }
 
-.flex-wrap-reverse {
-  flex-wrap: wrap-reverse !important;
+@media screen and (max-width: 1024px) {
+  .topbar-qrybox-first {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .topbar-qrybox-second {
+    display: none;
+  }
 }
 </style>
