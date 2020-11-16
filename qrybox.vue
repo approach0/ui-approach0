@@ -1,8 +1,17 @@
 <template>
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
+
+      <ul class="qry-li-wrap">
+        <li class="qry-li-item p-tag p-tag-info" v-for="item in items" :key="item.str">
+          {{item.type}}
+        </li>
+      </ul>
+      <!--
       <input placeholder="Enter query keywords here, type $ for math formula."
        class="qrybox-editor" :value="editing_val" @input="$emit('update:editing_val', $event.target.value)">
+      -->
+
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <Button label="Search" class="p-button-raised a0-color" style="width: 100%" @click="onClickSearch()"/>
@@ -34,6 +43,10 @@ export default {
 
   data: function() {
     return {
+      items: [
+        {type: "word", str: "hello world", boolop: 'OR'},
+        {type: "word-input", str: "", boolop: 'OR'}
+      ],
     }
   },
 
@@ -56,6 +69,19 @@ export default {
   flex-grow: 1 !important;
 }
 
+ul.qry-li-wrap {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+li.qry-li-item {
+  margin: 0px 5px 8px 0;
+}
+
 .a0-color {
   background-color: #54c6c0 !important;
 }
@@ -66,6 +92,6 @@ export default {
   height: 100%;
   border: none;
   outline: none;
-  background-color: var(--surface-e);
+  background-color: var(--surface-f);
 }
 </style>
