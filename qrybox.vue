@@ -3,10 +3,17 @@
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
 
       <div class="chips-wrap">
-        <div v-for="chip in modelValue.chips" :key="chip.str" class="p-mx-1">
+        <div v-for="chip in modelValue.chips" :key="chip.str" class="p-mx-1" id="chips">
           <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
             {{chip.str}}
-            <span class="p-badge chip-append-icon"><i class="fa fa-times"></i></span>
+            <span class="p-px-1"/>
+            <span class="p-badge chip-append-icon"> <i class="fa fa-times"></i> </span>
+          </div>
+          <div v-else-if="chip.type=='tex'" class="chip-item p-tag p-tag-info">
+            [imath] {{chip.str}} [/imath]
+            <span class="p-px-1"/>
+            <span class="p-badge chip-append-icon"> <i class="fa fa-pencil"></i> </span>
+            <span class="p-badge chip-append-icon"> <i class="fa fa-times"></i> </span>
           </div>
         </div>
 
@@ -18,7 +25,7 @@
             <a href="javascript: void(0)" @click="onFinishMathEdit()"> here</a>.
           </span>
           <input id="text-editor" class="text-editor" type="text" :value="enterValue"
-          @input="$emit('update:enterValue', $event.target.value)" @keyup="onKeyup"
+          @input="$emit('update:enterValue', $event.target.value)" @keyup="onKeyup" @keydown="onKeydown"
           placeholder="Enter keywords here, type $ for math keyword editing."
           v-else/>
         </div>
@@ -49,6 +56,8 @@
 </template>
 
 <script>
+const TeX_render = require('./tex-render.js')
+
 export default {
   props : {
     modelValue: Object,
@@ -67,6 +76,12 @@ export default {
           this.mq_render()
         })
       }
+    },
+
+    modelValue: function() {
+      this.$nextTick(function() {
+        TeX_render.render_fast('#chips')
+      })
     }
   },
 
@@ -90,13 +105,13 @@ export default {
       return false
     },
 
-    pushChip(keyword) {
+    pushChip(keyword, type) {
       if (keyword.trim().length === 0)
         return
 
       const chips = this.modelValue.chips
       chips.push({
-        type: "word",
+        type: type || "word",
         str: keyword,
         boolop: 'OR'
       })
@@ -104,8 +119,19 @@ export default {
       this.$emit('update:enterValue', '')
     },
 
-    onKeyup(ev) {
+    onKeydown(ev) {
       const chips = this.modelValue.chips
+      const keyword = this.enterValue.trim()
+
+      if (ev.code === 'Backspace') {
+        if (keyword === '') {
+          chips.pop()
+          this.$emit('update:modelValue', {chips})
+        }
+      }
+    },
+
+    onKeyup(ev) {
       const keyword = this.enterValue.trim()
 
       if (ev.code === 'Space') {
@@ -126,12 +152,6 @@ export default {
           this.pushChip(keyword)
         }
 
-      } else if (ev.code === 'Backspace') {
-        if (keyword === '') {
-          chips.pop()
-          this.$emit('update:modelValue', {chips})
-        }
-
       } else if (keyword.includes('$')) {
         const popout = keyword.slice(0, -1)
         this.pushChip(popout)
@@ -143,7 +163,7 @@ export default {
       const latex = this.enterValue
       console.log(latex)
       if (latex.length > 0) {
-        this.pushChip(latex)
+        this.pushChip(latex, 'tex')
       }
       this.reset()
     },
@@ -216,7 +236,6 @@ div.chip-item {
 }
 
 span.chip-append-icon {
-  margin-left: 5px;
   line-height: 15px;
   height: 1rem;
   min-width: 1rem;

@@ -122,6 +122,11 @@ body {
   overflow-x: hidden;
 }
 
+a {
+  text-decoration: none;
+  color: rgb(255, 128, 128);
+}
+
 .logo-text {
   -webkit-user-select: none;
   -moz-user-select: none;
