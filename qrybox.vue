@@ -54,29 +54,60 @@ export default {
 
   data: function() {
     return {
+      editing_math: false,
+      'specialChars': "+*/\\!^_%()[]:;{}=<>"
     }
   },
 
   methods: {
     onSearch() {
+      alert('Search!')
+    },
+
+    includesAnyChar(str, chars) {
+      for (let i = 0; i < chars.length; i++) {
+        if (str.indexOf(chars[i]) >= 0)
+          return true
+      }
+      return false
+    },
+
+    pushChip(keyword) {
+      if (keyword.trim().length === 0)
+        return
+
+      const chips = this.modelValue.chips
+      chips.push({
+        type: "word",
+        str: keyword,
+        boolop: 'OR'
+      })
+      this.$emit('update:modelValue', {chips})
+      this.$emit('update:enterValue', '')
     },
 
     onKeyup(ev) {
       const chips = this.modelValue.chips
       const keyword = this.enterValue.trim()
+      console.log(ev.code)
+      console.log(keyword)
 
-      if (ev.code === 'Enter') {
+      if (ev.code === 'Space') {
+        /* split by this space */
+        if (keyword.length > 0) {
+          this.$nextTick(function() {
+            this.pushChip(keyword)
+          })
+        } else {
+          this.$emit('update:enterValue', '')
+        }
+
+      } else if (ev.code === 'Enter') {
         if (keyword === '') {
           /* search signal */
           this.onSearch()
         } else {
-          chips.push({
-            type: "word",
-            str: keyword,
-            boolop: 'OR'
-          })
-          this.$emit('update:modelValue', {chips})
-          this.$emit('update:enterValue', '')
+          this.pushChip(keyword)
         }
 
       } else if (ev.code === 'Backspace') {
@@ -84,6 +115,10 @@ export default {
           chips.pop()
           this.$emit('update:modelValue', {chips})
         }
+      } else if (keyword.includes('$')) {
+        const popout = keyword.slice(0, -1)
+        this.pushChip(popout)
+        this.editing_math = true
       }
     },
 
