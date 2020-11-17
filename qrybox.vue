@@ -11,9 +11,16 @@
         </div>
 
         <div class="p-mx-1">
+          <!-- Editor -->
+          <span v-if="editing_math" id="math-editor"></span>
+          <span v-if="editing_math" class="p-mx-1 math-editor-info">
+            You are editing a math formula. When you finish, press enter or click
+            <a href="javascript: void(0)" @click="onFinishMathEdit()"> here</a>.
+          </span>
           <input id="text-editor" class="text-editor" type="text" :value="enterValue"
           @input="$emit('update:enterValue', $event.target.value)" @keyup="onKeyup"
-          placeholder="Enter keywords here, type $ for math keyword editing."/>
+          placeholder="Enter keywords here, type $ for math keyword editing."
+          v-else/>
         </div>
       </div>
 
@@ -35,6 +42,7 @@
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
+      {{modelValue}}
     </div>
   </div>
 </template>
@@ -47,21 +55,29 @@ export default {
   },
 
   mounted: function() {
+    this.MQ = MathQuill.getInterface(2)
   },
 
   watch: {
+    editing_math: function(yes) {
+      if (yes) {
+        this.$nextTick(function() {
+          this.mq_render()
+        })
+      }
+    }
   },
 
   data: function() {
     return {
       editing_math: false,
+      MQ: null,
       'specialChars': "+*/\\!^_%()[]:;{}=<>"
     }
   },
 
   methods: {
     onSearch() {
-      alert('Search!')
     },
 
     includesAnyChar(str, chars) {
@@ -89,8 +105,6 @@ export default {
     onKeyup(ev) {
       const chips = this.modelValue.chips
       const keyword = this.enterValue.trim()
-      console.log(ev.code)
-      console.log(keyword)
 
       if (ev.code === 'Space') {
         /* split by this space */
@@ -115,6 +129,7 @@ export default {
           chips.pop()
           this.$emit('update:modelValue', {chips})
         }
+
       } else if (keyword.includes('$')) {
         const popout = keyword.slice(0, -1)
         this.pushChip(popout)
@@ -122,13 +137,50 @@ export default {
       }
     },
 
+    onFinishMathEdit() {
+      const latex = this.enterValue
+      console.log(latex)
+      if (latex.length > 0) {
+        this.pushChip(latex)
+      }
+      this.reset()
+    },
+
+    mq_render() {
+      const vm = this
+      const mq = this.MQ.MathField(document.getElementById("math-editor"), {
+        supSubsRequireOperand: true, // avoid _{_a}
+        autoCommands: 'alpha beta gamma delta zeta eta theta kappa mu nu ' +
+        // last two 'mod' and 'pmod' is added by forked version
+        'xi rho sigma tau chi psi omega sqrt sum prod pi mod pmod',
+        handlers: {
+          edit: function() {
+            let latex = mq.latex()
+            vm.$emit('update:enterValue', latex)
+            /* user finishes math editing with a dollar */
+            if (-1 != latex.indexOf("$")) {
+              latex = latex.replace(/\\\$/g, ' ')
+              mq.latex(latex)
+              this.enter()
+            }
+          },
+          enter: function() {
+            vm.onFinishMathEdit()
+          }
+        }
+      })
+
+      if (mq) mq.focus()
+    },
+
     onClear() {
       this.$emit('update:modelValue', {chips: []})
       this.$emit('update:enterValue', '')
-      this.focus()
+      this.reset()
     },
 
-    focus() {
+    reset() {
+      this.editing_math = false
       this.$nextTick(function() {
         $('#text-editor').focus()
       })
@@ -188,5 +240,11 @@ input.text-editor {
   background-color: var(--surface-f);
   min-width: 350px;
   height: 1.5rem;
+}
+
+span.math-editor-info {
+  color: var(--text-color);
+  opacity: 0.6;
+  font-size: 13px;
 }
 </style>
