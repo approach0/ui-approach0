@@ -75,7 +75,7 @@ export default {
       nightTheme: false,
       sinking_qrybox: false,
 
-      qrybox_enter: 'cool',
+      qrybox_enter: '',
       qrybox_model: {
         chips: [
           {type: "word", str: "hello world", boolop: 'OR'},

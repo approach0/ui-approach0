@@ -2,30 +2,36 @@
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
 
-      <ul class="qry-li-wrap">
-        <li v-for="chip in modelValue.chips" :key="chip.str" class="p-m-1">
-          <div v-if="chip.type=='word'" class="qry-li-item p-tag p-tag-info">
+      <div class="chips-wrap">
+        <div v-for="chip in modelValue.chips" :key="chip.str" class="p-mx-1">
+          <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
             {{chip.str}}
             <span class="p-badge chip-append-icon"><i class="fa fa-times"></i></span>
           </div>
-        </li>
+        </div>
 
-        <li style="width: 100%">
-          <input class="qrybox-editor" placeholder="Enter query keywords here, type $ for math formula."
-                :value="enterValue" @input="$emit('update:enterValue', $event.target.value)"/>
-        </li>
-      </ul>
+        <div class="p-mx-1">
+          <input id="text-editor" class="text-editor" type="text" :value="enterValue"
+          @input="$emit('update:enterValue', $event.target.value)" @keyup="onKeyup"
+          placeholder="Enter keywords here, type $ for math keyword editing."/>
+        </div>
+      </div>
 
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
-      <Button label="Search" class="p-button-raised a0-color" style="width: 100%" @click="onClickSearch()"/>
+      <Button label="Search" class="p-button-raised srch-btn" style="width: 100%" @click="onSearch()"/>
     </div>
   </div>
 
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-jc-end input-stretch">
-      <Button label="example" icon="fa fa-lightbulb-o" class="p-button-secondary p-button-text p-button-sm"/>
-      <Button label="clear" icon="fa fa-times" class="p-button-secondary p-button-text p-button-sm"/>
+
+      <Button label="example" icon="fa fa-lightbulb-o" @click="onExample()"
+       class="p-button-secondary p-button-text p-button-sm"/>
+
+      <Button label="clear" icon="fa fa-times" @click="onClear()"
+       class="p-button-secondary p-button-text p-button-sm"/>
+
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
@@ -52,7 +58,45 @@ export default {
   },
 
   methods: {
-    onClickSearch() {
+    onSearch() {
+    },
+
+    onKeyup(ev) {
+      const chips = this.modelValue.chips
+      const keyword = this.enterValue.trim()
+
+      if (ev.code === 'Enter') {
+        if (keyword === '') {
+          /* search signal */
+          this.onSearch()
+        } else {
+          chips.push({
+            type: "word",
+            str: keyword,
+            boolop: 'OR'
+          })
+          this.$emit('update:modelValue', {chips})
+          this.$emit('update:enterValue', '')
+        }
+
+      } else if (ev.code === 'Backspace') {
+        if (keyword === '') {
+          chips.pop()
+          this.$emit('update:modelValue', {chips})
+        }
+      }
+    },
+
+    onClear() {
+      this.$emit('update:modelValue', {chips: []})
+      this.$emit('update:enterValue', '')
+      this.focus()
+    },
+
+    focus() {
+      this.$nextTick(function() {
+        $('#text-editor').focus()
+      })
     }
   }
 }
@@ -60,31 +104,25 @@ export default {
 
 <style>
 div.input-wrapper {
-  height: 3rem;
   margin: 0.5rem 0 0.5rem 0;
   background-color: var(--surface-f);
-  overflow: hide;
 }
 
-.input-stretch {
+div.input-stretch {
   max-width: 600px;
   flex-grow: 1 !important;
 }
 
-ul.qry-li-wrap {
+div.chips-wrap {
   margin: 0;
   padding: 0;
-  list-style: none;
   width: 100%;
   display: flex;
-  align-content: start;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: start;
   flex-wrap: wrap;
-  overflow: hidden;
 }
 
-li.qry-li-item {
+div.chip-item {
   margin: 0px 5px 8px 0;
 }
 
@@ -101,17 +139,19 @@ span.chip-append-icon:hover {
   cursor: pointer;
 }
 
-.a0-color {
+Button.srch-btn {
+  height: 3rem;
   background-color: #54c6c0 !important;
 }
 
-.qrybox-editor {
-  display: inline-block;
+input.text-editor {
   color: var(--text-color);
   caret-color: var(--text-color);
   width: 100%;
   border: none;
   outline: none;
   background-color: var(--surface-f);
+  min-width: 350px;
+  height: 1.5rem;
 }
 </style>
