@@ -2,7 +2,7 @@
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
 
-      <div class="chips-wrap">
+      <div class="chips-wrap" @click="onFocus()">
         <div v-for="chip in modelValue.chips" :key="chip.str" class="p-mx-1">
 
           <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
@@ -11,6 +11,7 @@
             <span class="p-badge chip-append-icon"> <i class="fa fa-times"></i> </span>
           </div>
           <div v-else-if="chip.type=='tex'" class="chip-item p-tag p-tag-info math-chip">
+            <span class="p-px-2"/>
             [imath] {{chip.str}} [/imath]
             <span class="p-px-2"/>
             <span class="p-badge chip-append-icon"> <i class="fa fa-pencil"></i> </span>
@@ -22,14 +23,14 @@
         <div class="p-mx-1">
 
           <!-- Editor -->
-          <span v-if="editing_math" id="math-editor"></span>
-          <span v-if="editing_math" class="p-mx-1 math-editor-info">
+          <span v-if="mq_dom" id="math-editor"></span>
+          <span v-if="mq" class="p-mx-1 math-editor-info">
             You are editing <b>a math formula</b>. When you finish, press enter or click
             <a href="javascript: void(0)" @click="onFinishMathEdit()"> here</a>.
           </span>
           <input id="text-editor" class="text-editor" type="text" :value="enterValue"
           @input="$emit('update:enterValue', $event.target.value)" @keyup="onKeyup" @keydown="onKeydown"
-          placeholder="Enter keywords here, type $ for math keyword editing."
+          placeholder="Enter keywords here, type $ for a math keyword."
           v-else/>
 
         </div>
@@ -53,7 +54,6 @@
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
-      {{modelValue}}
       {{enterValue}}
     </div>
   </div>
@@ -74,15 +74,6 @@ export default {
   },
 
   watch: {
-    editing_math: function(yes) {
-      if (yes) {
-        this.$emit('update:enterValue', '')
-        this.$nextTick(function() {
-          this.mqEditor()
-        })
-      }
-    },
-
     modelValue: function() {
       this.$nextTick(function() {
         TeX_render.render_fast('.math-chip')
@@ -92,19 +83,21 @@ export default {
 
   data: function() {
     return {
-      editing_math: false,
+      mq_dom: false,
       MQ: null,
-      'specialChars': "+*/\\!^_%()[]:;{}=<>"
+      mq: null
     }
   },
 
   methods: {
     onSearch() {
+      alert('Search Clicked!')
     },
 
-    includesAnyChar(str, chars) {
-      for (let i = 0; i < chars.length; i++) {
-        if (str.indexOf(chars[i]) >= 0)
+    anySpecialChar(str, chars) {
+      const specialChars = "+*/\\!^_%()[]:;{}=<>"
+      for (let i = 0; i < specialChars.length; i++) {
+        if (str.indexOf(specialChars[i]) >= 0)
           return true
       }
       return false
@@ -120,6 +113,7 @@ export default {
         str: keyword,
         boolop: 'OR'
       })
+
       this.$emit('update:modelValue', {chips})
       this.$emit('update:enterValue', '')
     },
@@ -158,46 +152,91 @@ export default {
         }
 
       } else if (keyword.includes('$')) {
-        const popout = keyword.slice(0, -1)
-        this.pushChip(popout)
-        this.editing_math = true
+        const vm = this
+        const pushin = keyword.slice(0, -1)
+        vm.pushChip(pushin)
+        vm.$emit('update:enterValue', '')
+        vm.mqEditorCreate((mq) => {
+          vm.mqEditorInput(mq, 'latex', '')
+        })
+
+      } else if (this.anySpecialChar(keyword)) {
+        const vm = this
+        vm.$emit('update:enterValue', keyword)
+        vm.mqEditorCreate((mq) => {
+          vm.mqEditorInput(mq, 'typing', keyword)
+        })
       }
     },
 
     onFinishMathEdit() {
       const latex = this.enterValue
-      console.log(latex)
       if (latex.length > 0) {
         this.pushChip(latex, 'tex')
       }
-      this.reset()
+
+      const vm = this
+      setTimeout(() => {
+        vm.reset()
+      }, 2000)
     },
 
-    mqEditor() {
+    mqEditorCreate(callbk) {
       const vm = this
-      const mq = this.MQ.MathField(document.getElementById("math-editor"), {
-        supSubsRequireOperand: true, // avoid _{_a}
-        autoCommands: 'alpha beta gamma delta zeta eta theta kappa mu nu ' +
-        // last two 'mod' and 'pmod' is added by forked version
-        'xi rho sigma tau chi psi omega sqrt sum prod pi mod pmod',
-        handlers: {
-          edit: function() {
-            let latex = mq.latex()
-            vm.$emit('update:enterValue', latex)
-            /* user finishes math editing with a dollar */
-            if (-1 != latex.indexOf("$")) {
-              latex = latex.replace(/\\\$/g, ' ')
-              mq.latex(latex)
-              this.enter()
+      vm.mq_dom = true
+      vm.mq = null
+      this.$nextTick(() => {
+        const mq = this.MQ.MathField(document.getElementById("math-editor"), {
+          supSubsRequireOperand: true, // avoid _{_a}
+          autoCommands: 'alpha beta gamma delta zeta eta theta kappa mu nu ' +
+          // last two 'mod' and 'pmod' is added by forked version
+          'xi rho sigma tau chi psi omega sqrt sum prod pi mod pmod',
+          handlers: {
+            edit: function() {
+              let latex = mq.latex()
+              vm.$emit('update:enterValue', latex)
+              /* user finishes math editing with a dollar */
+              if (-1 != latex.indexOf("$")) {
+                latex = latex.replace(/\\\$/g, ' ')
+                mq.latex(latex)
+                this.enter()
+              }
+            },
+            enter: function() {
+              vm.onFinishMathEdit()
             }
-          },
-          enter: function() {
-            vm.onFinishMathEdit()
           }
+        })
+
+        if (mq) {
+          this.mq = mq
+          callbk && callbk(mq)
+          mq.focus()
         }
       })
+    },
 
-      if (mq) mq.focus()
+    mqEditorInput(mq, type, input) {
+      if (type === 'latex') {
+        /* consume LaTeX input */
+        mq.latex(input)
+
+      } else if (type === 'typing') {
+        /* behave as if user are typing */
+        console.log('|', input, '|')
+        mq.typedText(input)
+
+      } else if (type === 'stroke') {
+        /* stroke sequence that handles TAB */
+        for (let i = 0; i < input.length; i++) {
+          let c = input[i]
+          if (c === '\t') mq.keystroke('Tab')
+          else mq.typedText(c)
+        }
+
+      } else {
+        console.error('Undefined MQ Editor input.')
+      }
     },
 
     onClear() {
@@ -206,8 +245,16 @@ export default {
       this.reset()
     },
 
+    onFocus() {
+      if (this.mq === null)
+        $('#text-editor').focus()
+      else
+        this.mq.focus()
+    },
+
     reset() {
-      this.editing_math = false
+      this.mq_dom = false
+      this.mq = null
       this.$nextTick(function() {
         $('#text-editor').focus()
       })
@@ -276,8 +323,12 @@ span.math-editor-info {
 }
 
 span.katex {
-  font-size: 0.9rem;
+  font-size: 1.0rem;
   font-weight: 600;
+}
+
+span.katex-display {
+  margin: 0.5em 0 !important;
 }
 
 div.math-chip {

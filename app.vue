@@ -142,6 +142,10 @@ a {
   font-size: 0.8rem;
 }
 
+div.p-toolbar {
+  background-color: var(--surface-c);
+}
+
 .topbar {
   position: sticky;
   top: 0;
