@@ -14,9 +14,9 @@
     </div>
 
     <div class="p-d-flex p-jc-end p-ai-center">
-      <i class="las la-sun"></i>
+      <i class="fa fa-sun-o"></i>
       <InputSwitch v-model="nightTheme" class="p-m-3"/>
-      <i class="las la-moon"></i>
+      <i class="fa fa-moon-o"></i>
     </div>
 
     <div class="topbar-qrybox-second p-col-12 p-mx-4" v-if="!sinking_qrybox">
