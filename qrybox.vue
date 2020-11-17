@@ -14,7 +14,7 @@
           <!-- Editor -->
           <span v-if="editing_math" id="math-editor"></span>
           <span v-if="editing_math" class="p-mx-1 math-editor-info">
-            You are editing a math formula. When you finish, press enter or click
+            You are editing <b>a math formula</b>. When you finish, press enter or click
             <a href="javascript: void(0)" @click="onFinishMathEdit()"> here</a>.
           </span>
           <input id="text-editor" class="text-editor" type="text" :value="enterValue"
@@ -43,6 +43,7 @@
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
       {{modelValue}}
+      {{enterValue}}
     </div>
   </div>
 </template>
@@ -61,6 +62,7 @@ export default {
   watch: {
     editing_math: function(yes) {
       if (yes) {
+        this.$emit('update:enterValue', '')
         this.$nextTick(function() {
           this.mq_render()
         })
@@ -217,8 +219,8 @@ span.chip-append-icon {
   margin-left: 5px;
   line-height: 15px;
   height: 1rem;
-  font-size: 13px;
   min-width: 1rem;
+  font-size: 0.75rem;
 }
 
 span.chip-append-icon:hover {
@@ -245,6 +247,7 @@ input.text-editor {
 span.math-editor-info {
   color: var(--text-color);
   opacity: 0.6;
-  font-size: 13px;
+  font-size: 0.75rem;
+  font-weight: 400;
 }
 </style>
