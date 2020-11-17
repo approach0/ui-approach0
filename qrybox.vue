@@ -176,9 +176,7 @@ export default {
       }
 
       const vm = this
-      setTimeout(() => {
-        vm.reset()
-      }, 2000)
+      vm.reset()
     },
 
     mqEditorCreate(callbk) {
@@ -254,8 +252,10 @@ export default {
 
     reset() {
       this.mq_dom = false
-      this.mq = null
       this.$nextTick(function() {
+        /* mq set to null later, we want to wait until `Enter' event
+         * goes away, otherwise text-editor will receive the event */
+        this.mq = null
         $('#text-editor').focus()
       })
     }
