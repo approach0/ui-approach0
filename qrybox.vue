@@ -3,16 +3,16 @@
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
 
       <ul class="qry-li-wrap">
-        <li v-for="item in items" :key="item.str" class="p-m-1">
-          <div v-if="item.type=='word'" class="qry-li-item p-tag p-tag-info">
-            {{item.str}}
+        <li v-for="chip in modelValue.chips" :key="chip.str" class="p-m-1">
+          <div v-if="chip.type=='word'" class="qry-li-item p-tag p-tag-info">
+            {{chip.str}}
             <span class="p-badge chip-append-icon"><i class="fa fa-times"></i></span>
           </div>
         </li>
 
         <li style="width: 100%">
           <input class="qrybox-editor" placeholder="Enter query keywords here, type $ for math formula."
-                :value="editing_val" @input="$emit('update:editing_val', $event.target.value)"/>
+                :value="enterValue" @input="$emit('update:enterValue', $event.target.value)"/>
         </li>
       </ul>
 
@@ -36,7 +36,8 @@
 <script>
 export default {
   props : {
-    editing_val: String
+    modelValue: Object,
+    enterValue: String
   },
 
   mounted: function() {
@@ -47,10 +48,6 @@ export default {
 
   data: function() {
     return {
-      items: [
-        {type: "word", str: "hello world", boolop: 'OR'},
-        {type: "word", str: "keyword", boolop: 'OR'}
-      ]
     }
   },
 
