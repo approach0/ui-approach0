@@ -25,6 +25,7 @@ function katex_tex_render(scope_select) {
     var ele = $(this).get(0);
     try {
       katex.render(tex, ele, {
+        displayMode: true,
         macros: {
           "\\qvar": "\\color{blue}"
         }

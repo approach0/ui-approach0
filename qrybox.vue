@@ -3,21 +3,24 @@
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
 
       <div class="chips-wrap">
-        <div v-for="chip in modelValue.chips" :key="chip.str" class="p-mx-1" id="chips">
+        <div v-for="chip in modelValue.chips" :key="chip.str" class="p-mx-1">
+
           <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
             {{chip.str}}
             <span class="p-px-1"/>
             <span class="p-badge chip-append-icon"> <i class="fa fa-times"></i> </span>
           </div>
-          <div v-else-if="chip.type=='tex'" class="chip-item p-tag p-tag-info">
+          <div v-else-if="chip.type=='tex'" class="chip-item p-tag p-tag-info math-chip">
             [imath] {{chip.str}} [/imath]
-            <span class="p-px-1"/>
+            <span class="p-px-2"/>
             <span class="p-badge chip-append-icon"> <i class="fa fa-pencil"></i> </span>
             <span class="p-badge chip-append-icon"> <i class="fa fa-times"></i> </span>
           </div>
+
         </div>
 
         <div class="p-mx-1">
+
           <!-- Editor -->
           <span v-if="editing_math" id="math-editor"></span>
           <span v-if="editing_math" class="p-mx-1 math-editor-info">
@@ -28,6 +31,7 @@
           @input="$emit('update:enterValue', $event.target.value)" @keyup="onKeyup" @keydown="onKeydown"
           placeholder="Enter keywords here, type $ for math keyword editing."
           v-else/>
+
         </div>
       </div>
 
@@ -66,6 +70,7 @@ export default {
 
   mounted: function() {
     this.MQ = MathQuill.getInterface(2)
+    TeX_render.render_fast('.math-chip')
   },
 
   watch: {
@@ -73,14 +78,14 @@ export default {
       if (yes) {
         this.$emit('update:enterValue', '')
         this.$nextTick(function() {
-          this.mq_render()
+          this.mqEditor()
         })
       }
     },
 
     modelValue: function() {
       this.$nextTick(function() {
-        TeX_render.render_fast('#chips')
+        TeX_render.render_fast('.math-chip')
       })
     }
   },
@@ -168,7 +173,7 @@ export default {
       this.reset()
     },
 
-    mq_render() {
+    mqEditor() {
       const vm = this
       const mq = this.MQ.MathField(document.getElementById("math-editor"), {
         supSubsRequireOperand: true, // avoid _{_a}
@@ -268,5 +273,15 @@ span.math-editor-info {
   opacity: 0.6;
   font-size: 0.75rem;
   font-weight: 400;
+}
+
+span.katex {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+div.math-chip {
+  display: flex;
+  align-items: center;
 }
 </style>
