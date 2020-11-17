@@ -144,11 +144,6 @@ body {
   z-index: -1;
 }
 
-/* line awesome */
-.las,.lab {
-  font-size: 1.5rem;
-}
-
 .a0-color {
   background-color: #54c6c0 !important;
 }
