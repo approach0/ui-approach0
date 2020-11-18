@@ -93,6 +93,9 @@
     </div>
   </div>
 
+  <Button icon="fa fa-th" class="p-button-rounded p-button-secondary" @click="onPullKeyboard()"
+          style="position: fixed; left: 2rem; bottom: 2rem; z-index: 0;"/>
+
   <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
     <div style="position: absolute; top: -1rem; right: 0; z-index: 100">
       <Button class="p-button-text" icon="fa fa-times" @click="keyboard_show = false"/>
@@ -165,7 +168,7 @@ export default {
       mq: null,
       menu_on: null,
       keyboard_keys: sym_keyboard.symbol_keys,
-      keyboard_show: true
+      keyboard_show: false
     }
   },
 
@@ -472,5 +475,9 @@ button.keyboard-key {
 
 .p-tabview .p-tabview-panels {
   padding: 0.5em 0 !important;
+}
+
+.mq-editable-field .mq-cursor {
+  border-left: 1px solid var(--text-color) !important;
 }
 </style>
