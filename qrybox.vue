@@ -3,19 +3,16 @@
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
 
       <div class="chips-wrap" @click="onFocus()">
-        <div v-for="chip in modelValue.chips" :key="chip.str" class="p-mx-1">
+        <div v-for="(chip, idx) in modelValue.chips" :key="chip.str" class="p-mx-1">
 
           <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
-            {{chip.str}}
-            <span class="p-px-1"/>
-            <span class="p-badge chip-append-icon"> <i class="fa fa-times"></i> </span>
+            <span class="chip-word p-px-1">{{chip.str}}</span>
+            <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
           </div>
           <div v-else-if="chip.type=='tex'" class="chip-item p-tag p-tag-info math-chip">
-            <span class="p-px-2"/>
-            [imath] {{chip.str}} [/imath]
-            <span class="p-px-2"/>
-            <span class="p-badge chip-append-icon"> <i class="fa fa-pencil"></i> </span>
-            <span class="p-badge chip-append-icon"> <i class="fa fa-times"></i> </span>
+            <span class="chip-tex p-px-2">[imath] {{chip.str}} [/imath]</span>
+            <span class="p-badge chip-append-icon" @click="onEdit(idx)"> <i class="fa fa-pencil"></i> </span>
+            <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
           </div>
 
         </div>
@@ -70,13 +67,13 @@ export default {
 
   mounted: function() {
     this.MQ = MathQuill.getInterface(2)
-    TeX_render.render_fast('.math-chip')
+    TeX_render.render_fast('.chip-tex')
   },
 
   watch: {
     modelValue: function() {
       this.$nextTick(function() {
-        TeX_render.render_fast('.math-chip')
+        TeX_render.render_fast('.chip-tex')
       })
     }
   },
@@ -221,7 +218,6 @@ export default {
 
       } else if (type === 'typing') {
         /* behave as if user are typing */
-        console.log('|', input, '|')
         mq.typedText(input)
 
       } else if (type === 'stroke') {
@@ -248,6 +244,25 @@ export default {
         $('#text-editor').focus()
       else
         this.mq.focus()
+    },
+
+    onDel(chipIdx) {
+      const chips = this.modelValue.chips
+      chips.splice(chipIdx, 1)
+      this.$emit('update:modelValue', {chips})
+    },
+
+    onEdit(chipIdx) {
+      const chips = this.modelValue.chips
+      const chip = chips.splice(chipIdx, 1)[0]
+      this.$emit('update:modelValue', {chips})
+
+      const vm = this
+      const keyword = chip.str
+      vm.$emit('update:enterValue', keyword)
+      vm.mqEditorCreate((mq) => {
+        vm.mqEditorInput(mq, 'latex', keyword)
+      })
     },
 
     reset() {
