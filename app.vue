@@ -25,19 +25,6 @@
 
   </div>
 
-  <css-doodle class="doodle rellax" data-rellax-speed="6">
-    @grid: 40x2 / 60%;
-    @place-cell: center;
-    @size: calc(100% / @size * @i);
-
-    transform: rotate(calc(@i * 5deg));
-
-    border-radius: 30%;
-    border: 1px solid hsla(
-      calc(10 + 4 * @i), 70%, 68%, @r.8
-    );
-  </css-doodle>
-
   <div class="p-d-flex p-jc-center p-ai-end" style="height: 50vh;" v-if="sinking_qrybox">
     <div style="width: 90%">
       <qrybox v-model="qrybox_model" v-model:enterValue="qrybox_enter"/>

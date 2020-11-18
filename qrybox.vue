@@ -40,14 +40,38 @@
   </div>
 
   <div class="p-grid p-d-flex p-jc-center">
-    <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-jc-end input-stretch">
+    <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-jc-between input-stretch menu">
+      <div>
+        <Button label="help" icon="fa fa-question-circle-o"  @click="menu_on = (menu_on === 'help' ? null : 'help')"
+         :class="'p-button-secondary p-button-sm ' + (menu_on === 'help' ? 'p-button-outlined' : 'p-button-text')"/>
 
-      <Button label="example" icon="fa fa-lightbulb-o" @click="onExample()"
-       class="p-button-secondary p-button-text p-button-sm"/>
+        <Button label="raw query" icon="fa fa-code" @click="menu_on = (menu_on === 'raw' ? null : 'raw')"
+         :class="'p-button-secondary p-button-sm ' + (menu_on === 'raw' ? 'p-button-outlined' : 'p-button-text')"/>
+      </div>
+      <div>
+        <Button label="example" icon="fa fa-lightbulb-o" @click="onExample()"
+         class="p-button-secondary p-button-text p-button-sm"/>
 
-      <Button label="clear" icon="fa fa-times" @click="onClear()"
-       class="p-button-secondary p-button-text p-button-sm"/>
+        <Button label="clear" icon="fa fa-times" @click="onClear()"
+         class="p-button-secondary p-button-text p-button-sm"/>
+      </div>
 
+      <div style="position: absolute; left: 0; top: 2.5rem" v-if="menu_on === 'help'"
+           class="p-message p-component p-message-info">
+        <div class="p-message-wrapper p-d-flex p-ai-center">
+          <div class="p-message-text">
+            <p>First time using this tool?
+            Let's walk through <a target="_blank" href="/guide"> user guide
+            <i class="fa fa-external-link"></i></a> to get you started. </p>
+
+            <p> Also, one good way to lookup math symbols is using a
+            <a target="_blank" href="/guide"> symbol-keyboard <i class="fa fa-th"></i>
+            </a> .</p>
+          </div>
+          <Button icon="fa fa-times" @click="menu_on = null"
+            class="p-button-rounded p-button-text p-button-secondary"/>
+        </div>
+      </div>
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
@@ -82,7 +106,8 @@ export default {
     return {
       mq_dom: false,
       MQ: null,
-      mq: null
+      mq: null,
+      menu_on: null
     }
   },
 
@@ -287,6 +312,11 @@ div.input-wrapper {
 div.input-stretch {
   max-width: 600px;
   flex-grow: 1 !important;
+}
+
+div.menu {
+  position: relative;
+  color: var(--primary-color);
 }
 
 div.chips-wrap {
