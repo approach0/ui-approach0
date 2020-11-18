@@ -65,8 +65,8 @@ export default {
       qrybox_enter: '',
       qrybox_model: {
         chips: [
-          {type: "word", str: "hello world", boolop: 'OR'},
-          {type: "tex", str: "\\frac a b", boolop: 'OR'}
+        /*{type: "word", str: "hello world", boolop: 'OR'},
+          {type: "tex", str: "\\frac a b", boolop: 'OR'} */
         ]
       }
     }

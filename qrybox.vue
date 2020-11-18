@@ -56,28 +56,48 @@
          class="p-button-secondary p-button-text p-button-sm"/>
       </div>
 
-      <div style="position: absolute; left: 0; top: 2.5rem" v-if="menu_on === 'help'"
-           class="p-message p-component p-message-info">
-        <div class="p-message-wrapper p-d-flex p-ai-center">
-          <div class="p-message-text">
-            <p>First time using this tool?
-            Let's walk through <a target="_blank" href="/guide"> user guide
-            <i class="fa fa-external-link"></i></a> to get you started. </p>
+      <div style="position: absolute; left: 0; top: 3rem; width: 100%" v-if="menu_on">
 
-            <p> Also, one good way to lookup math symbols is using a
-            <a target="_blank" href="/guide"> symbol-keyboard <i class="fa fa-th"></i>
-            </a> .</p>
+        <div class="p-message p-component p-message-info" v-if="menu_on === 'help'">
+          <div class="p-message-wrapper p-d-flex p-ai-center">
+            <div class="p-message-text">
+              <p>First time using this tool?
+              Let's walk through <a target="_blank" href="/guide"> user guide
+              <i class="fa fa-external-link"></i></a> to get you started. </p>
+
+              <p> Also, to quickly input math symbols, try out the
+              <a href="javascript: void(0)" @click="onPullKeyboard"> symbol-keyboard <i class="fa fa-th"></i>
+              </a> .</p>
+            </div>
+            <Button icon="fa fa-times" @click="menu_on = null"
+              class="p-button-rounded p-button-text p-button-secondary"/>
           </div>
-          <Button icon="fa fa-times" @click="menu_on = null"
-            class="p-button-rounded p-button-text p-button-secondary"/>
         </div>
+
+        <div style="width: 100%; padding-top: 1rem;" v-else-if="menu_on === 'raw'">
+          <span style="width: 100%" class="p-float-label sizes">
+            <InputText id="rawqry" style="width: 100%" type="text" class="p-inputtext-sm" aria-describedby="rawqry-help" v-model="rawqry"/>
+            <label for="rawqry">Enter raw query ...</label>
+            <small id="rawqry-help">
+              In <i>raw query</i>, you can edit math keyword in TeX directly (separate keywords by commas).
+            </small>
+          </span>
+        </div>
+
       </div>
+
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
       {{enterValue}}
     </div>
   </div>
+
+  <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
+    <div class="p-grid p-fluid p-jc-end">
+      <Button class="p-button-text" icon="fa fa-times" @click="keyboard_show = false"/>
+    </div>
+  </Sidebar>
 </template>
 
 <script>
@@ -107,13 +127,19 @@ export default {
       mq_dom: false,
       MQ: null,
       mq: null,
-      menu_on: null
+      menu_on: null,
+      keyboard_show: false
     }
   },
 
   methods: {
     onSearch() {
       alert('Search Clicked!')
+    },
+
+    onPullKeyboard() {
+      this.menu_on = null
+      this.keyboard_show = true
     },
 
     anySpecialChar(str, chars) {
@@ -347,6 +373,7 @@ span.chip-append-icon:hover {
 Button.srch-btn {
   height: 3rem;
   background-color: #54c6c0 !important;
+  margin: 0.5rem 0;
 }
 
 input.text-editor {
@@ -379,5 +406,9 @@ span.katex-display {
 div.math-chip {
   display: flex;
   align-items: center;
+}
+
+.p-float-label label {
+  top: 1.5rem !important;
 }
 </style>
