@@ -19,4 +19,10 @@ app.component('InputText', InputText)
 import Sidebar from 'primevue/sidebar'
 app.component('Sidebar', Sidebar)
 
+import TabView from 'primevue/tabview'
+app.component('TabView', TabView)
+
+import TabPanel from 'primevue/tabpanel'
+app.component('TabPanel', TabPanel)
+
 app.mount('#app')

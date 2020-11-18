@@ -42,17 +42,17 @@
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-jc-between input-stretch menu">
       <div>
-        <Button label="help" icon="fa fa-question-circle-o"  @click="menu_on = (menu_on === 'help' ? null : 'help')"
+        <Button label="Help" icon="fa fa-question-circle-o"  @click="menu_on = (menu_on === 'help' ? null : 'help')"
          :class="'p-button-secondary p-button-sm ' + (menu_on === 'help' ? 'p-button-outlined' : 'p-button-text')"/>
 
-        <Button label="raw query" icon="fa fa-code" @click="menu_on = (menu_on === 'raw' ? null : 'raw')"
+        <Button label="Raw query" icon="fa fa-code" @click="menu_on = (menu_on === 'raw' ? null : 'raw')"
          :class="'p-button-secondary p-button-sm ' + (menu_on === 'raw' ? 'p-button-outlined' : 'p-button-text')"/>
       </div>
       <div>
-        <Button label="example" icon="fa fa-lightbulb-o" @click="onExample()"
+        <Button label="Example" icon="fa fa-lightbulb-o" @click="onExample()"
          class="p-button-secondary p-button-text p-button-sm"/>
 
-        <Button label="clear" icon="fa fa-times" @click="onClear()"
+        <Button label="Clear" icon="fa fa-times" @click="onClear()"
          class="p-button-secondary p-button-text p-button-sm"/>
       </div>
 
@@ -94,14 +94,41 @@
   </div>
 
   <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
-    <div class="p-grid p-fluid p-jc-end">
+    <div style="position: absolute; top: -1rem; right: 0; z-index: 100">
       <Button class="p-button-text" icon="fa fa-times" @click="keyboard_show = false"/>
     </div>
+
+    <TabView style="overflow-y: auto; height: 100%;">
+      <TabPanel :header="keyboard_keys[0].keyset">
+        <Button v-for="key in keyboard_keys[0].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
+         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+
+        <Button v-for="key in keyboard_keys[1].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
+         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+      </TabPanel>
+
+      <TabPanel :header="keyboard_keys[2].keyset">
+        <Button v-for="key in keyboard_keys[2].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
+         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+      </TabPanel>
+
+      <TabPanel :header="keyboard_keys[3].keyset">
+        <Button v-for="key in keyboard_keys[3].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
+         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+      </TabPanel>
+
+      <TabPanel :header="keyboard_keys[4].keyset">
+        <Button v-for="key in keyboard_keys[4].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
+         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+      </TabPanel>
+    </TabView>
+
   </Sidebar>
 </template>
 
 <script>
 const TeX_render = require('./tex-render.js')
+const sym_keyboard = require('./symbol-keyboard.js')
 
 export default {
   props : {
@@ -112,6 +139,7 @@ export default {
   mounted: function() {
     this.MQ = MathQuill.getInterface(2)
     TeX_render.render_fast('.chip-tex')
+    TeX_render.render_fast('.keyboard-key .p-button-label')
   },
 
   watch: {
@@ -119,6 +147,14 @@ export default {
       this.$nextTick(function() {
         TeX_render.render_fast('.chip-tex')
       })
+    },
+
+    keyboard_show: function(show) {
+      if (show) {
+        this.$nextTick(function() {
+          TeX_render.render_fast('.keyboard-key .p-button-label')
+        })
+      }
     }
   },
 
@@ -128,13 +164,15 @@ export default {
       MQ: null,
       mq: null,
       menu_on: null,
-      keyboard_show: false
+      keyboard_keys: sym_keyboard.symbol_keys,
+      keyboard_show: true
     }
   },
 
   methods: {
     onSearch() {
-      alert('Search Clicked!')
+      console.log(this.keyboard_keys)
+      //alert('Search Clicked!')
     },
 
     onPullKeyboard() {
@@ -410,5 +448,29 @@ div.math-chip {
 
 .p-float-label label {
   top: 1.5rem !important;
+}
+
+div.p-sidebar-content {
+  height: calc(100%);
+}
+
+div.p-fieldset-content {
+  display: flex !important;
+  flex-wrap: wrap;
+}
+
+button.keyboard-key {
+  font-size: 1px;
+  line-height: 1;
+  width: 1.7rem;
+  height: 2.7rem;
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  padding: 0.5em !important;
+}
+
+.p-tabview .p-tabview-panels {
+  padding: 0.5em 0 !important;
 }
 </style>
