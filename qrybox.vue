@@ -94,7 +94,6 @@
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
-      {{focus}}
     </div>
   </div>
 
@@ -171,6 +170,10 @@ export default {
           TeX_render.render_fast('.keyboard-key .p-button-label')
         })
       }
+    },
+
+    rawqry: function() {
+      this.rawstr2chips()
     }
   },
 
@@ -204,7 +207,8 @@ export default {
     },
 
     onSearch() {
-      alert('Search Clicked!')
+      //alert('Search Clicked!')
+      this.rawstr2chips()
     },
 
     onPullKeyboard() {
@@ -286,7 +290,6 @@ export default {
       }
 
       this.chips2rawstr()
-
       ev.stopPropagation()
       ev.preventDefault()
     },
@@ -415,6 +418,96 @@ export default {
       }
 
       this.rawqry = arr.join(', ')
+    },
+
+    rawstr2chips() {
+      let chips = []
+      let expect_comma = false
+      let dollar_open = false
+      let keyword = ''
+
+      const wrapup = function() {
+        if (keyword.trim() !== '') {
+          chips.push(keyword.trim())
+          keyword = ''
+        }
+      }
+
+      /* block here if user is typing on query box */
+      if (this.entering) { return }
+
+      const rawstr = this.rawqry
+      for (let i = 0; i < rawstr.length; i++) {
+        if (rawstr[i] == '$' && i + 1 < rawstr.length && rawstr[i + 1] == '$')
+          /* this is a double dollar, trim this $ */
+          continue
+
+        if (rawstr[i] == '$') {
+          dollar_open = !dollar_open
+
+          /* $ is just closed, looking for a comma ahead */
+          if (!dollar_open)
+            expect_comma = true
+
+          /* encounter "word [.] $tex$" case, user forgets comma? */
+          if (dollar_open && keyword.trim() !== '') { wrapup() }
+
+          /* fall through to push this dollar sign */
+
+        } else {
+
+          if (this.anySpecialChar(rawstr[i])) {
+            /* encounter "word [t]ex" case, user forgets dollar? */
+            dollar_open = true
+          }
+
+          /* NOT in dollar-enclosed chip */
+          if (!dollar_open) {
+
+            if (rawstr[i] == ',') {
+              /* skip this comma and wrap up this keyword */
+              expect_comma = false
+              wrapup()
+              continue
+
+            } else if (expect_comma && rawstr[i] != ' ') {
+              /* encounter "$tex$ [w]ord" case, user forgets comma? */
+              expect_comma = false
+
+              /* wrap up this keyword */
+              wrapup()
+            }
+          }
+        }
+
+        /* concatenate */
+        keyword += rawstr[i]
+      } /* end loop */
+
+      /* wrap up the remaining, if any */
+      wrapup()
+      //console.log(chips.join(' | ')); return /* DEBUG */
+
+      /* enforce chip to have specified structure */
+      const vm = this
+      let missing_dollar = false
+      this.chips = chips.map(keyword => {
+        if (keyword[0] == '$' || vm.anySpecialChar(keyword)) {
+          if (keyword[0] != '$') { missing_dollar = true }
+
+          const trim_dollar = keyword.replace(/^\$|\$$/g, "")
+          return { 'type': 'tex', 'str': trim_dollar, 'boolop': 'OR' }
+        } else {
+
+          return { 'type': 'word', 'str': keyword, 'boolop': 'OR' }
+        }
+      })
+
+      /* help user correct raw string due to some missing dollar */
+      if (missing_dollar) {
+        console.log('[auto correct]', chips)
+        this.chips2rawstr()
+      }
     },
 
     clearEntering() {
