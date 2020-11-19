@@ -60,16 +60,16 @@
             <div class="p-message-text">
               <p>First time using this tool?
               Let's walk through our
-              <a target="_blank" href="/guide"> user guide <i class="fa fa-external-link"></i></a>
+              <a target="_blank" href="/guide"><i class="fa fa-external-link"></i> user guide </a>
               to get you started.
-              Also, why not try a few
-              <a href="javascript: void(0)" @click="onExampleQuery"> random queries
-              <i class="fa fa-lightbulb-o"></i></a>
+              Also, why not to try a few
+              <a href="javascript: void(0)" @click="onExampleQuery"><i class="fa fa-lightbulb-o"></i>
+              random queries </a>
               to get a sense?</p>
 
-              <p>To quickly input math symbols, try out the
-              <a href="javascript: void(0)" @click="onPullKeyboard"> symbol-keyboard <i class="fa fa-th"></i>
-              </a> .</p>
+              <p>To quickly input math symbols, use the
+              <a href="javascript: void(0)" @click="onPullKeyboard"><i class="fa fa-th"></i>
+              symbol-keyboard</a>.</p>
 
             </div>
             <Button icon="fa fa-times" @click="menu_on = null"
