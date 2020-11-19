@@ -44,7 +44,7 @@
         <Button label="Help" icon="fa fa-question-circle-o"  @click="menu_on = (menu_on === 'help' ? null : 'help')"
          :class="'p-button-secondary p-button-sm ' + (menu_on === 'help' ? 'p-button-outlined' : 'p-button-text')"/>
 
-        <Button label="Raw query" icon="fa fa-code" @click="menu_on = (menu_on === 'raw' ? null : 'raw')"
+        <Button label="Raw Query" icon="fa fa-code" @click="menu_on = (menu_on === 'raw' ? null : 'raw')"
          :class="'p-button-secondary p-button-sm ' + (menu_on === 'raw' ? 'p-button-outlined' : 'p-button-text')"/>
       </div>
       <div>
