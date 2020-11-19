@@ -26,7 +26,7 @@
             You are editing <b>a math formula</b>. When you finish, press enter or click
             <a href="javascript: void(0)" @click="onFinishMathEdit()"> here</a>.
           </span>
-          <input id="text-editor" class="text-editor" type="text"
+          <input class="text-editor" type="text"
            @paste="onPaste" v-model="entering" @keyup="onKeyup" @keydown="onKeydown"
            placeholder="Enter keywords here, type $ for a math keyword." v-else/>
 
@@ -212,11 +212,11 @@ export default {
     registerFocusBlurWatcher() {
       this.$nextTick(function() {
         const vm = this
-        $('#text-editor').focus(function() {
+        $('.text-editor').focus(function() {
           vm.focus_style = true
         })
 
-        $('#text-editor').blur(function() {
+        $('.text-editor').blur(function() {
           vm.focus_style = false
         })
       })
@@ -421,7 +421,7 @@ export default {
 
     onFocus() {
       if (this.mq === null)
-        $('#text-editor').focus()
+        $('.text-editor').focus()
       else
         this.mq.focus()
     },

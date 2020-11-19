@@ -114,6 +114,8 @@ module.exports = (env, options) => {
         filename: '[name].css'
       }),
       new webpack.DefinePlugin({
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false
       })
     ],
     devServer: {
