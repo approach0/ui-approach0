@@ -424,15 +424,32 @@ export default {
       })
     },
 
+    correct_mathtex(tex) {
+      /* correct common mistakes in math-mode TeX */
+      tex = tex.replace(/_\{[ ]*\}/g, " ")
+      tex = tex.replace(/\^\{[ ]*\}/g, " ")
+      tex = tex.replace(/\{_/g, "{")
+      return tex
+    },
+
     chips2rawstr() {
+      const vm = this
       const arr = this.chips.map(chip => {
-        return chip.type === 'tex' ? `$${chip.str}$` : chip.str
+        if (chip.type === 'tex') {
+          const tex = vm.correct_mathtex(chip.str)
+          return `$${tex}$`
+        } else {
+          return chip.str
+        }
       })
 
       if (this.entering.trim().length > 0) {
-        arr.push(
-          this.mq_dom ? `$${this.entering}$` : this.entering
-        )
+        if (this.mq_dom === null) {
+          arr.push(this.entering)
+        } else {
+          const tex = vm.correct_mathtex(this.entering)
+          arr.push(`$${tex}$`)
+        }
       }
 
       this.rawqry = arr.join(', ')
