@@ -146,17 +146,7 @@ export default {
     this.MQ = MathQuill.getInterface(2)
     TeX_render.render_fast('.chip-tex')
     TeX_render.render_fast('.keyboard-key .p-button-label')
-
-    this.$nextTick(function() {
-      const vm = this
-      $('#text-editor').focus(function() {
-        vm.focus = true
-      })
-
-      $('#text-editor').blur(function() {
-        vm.focus = false
-      })
-    })
+    this.registerFocusBlurWatcher()
   },
 
   watch: {
@@ -171,16 +161,7 @@ export default {
 
     mq: function(math_editor) {
       if (math_editor === null) {
-        this.$nextTick(function() {
-          const vm = this
-          $('#text-editor').focus(function() {
-            vm.focus = true
-          })
-
-          $('#text-editor').blur(function() {
-            vm.focus = false
-          })
-        })
+        this.registerFocusBlurWatcher()
       }
     },
 
@@ -209,6 +190,19 @@ export default {
   },
 
   methods: {
+    registerFocusBlurWatcher() {
+      this.$nextTick(function() {
+        const vm = this
+        $('#text-editor').focus(function() {
+          vm.focus = true
+        })
+
+        $('#text-editor').blur(function() {
+          vm.focus = false
+        })
+      })
+    },
+
     onSearch() {
       alert('Search Clicked!')
     },
