@@ -10,7 +10,7 @@
     </div>
 
     <div class="topbar-qrybox-first p-col p-mx-4" v-if="!qrybox_sinking">
-      <qrybox v-model="qrybox_model" v-model:enterValue="qrybox_enter"/>
+      <qrybox v-model="qrybox_model"/>
     </div>
 
     <div class="p-d-flex p-jc-end p-ai-center">
@@ -20,14 +20,14 @@
     </div>
 
     <div class="topbar-qrybox-second p-col-12 p-mx-4" v-if="!qrybox_sinking">
-      <qrybox v-model="qrybox_model" v-model:enterValue="qrybox_enter"/>
+      <qrybox v-model="qrybox_model"/>
     </div>
 
   </div>
 
   <div class="p-d-flex p-jc-center p-ai-end" style="height: 50vh;" v-if="qrybox_sinking">
     <div style="width: 90%">
-      <qrybox v-model="qrybox_model" v-model:enterValue="qrybox_enter"/>
+      <qrybox v-model="qrybox_model"/>
     </div>
   </div>
 
@@ -63,7 +63,7 @@ export default {
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
       qrybox_sinking: false,
-      qrybox: ''
+      qrybox_model: 'hello'
     }
   },
 

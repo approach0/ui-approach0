@@ -138,13 +138,21 @@ const symbol_keys = require('./symbol-keyboard.js').symbol_keys
 
 export default {
   props : {
+    modelValue: String
   },
 
   mounted: function() {
+    /* create MathQuill constructor */
     this.MQ = MathQuill.getInterface(2)
+
     TeX_render.render_fast('.chip-tex')
     TeX_render.render_fast('.keyboard-key .p-button-label')
+
     this.registerFocusBlurWatcher()
+
+    /* get component property upon mounting */
+    this.rawqry = this.modelValue
+    this.rawstr2chips()
   },
 
   watch: {
@@ -173,6 +181,12 @@ export default {
 
     rawqry: function() {
       this.rawstr2chips()
+      /* update props */
+      this.$emit('update:modelValue', this.rawqry)
+    },
+
+    modelValue: function(newVal) {
+      this.rawqry = this.rawqry
     }
   },
 
@@ -237,8 +251,6 @@ export default {
         boolop: 'OR'
       })
 
-      //this.$emit('update:modelValue', {chips})
-      //this.$emit('update:enterValue', '')
       this.entering = ''
       this.chips2rawstr()
     },
