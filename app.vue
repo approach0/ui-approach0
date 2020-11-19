@@ -19,7 +19,8 @@
       <i class="fa fa-moon-o"></i>
     </div>
 
-    <div class="topbar-qrybox-second p-col-12 p-mx-4" v-if="!qrybox_sinking">
+    <!-- p-col-11 instead of 12 leaves nice padding in small device screen -->
+    <div class="topbar-qrybox-second p-col-11 p-mx-4" v-if="!qrybox_sinking">
       <qrybox v-model="qrybox_model"/>
     </div>
 
