@@ -134,7 +134,7 @@
 
 <script>
 const TeX_render = require('./tex-render.js')
-const sym_keyboard = require('./symbol-keyboard.js')
+const symbol_keys = require('./symbol-keyboard.js').symbol_keys
 
 export default {
   props : {
@@ -179,14 +179,17 @@ export default {
   data: function() {
     return {
       focus_style: false,
-      chips: [],
+      chips: [
+        /*{type: "word", str: "hello world", boolop: 'OR'},
+          {type: "tex", str: "\\frac a b", boolop: 'OR'} */
+      ],
       entering: '',
       rawqry: '',
       mq_dom: false,
       MQ: null,
       mq: null,
       menu_on: null,
-      keyboard_keys: sym_keyboard.symbol_keys,
+      keyboard_keys: symbol_keys,
       keyboard_show: false
     }
   },

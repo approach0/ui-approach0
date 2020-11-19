@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="topbar-qrybox-first p-col p-mx-4" v-if="!sinking_qrybox">
+    <div class="topbar-qrybox-first p-col p-mx-4" v-if="!qrybox_sinking">
       <qrybox v-model="qrybox_model" v-model:enterValue="qrybox_enter"/>
     </div>
 
@@ -19,13 +19,13 @@
       <i class="fa fa-moon-o"></i>
     </div>
 
-    <div class="topbar-qrybox-second p-col-12 p-mx-4" v-if="!sinking_qrybox">
+    <div class="topbar-qrybox-second p-col-12 p-mx-4" v-if="!qrybox_sinking">
       <qrybox v-model="qrybox_model" v-model:enterValue="qrybox_enter"/>
     </div>
 
   </div>
 
-  <div class="p-d-flex p-jc-center p-ai-end" style="height: 50vh;" v-if="sinking_qrybox">
+  <div class="p-d-flex p-jc-center p-ai-end" style="height: 50vh;" v-if="qrybox_sinking">
     <div style="width: 90%">
       <qrybox v-model="qrybox_model" v-model:enterValue="qrybox_enter"/>
     </div>
@@ -62,15 +62,8 @@ export default {
     return {
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
-      sinking_qrybox: false,
-
-      qrybox_enter: '',
-      qrybox_model: {
-        chips: [
-        /*{type: "word", str: "hello world", boolop: 'OR'},
-          {type: "tex", str: "\\frac a b", boolop: 'OR'} */
-        ]
-      }
+      qrybox_sinking: false,
+      qrybox: ''
     }
   },
 
@@ -90,7 +83,7 @@ export default {
     },
 
     onClickIcon() {
-      this.sinking_qrybox = !this.sinking_qrybox
+      this.qrybox_sinking = !this.qrybox_sinking
     }
   }
 }
