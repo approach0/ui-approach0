@@ -1,11 +1,12 @@
 <template>
+  <!-- Query line -->
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch"
          :class="{ 'input-focus': focus_style }">
 
       <div class="chips-wrap" @click="onFocus()">
+        <!-- Chips -->
         <div v-for="(chip, idx) in chips" :key="chip.str" class="p-mx-1">
-
           <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
             <span class="chip-word p-px-1">{{chip.str}}</span>
             <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
@@ -15,12 +16,10 @@
             <span class="p-badge chip-append-icon" @click="onEdit(idx)"> <i class="fa fa-pencil"></i> </span>
             <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
           </div>
-
         </div>
 
+        <!-- Editor -->
         <div class="p-mx-1">
-
-          <!-- Editor -->
           <span v-if="mq_dom" id="math-editor"></span>
           <span v-if="mq" class="p-mx-1 math-editor-info">
             You are editing <b>a math formula</b>. When you finish, press enter or click
@@ -29,7 +28,6 @@
           <input class="text-editor" type="text"
            @paste="onPaste" v-model="entering" @keyup="onKeyup" @keydown="onKeydown"
            placeholder="Enter keywords here, type $ for a math keyword." v-else/>
-
         </div>
       </div>
 
@@ -39,6 +37,7 @@
     </div>
   </div>
 
+  <!-- Menu line -->
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-jc-between input-stretch menu">
       <div>
@@ -96,6 +95,7 @@
     </div>
   </div>
 
+  <!-- Math Keyboard -->
   <Button icon="fa fa-th" class="p-button-rounded p-button-secondary" @click="onPullKeyboard()"
           style="position: fixed; left: 2rem; bottom: 2rem; z-index: 0;"/>
 
