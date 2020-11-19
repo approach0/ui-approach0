@@ -1,6 +1,7 @@
 <template>
   <div class="p-grid p-d-flex p-jc-center">
-    <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
+    <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch"
+         :class="{ 'input-focus': focus }">
 
       <div class="chips-wrap" @click="onFocus()">
         <div v-for="(chip, idx) in chips" :key="chip.str" class="p-mx-1">
@@ -93,7 +94,7 @@
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
-      {{entering}}
+      {{focus}}
     </div>
   </div>
 
@@ -145,6 +146,17 @@ export default {
     this.MQ = MathQuill.getInterface(2)
     TeX_render.render_fast('.chip-tex')
     TeX_render.render_fast('.keyboard-key .p-button-label')
+
+    this.$nextTick(function() {
+      const vm = this
+      $('#text-editor').focus(function() {
+        vm.focus = true
+      })
+
+      $('#text-editor').blur(function() {
+        vm.focus = false
+      })
+    })
   },
 
   watch: {
@@ -155,6 +167,21 @@ export default {
         })
       },
       deep: true,
+    },
+
+    mq: function(math_editor) {
+      if (math_editor === null) {
+        this.$nextTick(function() {
+          const vm = this
+          $('#text-editor').focus(function() {
+            vm.focus = true
+          })
+
+          $('#text-editor').blur(function() {
+            vm.focus = false
+          })
+        })
+      }
     },
 
     keyboard_show: function(show) {
@@ -168,6 +195,7 @@ export default {
 
   data: function() {
     return {
+      focus: false,
       chips: [],
       entering: '',
       rawqry: '',
@@ -212,7 +240,7 @@ export default {
       //this.$emit('update:modelValue', {chips})
       //this.$emit('update:enterValue', '')
       this.entering = ''
-      this.model2rawstr()
+      this.chips2rawstr()
     },
 
     onKeydown(ev) {
@@ -262,12 +290,16 @@ export default {
           vm.mqEditorInput(mq, 'typing', keyword)
         })
       }
+
+      this.chips2rawstr()
+
+      ev.stopPropagation()
+      ev.preventDefault()
     },
 
     onFinishMathEdit() {
       const latex = this.entering
       if (latex.length > 0) {
-        console.log(latex)
         this.pushChip(latex, 'tex')
         this.clearEntering()
       }
@@ -277,6 +309,7 @@ export default {
       const vm = this
       vm.mq_dom = true
       vm.mq = null
+
       this.$nextTick(() => {
         const mq = this.MQ.MathField(document.getElementById("math-editor"), {
           supSubsRequireOperand: true, // avoid _{_a}
@@ -287,6 +320,8 @@ export default {
             edit: function() {
               let latex = mq.latex()
               vm.entering = latex
+              vm.chips2rawstr()
+
               /* user finishes math editing with a dollar */
               if (-1 != latex.indexOf("$")) {
                 latex = latex.replace(/\\\$/g, ' ')
@@ -303,7 +338,9 @@ export default {
         if (mq) {
           this.mq = mq
           callbk && callbk(mq)
+
           mq.focus()
+          this.focus = true
         }
       })
     },
@@ -356,7 +393,7 @@ export default {
       })
     },
 
-    model2rawstr() {
+    chips2rawstr() {
       const arr = this.chips.map(chip => {
         return chip.type === 'tex' ? `$${chip.str}$` : chip.str
       })
@@ -376,7 +413,9 @@ export default {
         /* mq set to null later, we want to wait until `Enter' event
          * goes away, otherwise text-editor will receive the event */
         this.mq = null
-        $('#text-editor').focus()
+        setTimeout(function() {
+          $('#text-editor').focus()
+        }, 100)
       })
     }
   }
@@ -392,6 +431,12 @@ div.input-wrapper {
 div.input-stretch {
   max-width: 600px;
   flex-grow: 1 !important;
+}
+
+div.input-focus {
+  box-shadow: none;
+  outline: 2px solid var(--primary-color);
+  outline-offset: 0;
 }
 
 div.menu {
@@ -492,5 +537,10 @@ button.keyboard-key {
 
 .mq-editable-field .mq-cursor {
   border-left: 1px solid var(--text-color) !important;
+}
+
+.p-button.p-button-outlined {
+  border: none !important;
+  outline: 1px solid #F48FB1 !important;
 }
 </style>
