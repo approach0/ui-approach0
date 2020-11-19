@@ -148,10 +148,13 @@ export default {
   },
 
   watch: {
-    chips: function() {
-      this.$nextTick(function() {
-        TeX_render.render_fast('.chip-tex')
-      })
+    chips: {
+      handler() {
+        this.$nextTick(function() {
+          TeX_render.render_fast('.chip-tex')
+        })
+      },
+      deep: true,
     },
 
     keyboard_show: function(show) {
@@ -264,11 +267,10 @@ export default {
     onFinishMathEdit() {
       const latex = this.entering
       if (latex.length > 0) {
+        console.log(latex)
         this.pushChip(latex, 'tex')
+        this.clearEntering()
       }
-
-      const vm = this
-      vm.reset()
     },
 
     mqEditorCreate(callbk) {
@@ -284,7 +286,7 @@ export default {
           handlers: {
             edit: function() {
               let latex = mq.latex()
-              this.entering = latex
+              vm.entering = latex
               /* user finishes math editing with a dollar */
               if (-1 != latex.indexOf("$")) {
                 latex = latex.replace(/\\\$/g, ' ')
@@ -331,7 +333,7 @@ export default {
     onClear() {
       this.chips = []
       this.entering = ''
-      this.reset()
+      this.clearEntering()
     },
 
     onFocus() {
@@ -368,7 +370,7 @@ export default {
       this.rawqry = arr.join(', ')
     },
 
-    reset() {
+    clearEntering() {
       this.mq_dom = false
       this.$nextTick(function() {
         /* mq set to null later, we want to wait until `Enter' event
