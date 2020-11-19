@@ -109,25 +109,25 @@
     <TabView style="overflow-y: auto; height: 100%;">
       <TabPanel :header="keyboard_keys[0].keyset">
         <Button v-for="key in keyboard_keys[0].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
 
         <Button v-for="key in keyboard_keys[1].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
       </TabPanel>
 
       <TabPanel :header="keyboard_keys[2].keyset">
         <Button v-for="key in keyboard_keys[2].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
       </TabPanel>
 
       <TabPanel :header="keyboard_keys[3].keyset">
         <Button v-for="key in keyboard_keys[3].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
       </TabPanel>
 
       <TabPanel :header="keyboard_keys[4].keyset">
         <Button v-for="key in keyboard_keys[4].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="alert(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
       </TabPanel>
     </TabView>
 
@@ -305,7 +305,8 @@ export default {
       vm.mq = null
 
       this.$nextTick(() => {
-        const mq = this.MQ.MathField(document.getElementById("math-editor"), {
+        const ele = document.getElementById("math-editor")
+        const mq = this.MQ.MathField(ele, {
           supSubsRequireOperand: true, // avoid _{_a}
           autoCommands: 'alpha beta gamma delta zeta eta theta kappa mu nu ' +
           // last two 'mod' and 'pmod' is added by forked version
@@ -352,13 +353,28 @@ export default {
         /* stroke sequence that handles TAB */
         for (let i = 0; i < input.length; i++) {
           let c = input[i]
-          if (c === '\t') mq.keystroke('Tab')
-          else mq.typedText(c)
+          if (c === "\t") {
+            mq.keystroke('Tab')
+          } else {
+            /* uncomment for debugging */
+            //setTimeout(()=>{
+            mq.typedText(c)
+            //}, i * 500)
+          }
         }
 
       } else {
         console.error('Undefined MQ Editor input.')
       }
+    },
+
+    mqCMD(cmd) {
+      const mq = this.mq
+      const vm = this
+      const cmd_ = cmd + ' '
+      vm.mqEditorCreate((mq) => {
+        vm.mqEditorInput(mq, 'stroke', cmd_)
+      })
     },
 
     onClear() {
@@ -409,7 +425,7 @@ export default {
         this.mq = null
         setTimeout(function() {
           $('#text-editor').focus()
-        }, 100)
+        }, 300)
       })
     }
   }
