@@ -3,7 +3,7 @@
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch">
 
       <div class="chips-wrap" @click="onFocus()">
-        <div v-for="(chip, idx) in modelValue.chips" :key="chip.str" class="p-mx-1">
+        <div v-for="(chip, idx) in chips" :key="chip.str" class="p-mx-1">
 
           <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
             <span class="chip-word p-px-1">{{chip.str}}</span>
@@ -25,9 +25,9 @@
             You are editing <b>a math formula</b>. When you finish, press enter or click
             <a href="javascript: void(0)" @click="onFinishMathEdit()"> here</a>.
           </span>
-          <input id="text-editor" class="text-editor" type="text" :value="enterValue"
-          @input="$emit('update:enterValue', $event.target.value)" @keyup="onKeyup" @keydown="onKeydown"
-          placeholder="Enter keywords here, type $ for a math keyword."
+          <input id="text-editor" class="text-editor" type="text"
+                 v-model="entering" @keyup="onKeyup" @keydown="onKeydown"
+                 placeholder="Enter keywords here, type $ for a math keyword."
           v-else/>
 
         </div>
@@ -49,9 +49,6 @@
          :class="'p-button-secondary p-button-sm ' + (menu_on === 'raw' ? 'p-button-outlined' : 'p-button-text')"/>
       </div>
       <div>
-        <Button label="Example" icon="fa fa-lightbulb-o" @click="onExample()"
-         class="p-button-secondary p-button-text p-button-sm"/>
-
         <Button label="Clear" icon="fa fa-times" @click="onClear()"
          class="p-button-secondary p-button-text p-button-sm"/>
       </div>
@@ -62,12 +59,18 @@
           <div class="p-message-wrapper p-d-flex p-ai-center">
             <div class="p-message-text">
               <p>First time using this tool?
-              Let's walk through <a target="_blank" href="/guide"> user guide
-              <i class="fa fa-external-link"></i></a> to get you started. </p>
+              Let's walk through our
+              <a target="_blank" href="/guide"> user guide <i class="fa fa-external-link"></i></a>
+              to get you started.
+              Also, why not try a few
+              <a href="javascript: void(0)" @click="onExampleQuery"> random queries
+              <i class="fa fa-lightbulb-o"></i></a>
+              to get a sense?</p>
 
-              <p> Also, to quickly input math symbols, try out the
+              <p>To quickly input math symbols, try out the
               <a href="javascript: void(0)" @click="onPullKeyboard"> symbol-keyboard <i class="fa fa-th"></i>
               </a> .</p>
+
             </div>
             <Button icon="fa fa-times" @click="menu_on = null"
               class="p-button-rounded p-button-text p-button-secondary"/>
@@ -76,7 +79,8 @@
 
         <div style="width: 100%; padding-top: 1rem;" v-else-if="menu_on === 'raw'">
           <span style="width: 100%" class="p-float-label sizes">
-            <InputText id="rawqry" style="width: 100%" type="text" class="p-inputtext-sm" aria-describedby="rawqry-help" v-model="rawqry"/>
+            <InputText id="rawqry" style="width: 100%" type="text"
+             class="p-inputtext-sm" aria-describedby="rawqry-help" v-model="rawqry"/>
             <label for="rawqry">Enter raw query ...</label>
             <small id="rawqry-help">
               In <i>raw query</i>, you can edit math keyword in TeX directly (separate keywords by commas).
@@ -89,7 +93,7 @@
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
       <!-- Placeholder -->
-      {{enterValue}}
+      {{entering}}
     </div>
   </div>
 
@@ -135,8 +139,6 @@ const sym_keyboard = require('./symbol-keyboard.js')
 
 export default {
   props : {
-    modelValue: Object,
-    enterValue: String
   },
 
   mounted: function() {
@@ -146,7 +148,7 @@ export default {
   },
 
   watch: {
-    modelValue: function() {
+    chips: function() {
       this.$nextTick(function() {
         TeX_render.render_fast('.chip-tex')
       })
@@ -163,6 +165,9 @@ export default {
 
   data: function() {
     return {
+      chips: [],
+      entering: '',
+      rawqry: '',
       mq_dom: false,
       MQ: null,
       mq: null,
@@ -174,8 +179,7 @@ export default {
 
   methods: {
     onSearch() {
-      console.log(this.keyboard_keys)
-      //alert('Search Clicked!')
+      alert('Search Clicked!')
     },
 
     onPullKeyboard() {
@@ -196,31 +200,30 @@ export default {
       if (keyword.trim().length === 0)
         return
 
-      const chips = this.modelValue.chips
-      chips.push({
+      this.chips.push({
         type: type || "word",
         str: keyword,
         boolop: 'OR'
       })
 
-      this.$emit('update:modelValue', {chips})
-      this.$emit('update:enterValue', '')
+      //this.$emit('update:modelValue', {chips})
+      //this.$emit('update:enterValue', '')
+      this.entering = ''
+      this.model2rawstr()
     },
 
     onKeydown(ev) {
-      const chips = this.modelValue.chips
-      const keyword = this.enterValue.trim()
+      const keyword = this.entering.trim()
 
       if (ev.code === 'Backspace') {
         if (keyword === '') {
-          chips.pop()
-          this.$emit('update:modelValue', {chips})
+          this.chips.pop()
         }
       }
     },
 
     onKeyup(ev) {
-      const keyword = this.enterValue.trim()
+      const keyword = this.entering.trim()
 
       if (ev.code === 'Space') {
         /* split by this space */
@@ -229,7 +232,7 @@ export default {
             this.pushChip(keyword)
           })
         } else {
-          this.$emit('update:enterValue', '')
+          this.entering = ''
         }
 
       } else if (ev.code === 'Enter') {
@@ -244,14 +247,14 @@ export default {
         const vm = this
         const pushin = keyword.slice(0, -1)
         vm.pushChip(pushin)
-        vm.$emit('update:enterValue', '')
+        vm.entering = ''
         vm.mqEditorCreate((mq) => {
           vm.mqEditorInput(mq, 'latex', '')
         })
 
       } else if (this.anySpecialChar(keyword)) {
         const vm = this
-        vm.$emit('update:enterValue', keyword)
+        vm.entering = keyword
         vm.mqEditorCreate((mq) => {
           vm.mqEditorInput(mq, 'typing', keyword)
         })
@@ -259,7 +262,7 @@ export default {
     },
 
     onFinishMathEdit() {
-      const latex = this.enterValue
+      const latex = this.entering
       if (latex.length > 0) {
         this.pushChip(latex, 'tex')
       }
@@ -281,7 +284,7 @@ export default {
           handlers: {
             edit: function() {
               let latex = mq.latex()
-              vm.$emit('update:enterValue', latex)
+              this.entering = latex
               /* user finishes math editing with a dollar */
               if (-1 != latex.indexOf("$")) {
                 latex = latex.replace(/\\\$/g, ' ')
@@ -326,8 +329,8 @@ export default {
     },
 
     onClear() {
-      this.$emit('update:modelValue', {chips: []})
-      this.$emit('update:enterValue', '')
+      this.chips = []
+      this.entering = ''
       this.reset()
     },
 
@@ -339,22 +342,30 @@ export default {
     },
 
     onDel(chipIdx) {
-      const chips = this.modelValue.chips
-      chips.splice(chipIdx, 1)
-      this.$emit('update:modelValue', {chips})
+      this.chips.splice(chipIdx, 1)
     },
 
     onEdit(chipIdx) {
-      const chips = this.modelValue.chips
-      const chip = chips.splice(chipIdx, 1)[0]
-      this.$emit('update:modelValue', {chips})
-
+      const chip = this.chips.splice(chipIdx, 1)[0]
       const vm = this
-      const keyword = chip.str
-      vm.$emit('update:enterValue', keyword)
+      vm.entering = chip.str
       vm.mqEditorCreate((mq) => {
-        vm.mqEditorInput(mq, 'latex', keyword)
+        vm.mqEditorInput(mq, 'latex', chip.str)
       })
+    },
+
+    model2rawstr() {
+      const arr = this.chips.map(chip => {
+        return chip.type === 'tex' ? `$${chip.str}$` : chip.str
+      })
+
+      if (this.entering.trim().length > 0) {
+        arr.push(
+          this.mq_dom ? `$${this.entering}$` : this.entering
+        )
+      }
+
+      this.rawqry = arr.join(', ')
     },
 
     reset() {
