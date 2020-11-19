@@ -1,7 +1,7 @@
 <template>
   <div class="p-grid p-d-flex p-jc-center">
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-card input-wrapper input-stretch"
-         :class="{ 'input-focus': focus }">
+         :class="{ 'input-focus': focus_style }">
 
       <div class="chips-wrap" @click="onFocus()">
         <div v-for="(chip, idx) in chips" :key="chip.str" class="p-mx-1">
@@ -27,9 +27,8 @@
             <a href="javascript: void(0)" @click="onFinishMathEdit()"> here</a>.
           </span>
           <input id="text-editor" class="text-editor" type="text"
-                 v-model="entering" @keyup="onKeyup" @keydown="onKeydown"
-                 placeholder="Enter keywords here, type $ for a math keyword."
-          v-else/>
+           @paste="onPaste" v-model="entering" @keyup="onKeyup" @keydown="onKeydown"
+           placeholder="Enter keywords here, type $ for a math keyword." v-else/>
 
         </div>
       </div>
@@ -179,7 +178,7 @@ export default {
 
   data: function() {
     return {
-      focus: false,
+      focus_style: false,
       chips: [],
       entering: '',
       rawqry: '',
@@ -197,11 +196,11 @@ export default {
       this.$nextTick(function() {
         const vm = this
         $('#text-editor').focus(function() {
-          vm.focus = true
+          vm.focus_style = true
         })
 
         $('#text-editor').blur(function() {
-          vm.focus = false
+          vm.focus_style = false
         })
       })
     },
@@ -251,15 +250,36 @@ export default {
       }
     },
 
+    onPaste(ev) {
+      if (ev.type === 'paste') {
+        /* stop data actually being pasted into <input/> */
+        ev.stopPropagation()
+        ev.preventDefault()
+
+        /* get pasted data via clipboard API */
+        const clipboardData = ev.clipboardData || window.clipboardData
+        const pastedData = clipboardData.getData('Text')
+
+        const rawstr = this.rawqry.trim()
+        if (rawstr === '')
+          this.rawqry = pastedData
+        else
+          this.rawqry = `${rawstr}, ${pastedData}`
+
+        this.rawstr2chips()
+        this.$nextTick(function() {
+          this.clearEntering()
+        })
+      }
+    },
+
     onKeyup(ev) {
       const keyword = this.entering.trim()
 
       if (ev.code === 'Space') {
         /* split by this space */
         if (keyword.length > 0) {
-          this.$nextTick(function() {
-            this.pushChip(keyword)
-          })
+          this.pushChip(keyword)
         } else {
           this.entering = ''
         }
@@ -290,8 +310,6 @@ export default {
       }
 
       this.chips2rawstr()
-      ev.stopPropagation()
-      ev.preventDefault()
     },
 
     onFinishMathEdit() {
@@ -338,7 +356,7 @@ export default {
           callbk && callbk(mq)
 
           mq.focus()
-          this.focus = true
+          this.focus_style = true
         }
       })
     },
@@ -516,8 +534,9 @@ export default {
         /* mq set to null later, we want to wait until `Enter' event
          * goes away, otherwise text-editor will receive the event */
         this.mq = null
+        const vm = this
         setTimeout(function() {
-          $('#text-editor').focus()
+          vm.onFocus()
         }, 300)
       })
     }
