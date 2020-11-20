@@ -4,8 +4,8 @@
     <div class="p-d-flex p-ai-center p-m-3" v-if="!qrybox_sinking">
       <img :src="logo32" class="p-m-1" @click="onClickIcon"/>
       <div class="p-d-flex p-flex-column">
-        <span class="logo-text">Approach Zero</span>
-        <div class="logo-text">A math-aware search engine.</div>
+        <span class="logo-text no-select">Approach Zero</span>
+        <div class="logo-text no-select">A math-aware search engine.</div>
       </div>
     </div>
 
@@ -27,27 +27,27 @@
   </div>
 
   <div style="position: fixed; width: 100%;" v-if="qrybox_sinking">
-    <div style="height: 18vh;"/>
+    <div class="vspacer"/>
 
     <div class="rellax" style="height: 100%;" data-rellax-speed="1">
       <div class="p-d-flex p-jc-center p-mb-6">
         <img class="sinking-logo" :src="logo128" @click="onClickIcon"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-3">
-          <span class="logo-text-large">Approach Zero</span>
-          <div class="logo-text-large">A math-aware search engine.</div>
+          <span class="logo-text-large no-select">Approach Zero</span>
+          <div class="logo-text-large no-select">A math-aware search engine.</div>
         </div>
       </div>
     </div>
 
     <div class="p-d-flex p-jc-center">
-      <div class="p-mx-3" style="width: 100%">
+      <div class="p-mx-3" style="width: 100%;">
         <qrybox v-model="qrybox_model"/>
       </div>
     </div>
   </div>
 
   <div v-if="!qrybox_sinking" style="background-color: red; height: 3000px; width: 20px"></div>
-  <Footer v-bind:useAbsPos="qrybox_sinking"/>
+  <Footer v-bind:useAbsPos="qrybox_sinking" style="z-index: -1"/>
 </template>
 
 <script>
@@ -77,7 +77,7 @@ export default {
       logo128: require('./resource/logo128.png'),
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
-      qrybox_sinking: true,
+      qrybox_sinking: false,
       qrybox_model: ''
     }
   },
@@ -124,7 +124,7 @@ a {
   color: rgb(255, 128, 128);
 }
 
-.logo-text {
+.no-select {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -150,7 +150,6 @@ a {
 }
 
 img.sinking-logo {
-  width: 5rem;
   height: 5rem;
 }
 
@@ -172,6 +171,10 @@ div.p-toolbar {
   z-index: -1;
 }
 
+div.vspacer {
+  height: 25vh;
+}
+
 /* query box layout media CSS */
 @media screen and (max-width: 576px) {
   .p-sm-12 {
@@ -185,6 +188,10 @@ div.p-toolbar {
 @media screen and (max-width: 1024px) {
   .topbar-qrybox-first {
     display: none;
+  }
+
+  div.vspacer {
+    height: 5vh;
   }
 }
 

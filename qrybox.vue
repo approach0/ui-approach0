@@ -97,7 +97,7 @@
 
   <!-- Math Keyboard -->
   <Button icon="fa fa-th" class="p-button-rounded p-button-secondary" @click="onPullKeyboard()"
-          style="position: fixed; left: 2rem; bottom: 2rem; z-index: 0;"/>
+          style="position: fixed; left: 2rem; bottom: 2rem; z-index: 99"/>
 
   <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
     <div style="position: absolute; top: -1rem; right: 0; z-index: 100">
