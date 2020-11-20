@@ -32,18 +32,19 @@
     </div>
   </div>
 
-  <!--
   <div style="background-color: red; height: 1800px; width: 2px"></div>
+  <!--
   -->
-
+  <Footer id="foot"/>
 </template>
 
 <script>
 const axios = require('axios')
 import qrybox from './qrybox.vue'
+import footer from './footer.vue'
 
 export default {
-  components: { qrybox },
+  components: { qrybox, Footer: footer },
   mounted: function() {
     this.attachDefaultTheme()
     new Rellax('.rellax')
