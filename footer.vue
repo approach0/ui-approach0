@@ -30,7 +30,7 @@
           their names will be kept in the following page:
           </p>
           <p>
-          https://xitizu.com/docs/content/en/contributors.html
+          https://approach0.xyz/docs/content/en/contributors.html
           </p>
         </div>
       </div>
@@ -40,8 +40,16 @@
           <h2 class="ft-title">Contribute</h2>
           <ul class="ft-items">
             <li>
+              <i class="fa fa-heart-o"></i>
+              <a href="#">Sponsorship (really needed)</a>
+            </li>
+            <li>
               <i class="fa fa-map-o"></i>
               <a href="#">User Guide</a>
+            </li>
+            <li>
+              <i class="fa fa-book"></i>
+              <a href="#">Developer Docs</a>
             </li>
             <li>
               <i class="fa fa-paint-brush"></i>
@@ -52,16 +60,8 @@
               <a href="#">Backend and Automation</a>
             </li>
             <li>
-              <i class="fa fa-heart-o"></i>
-              <a href="#">Sponsorship (really needed)</a>
-            </li>
-            <li>
               <i class="fa fa-motorcycle"></i>
               <a href="#">Search Engine (by invitation)</a>
-            </li>
-            <li>
-              <i class="fa fa-book"></i>
-              <a href="#">Search Engine Docs</a>
             </li>
           </ul>
         </div>
@@ -81,7 +81,7 @@
             </li>
             <li class="p-d-flex p-ai-start">
               <i class="fa fa-lg fa-question" style="width: 56px;"></i>
-              More to be added soon ...
+              <a href="#">Help to Add More ...</a>
             </li>
           </ul>
         </div>
