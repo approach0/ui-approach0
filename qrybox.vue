@@ -8,11 +8,11 @@
         <!-- Chips -->
         <div v-for="(chip, idx) in chips" :key="chip.str" class="p-mx-1">
           <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
-            <span class="chip-word p-px-1">{{chip.str}}</span>
+            <span class="chip-word p-px-2">{{chip.str}}</span>
             <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
           </div>
           <div v-else-if="chip.type=='tex'" class="chip-item p-tag p-tag-info math-chip">
-            <span class="chip-tex p-px-2">[imath] {{chip.str}} [/imath]</span>
+            <span class="chip-tex p-px-3">[imath] {{chip.str}} [/imath]</span>
             <span class="p-badge chip-append-icon" @click="onEdit(idx)"> <i class="fa fa-pencil"></i> </span>
             <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
           </div>
@@ -643,13 +643,13 @@ input.text-editor {
 
 span.math-editor-info {
   color: var(--text-color);
-  opacity: 0.7;
+  opacity: 0.6;
   font-size: 0.85rem;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 span.katex {
-  font-size: 1.0rem;
+  font-size:  1rem;
   font-weight: 600;
 }
 
@@ -676,10 +676,13 @@ div.p-fieldset-content {
 }
 
 button.keyboard-key {
-  font-size: 1px;
   line-height: 1;
   width: 1.7rem;
   height: 2.7rem;
+}
+
+.p-tag {
+  font-size: 1.0rem !important;
 }
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {

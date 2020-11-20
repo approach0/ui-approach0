@@ -1,5 +1,6 @@
 <template>
-  <div class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid">
+  <div id="topbar" v-if="!footer_overshadow"
+   class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid">
 
     <div class="p-d-flex p-ai-center p-m-3" v-if="!qrybox_sinking">
       <img :src="logo32" class="p-m-1" @click="onClickIcon"/>
@@ -26,7 +27,8 @@
 
   </div>
 
-  <div style="position: fixed; width: 100%;" v-if="qrybox_sinking">
+  <div id="sink_div" style="position: fixed; width: 100%;" v-if="qrybox_sinking"
+    v-bind:style=" (footer_overshadow) ? 'z-index: -1' : 'z-index: 1'">
     <div class="vspacer"/>
 
     <div class="rellax" style="height: 100%;" data-rellax-speed="1">
@@ -46,8 +48,8 @@
     </div>
   </div>
 
-  <div v-if="!qrybox_sinking" style="background-color: red; height: 3000px; width: 20px"></div>
-  <Footer v-bind:useAbsPos="qrybox_sinking" style="z-index: -1"/>
+  <div v-if="!qrybox_sinking" style="background-color: red; height: 1500px; width: 20px"></div>
+  <Footer v-bind:footerStyle="footer_style"/>
 </template>
 
 <script>
@@ -57,18 +59,41 @@ import footer from './footer.vue'
 
 export default {
   components: { qrybox, Footer: footer },
+
   mounted: function() {
     this.attachDefaultTheme()
     new Rellax('.rellax')
+    window.addEventListener("scroll", this.onScroll)
+
+    /* update footer stickiness on mounting and window resizing */
+    const vm = this
+    this.footer_style = this.footerStickiness()
+    $(window).resize(function() {
+      vm.footer_style = vm.footerStickiness()
+    })
+
+    /* handle browser back/forward button */
+    window.addEventListener('popstate', function(event) {
+      const state = event.state
+      alert(state)
+    })
+
+    /* ensure we are at the top of the page */
+    $("html, body").animate({ scrollTop: 0 })
   },
 
   watch: {
-    nightTheme: function (val) {
+    nightTheme: function(val) {
       if (val) {
         this.changeTheme('night.css')
       } else {
         this.changeTheme('light.css')
       }
+    },
+
+    qrybox_sinking: function() {
+      /* update footer stickiness on sinking state change */
+      this.footer_style = this.footerStickiness()
     }
   },
 
@@ -77,8 +102,11 @@ export default {
       logo128: require('./resource/logo128.png'),
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
-      qrybox_sinking: false,
-      qrybox_model: ''
+      qrybox_sinking: true,
+      qrybox_model: '',
+      anti_shake_timer: null,
+      footer_style: '',
+      footer_overshadow: false
     }
   },
 
@@ -95,6 +123,38 @@ export default {
       theme.id = "theme"
       theme.href = 'light.css' /* default */
       document.head.appendChild(theme)
+    },
+
+    onScroll() {
+      /* get jQuery element */
+      const ceil_ele = (this.qrybox_sinking) ? $('#sink_div') : $('#topbar')
+      const footer_ele = $('#footer')
+	    if (ceil_ele.offset() === undefined || footer_ele.offset() === undefined) { return }
+
+      /* calculate opacity based on gaps */
+	    const ceil_bottom = ceil_ele.offset().top + ceil_ele.outerHeight()
+      const footer_top  = footer_ele.offset().top
+      const over_depth = Math.max(0, ceil_bottom - footer_top)
+      const grace_gaps = 150
+      const opacity = 1 - Math.min(over_depth, grace_gaps) / grace_gaps
+      ceil_ele.fadeTo(0, opacity)
+
+      /* update footer_overshadow state (anti-shaking) */
+      const vm = this
+      if (this.anti_shake_timer) clearTimeout(this.anti_shake_timer)
+      this.anti_shake_timer = setTimeout(function() {
+        vm.footer_overshadow = (opacity < 0.5)
+      }, 500)
+    },
+
+    footerStickiness() {
+      if (this.qrybox_sinking) {
+        const footer_ele = $('#footer')
+	      const footer_height = footer_ele.outerHeight() || window.innerHeight
+        return `position: absolute; bottom: -${footer_height}px;`
+      } else {
+        return 'position: static;'
+      }
     },
 
     onClickIcon() {
@@ -121,7 +181,12 @@ body {
 
 a {
   text-decoration: none;
-  color: rgb(255, 128, 128);
+  color: rgb(202 103 136);
+  font-weight: bold;
+}
+
+a:hover {
+  cursor: pointer;
 }
 
 .no-select {
@@ -191,7 +256,7 @@ div.vspacer {
   }
 
   div.vspacer {
-    height: 5vh;
+    height: 15vh;
   }
 }
 
