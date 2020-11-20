@@ -643,8 +643,8 @@ input.text-editor {
 
 span.math-editor-info {
   color: var(--text-color);
-  opacity: 0.6;
-  font-size: 0.75rem;
+  opacity: 0.7;
+  font-size: 0.85rem;
   font-weight: 400;
 }
 

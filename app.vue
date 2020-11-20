@@ -1,8 +1,8 @@
 <template>
   <div class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid">
 
-    <div class="p-d-flex p-ai-center">
-      <img :src="logo32" class="p-m-3" @click="onClickIcon"/>
+    <div class="p-d-flex p-ai-center p-m-3" v-if="!qrybox_sinking">
+      <img :src="logo32" class="p-m-1" @click="onClickIcon"/>
       <div class="p-d-flex p-flex-column">
         <span class="logo-text">Approach Zero</span>
         <div class="logo-text">A math-aware search engine.</div>
@@ -13,9 +13,9 @@
       <qrybox v-model="qrybox_model"/>
     </div>
 
-    <div class="p-d-flex p-jc-end p-ai-center">
+    <div class="p-d-flex p-jc-end p-ai-center p-m-2">
       <i class="fa fa-sun-o"></i>
-      <InputSwitch v-model="nightTheme" class="p-m-3"/>
+      <InputSwitch v-model="nightTheme" class="p-m-2"/>
       <i class="fa fa-moon-o"></i>
     </div>
 
@@ -26,15 +26,26 @@
 
   </div>
 
-  <div class="p-d-flex p-jc-center p-ai-end" style="height: 50vh;" v-if="qrybox_sinking">
-    <div style="width: 90%">
-      <qrybox v-model="qrybox_model"/>
+  <div style="position: fixed; width: 100%;" v-if="qrybox_sinking">
+    <div style="height: 18vh;"/>
+
+    <div class="rellax" style="height: 100%;" data-rellax-speed="1">
+      <div class="p-d-flex p-jc-center p-mb-6">
+        <img class="sinking-logo" :src="logo128" @click="onClickIcon"/>
+        <div class="p-d-flex p-flex-column p-jc-center p-mx-3">
+          <span class="logo-text-large">Approach Zero</span>
+          <div class="logo-text-large">A math-aware search engine.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-d-flex p-jc-center">
+      <div class="p-mx-3" style="width: 100%">
+        <qrybox v-model="qrybox_model"/>
+      </div>
     </div>
   </div>
 
-  <div style="background-color: red; height: 1800px; width: 2px"></div>
-  <!--
-  -->
   <Footer id="foot"/>
 </template>
 
@@ -62,10 +73,11 @@ export default {
 
   data: function() {
     return {
+      logo128: require('./resource/logo128.png'),
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
-      qrybox_sinking: false,
-      qrybox_model: 'hello'
+      qrybox_sinking: true,
+      qrybox_model: ''
     }
   },
 
@@ -126,6 +138,21 @@ a {
   font-size: 0.8rem;
 }
 
+.logo-text-large:first-child {
+  font-size: 2.0rem;
+  text-shadow: 1px 1px #4eb5b0;
+  font-weight: bold;
+}
+
+.logo-text-large:last-child {
+  font-size: 1.0rem;
+}
+
+img.sinking-logo {
+  width: 5rem;
+  height: 5rem;
+}
+
 div.p-toolbar {
   background-color: var(--surface-c);
 }
@@ -142,10 +169,6 @@ div.p-toolbar {
   right: 10%;
   bottom: -100px;
   z-index: -1;
-}
-
-.a0-color {
-  background-color: #54c6c0 !important;
 }
 
 /* query box layout media CSS */
