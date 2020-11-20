@@ -417,6 +417,7 @@ export default {
       this.chips = []
       this.entering = ''
       this.clearEntering()
+      this.chips2rawstr()
     },
 
     onFocus() {
