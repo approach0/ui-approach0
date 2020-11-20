@@ -182,7 +182,6 @@ body {
 a {
   text-decoration: none;
   color: rgb(202 103 136);
-  font-weight: bold;
 }
 
 a:hover {

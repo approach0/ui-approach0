@@ -11,7 +11,7 @@
 
       <div class="p-lg-6 p-md-12 p-sm-12" style="padding: 0 3rem">
         <h2 class="ft-title p-d-flex p-jc-center p-ai-center">
-          <i class="fa fa-heart" style="padding: 1rem; color: #e64a4e;"></i> Special Thanks
+          Special Thanks
         </h2>
         <div class="p-d-flex p-grid p-jc-around">
           <a><img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"/></a>
@@ -88,7 +88,7 @@
 
     </div>
 
-    <div class="footer-copyright p-pt-3 p-px-6">
+    <div class="footer-copyleft p-pt-3 p-px-6">
       <div class="p-d-grid p-d-flex p-jc-between p-py-4" style="border-top: 1px #99dcd9 solid;">
         <div></div>
         <div> <strong>Approach Zero - {{ new Date().getFullYear() }}</strong> </div>
@@ -119,6 +119,10 @@ div.footer-main {
   color: var(--surface-f);
   /* background-color: #4eb5b0; */
   background-color: #39928e;
+}
+
+.thanksgiving a {
+  font-weight: bold;
 }
 
 h2.ft-title {
@@ -165,11 +169,7 @@ ul {
   font-size: 1.2rem;
 }
 
-.thanksgiving a {
-  color: #f1e3e3;
-}
-
-div.footer-copyright {
+div.footer-copyleft {
   color: var(--surface-e);
   background-color: #39928e;
 }
