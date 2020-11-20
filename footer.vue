@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" :class="{ 'absolute-position': useAbsPos }">
     <div class="shape-separator">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
         <path fill="#54c6c0" fill-opacity="0.3" d="M0,320L120,314.7C240,309,480,299,720,250.7C960,203,1200,117,1320,74.7L1440,32L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
@@ -13,9 +13,12 @@
 </template>
 
 <style>
-div.footer {
+div.absolute-position {
   position: absolute;
   bottom: -25rem;
+}
+
+div.footer {
   width: 100%;
   z-index: -100 !important; /* otherwise keyboard event won't pass */
 }
@@ -33,6 +36,7 @@ div.footer-main {
 <script>
 export default {
   props : {
+    useAbsPos: Boolean
   },
   data: function() {
     return {}

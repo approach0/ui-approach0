@@ -46,7 +46,8 @@
     </div>
   </div>
 
-  <Footer id="foot"/>
+  <div v-if="!qrybox_sinking" style="background-color: red; height: 3000px; width: 20px"></div>
+  <Footer v-bind:useAbsPos="qrybox_sinking"/>
 </template>
 
 <script>
