@@ -153,24 +153,40 @@ export default {
       document.head.appendChild(theme)
     },
 
+    search(encqry, page) {
+      $.ajax({
+        url: 'http://localhost:8080/search-relay.php',
+        data: `p=${page}&q=${encqry}`,
+        dataType: 'json'
+
+      }).done(function(res) {
+        console.log(res)
+
+      }).fail(function(res, err) {
+        console.log(err)
+      })
+    },
+
     onSearch(rawqry) {
       if (rawqry.trim() == '') return
 
-      const encqry = encodeURIComponent(rawqry)
-      const page = this.pagination_curpage
-
+      /* move viewbox and querybox on top */
       $("html, body").animate({ scrollTop: 0 })
       this.qrybox_sinking = false
-      this.loading = true
 
-      console.log('Search', encqry, page)
-
+      /* setup loading page */
       const vm = this
-      vm.loading_error = ''
+      this.loading = true
+      this.loading_error = ''
       setTimeout(function() {
         vm.loading_error = `Oops! seems like server is down, please come back later.
         If the problem persists, please contact us.`
       }, 2000)
+
+      /* perform search */
+      const encqry = encodeURIComponent(rawqry)
+      const page = this.pagination_curpage
+      this.search(encqry, page)
     },
 
     onScroll() {
