@@ -141,6 +141,8 @@ export default {
     modelValue: String
   },
 
+  emits: ['update:modelValue', 'search'],
+
   mounted: function() {
     /* create MathQuill constructor */
     this.MQ = MathQuill.getInterface(2)
@@ -223,8 +225,16 @@ export default {
     },
 
     onSearch() {
-      //alert('Search Clicked!')
-      this.rawstr2chips()
+      this.$emit('search', this.rawqry)
+      this.focus_style = false
+
+      const entering = this.entering
+      if (this.mq) {
+        this.pushChip(entering, 'tex')
+        this.clearEntering(true)
+      } else {
+        this.pushChip(entering)
+      }
     },
 
     onPullKeyboard() {
@@ -561,7 +571,7 @@ export default {
       }
     },
 
-    clearEntering() {
+    clearEntering(left_blur) {
       this.mq_dom = false
       this.$nextTick(function() {
         /* mq set to null later, we want to wait until `Enter' event
@@ -569,7 +579,7 @@ export default {
         this.mq = null
         const vm = this
         setTimeout(function() {
-          vm.onFocus()
+          left_blur || vm.onFocus()
         }, 300)
       })
     }

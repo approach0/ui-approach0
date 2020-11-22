@@ -11,7 +11,7 @@
     </div>
 
     <div class="topbar-qrybox-first p-col p-mx-4" v-if="!qrybox_sinking">
-      <qrybox v-model="qrybox_model"/>
+      <qrybox v-model="qrybox_model" @search="onSearch"/>
     </div>
 
     <div class="p-d-flex p-jc-end p-ai-center p-m-2">
@@ -22,13 +22,14 @@
 
     <!-- p-col-11 instead of 12 leaves nice padding in small device screen -->
     <div class="topbar-qrybox-second p-col-11 p-mx-4" v-if="!qrybox_sinking">
-      <qrybox v-model="qrybox_model"/>
+      <qrybox v-model="qrybox_model" @search="onSearch"/>
     </div>
 
   </div>
 
   <div id="sink_div" style="position: fixed; width: 100%;" v-if="qrybox_sinking"
     v-bind:style=" (footer_overshadow) ? 'z-index: -1' : 'z-index: 1'">
+
     <div class="vspacer"/>
 
     <div class="rellax" style="height: 100%;" data-rellax-speed="1">
@@ -43,8 +44,18 @@
 
     <div class="p-d-flex p-jc-center">
       <div class="p-mx-3" style="width: 100%;">
-        <qrybox v-model="qrybox_model"/>
+        <qrybox v-model="qrybox_model" @search="onSearch"/>
       </div>
+    </div>
+  </div>
+
+  <div id="loading" style="position: fixed; width: 100%;" v-if="loading"
+    v-bind:style=" (footer_overshadow) ? 'z-index: -1' : 'z-index: 1'">
+
+    <div class="vspacer"/>
+
+    <div class="p-d-flex p-jc-center">
+      <ProgressSpinner />
     </div>
   </div>
 
@@ -75,7 +86,6 @@ export default {
     /* handle browser back/forward button */
     window.addEventListener('popstate', function(event) {
       const state = event.state
-      alert(state)
     })
 
     /* ensure we are at the top of the page */
@@ -105,6 +115,7 @@ export default {
       qrybox_sinking: true,
       qrybox_model: '',
       anti_shake_timer: null,
+      pagination_curpage: 0,
       footer_style: '',
       footer_overshadow: false
     }
@@ -123,6 +134,19 @@ export default {
       theme.id = "theme"
       theme.href = 'light.css' /* default */
       document.head.appendChild(theme)
+    },
+
+    onSearch(rawqry) {
+      if (rawqry.trim() == '') return
+
+      const encqry = encodeURIComponent(rawqry)
+      const page = this.pagination_curpage
+
+      $("html, body").animate({ scrollTop: 0 })
+      this.qrybox_sinking = false
+      this.loading = true
+
+      console.log('Search', encqry, page)
     },
 
     onScroll() {
@@ -231,7 +255,7 @@ div.p-toolbar {
 .doodle {
   position: absolute;
   right: 10%;
-  bottom: -100px;
+  bottom: -10vh;
   z-index: -1;
 }
 

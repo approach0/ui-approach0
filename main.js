@@ -25,4 +25,7 @@ app.component('TabView', TabView)
 import TabPanel from 'primevue/tabpanel'
 app.component('TabPanel', TabPanel)
 
+import ProgressSpinner from 'primevue/progressspinner'
+app.component('ProgressSpinner', ProgressSpinner)
+
 app.mount('#app')
