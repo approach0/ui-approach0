@@ -1,6 +1,6 @@
 <template>
   <!-- progress bar (only for measuring snippet TeX render progress currently) -->
-  <ProgressBar :value="loading_percentage" class="progressbar"/>
+  <ProgressBar :value="loading_percentage" class="progressbar" v-if="search_results !== null"/>
 
   <!-- Top bar (menu and secondary query boxes) -->
   <div id="topbar" v-if="!footer_overshadow"
@@ -140,6 +140,8 @@ export default {
     },
 
     search_results: function() {
+      this.loading_percentage = 100
+
       this.$nextTick(function() {
         TeX_render.render('.search-res', (a, b) => {
           let percentage = Math.ceil((a * 100) / b)
@@ -417,6 +419,7 @@ div.vspacer {
 
 .search-res {
   max-width: 892px; /* 932 - 40 */
+  width: 100%;
 }
 
 .search-res > .docid,.score {
@@ -442,7 +445,7 @@ div.vspacer {
 }
 
 .search-res > div.snippet {
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 .search-res > div.snippet > p {
