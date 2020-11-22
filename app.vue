@@ -274,19 +274,17 @@ export default {
     onScroll() {
       /* get jQuery element */
       const ceil_ele = (this.qrybox_sinking) ? $('#sink-div') : $('#topbar')
-      const footer_ele = $('#footer')
-	    if (ceil_ele.offset() === undefined || footer_ele.offset() === undefined) {
-        console.error('[onScroll position error]', ceil_ele, footer_ele)
-        return
-      }
+      const footer_ele = $('#footer') /* this should always present */
 
       /* calculate opacity based on gaps */
-	    const ceil_bottom = ceil_ele.offset().top + ceil_ele.outerHeight()
+      const ceil_bottom = (ceil_ele.offset() === undefined) ?
+        window.pageYOffset : ceil_ele.offset().top + ceil_ele.outerHeight()
       const footer_top  = footer_ele.offset().top
       const over_depth = Math.max(0, ceil_bottom - footer_top)
       const grace_gaps = 150
       const opacity = 1 - Math.min(over_depth, grace_gaps) / grace_gaps
-      ceil_ele.fadeTo(0, opacity)
+
+      ceil_ele.length && ceil_ele.fadeTo(0, opacity)
 
       /* update footer_overshadow state (anti-shaking) */
       const vm = this
