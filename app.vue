@@ -32,7 +32,7 @@
   </div>
 
   <!-- Initial query box -->
-  <div id="sink_div" style="position: fixed; width: 100%;" v-if="qrybox_sinking"
+  <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking"
     v-bind:style=" (footer_overshadow) ? 'z-index: -1' : 'z-index: 1'">
 
     <div class="vspacer"/>
@@ -55,7 +55,7 @@
   </div>
 
   <!-- Loading spinner and error message -->
-  <div id="sink_div" style="position: fixed; width: 100%; z-index: -1" v-if="loading">
+  <div id="sink-div" style="position: fixed; width: 100%; z-index: -1" v-if="loading">
 
     <div class="vspacer"/>
 
@@ -273,9 +273,12 @@ export default {
 
     onScroll() {
       /* get jQuery element */
-      const ceil_ele = (this.qrybox_sinking) ? $('#sink_div') : $('#topbar')
+      const ceil_ele = (this.qrybox_sinking) ? $('#sink-div') : $('#topbar')
       const footer_ele = $('#footer')
-	    if (ceil_ele.offset() === undefined || footer_ele.offset() === undefined) { return }
+	    if (ceil_ele.offset() === undefined || footer_ele.offset() === undefined) {
+        console.error('[onScroll position error]', ceil_ele, footer_ele)
+        return
+      }
 
       /* calculate opacity based on gaps */
 	    const ceil_bottom = ceil_ele.offset().top + ceil_ele.outerHeight()
