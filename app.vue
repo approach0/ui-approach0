@@ -49,17 +49,28 @@
     </div>
   </div>
 
-  <div id="loading" style="position: fixed; width: 100%;" v-if="loading"
-    v-bind:style=" (footer_overshadow) ? 'z-index: -1' : 'z-index: 1'">
+  <div id="sink_div" style="position: fixed; width: 100%; z-index: -1" v-if="loading">
 
     <div class="vspacer"/>
 
     <div class="p-d-flex p-jc-center">
-      <ProgressSpinner />
+      <ProgressSpinner v-if="loading_error.length == 0"/>
+
+      <div class="p-message p-component p-message-warn" v-else>
+        <div class="p-message-wrapper p-d-flex">
+          <span class="p-message-icon fa fa-exclamation-triangle"></span>
+          <div class="p-message-text" style="max-width: 20rem;">
+            {{loading_error}}
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div v-if="!qrybox_sinking" style="background-color: red; height: 1500px; width: 20px"></div>
+  <div v-if="!qrybox_sinking" style="height: 100vh; width: 0px;">
+  </div>
+
   <Footer v-bind:footerStyle="footer_style"/>
 </template>
 
@@ -112,10 +123,16 @@ export default {
       logo128: require('./resource/logo128.png'),
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
+
       qrybox_sinking: true,
       qrybox_model: '',
       anti_shake_timer: null,
+
+      loading: false,
+      loading_error: '',
+
       pagination_curpage: 0,
+
       footer_style: '',
       footer_overshadow: false
     }
@@ -147,6 +164,13 @@ export default {
       this.loading = true
 
       console.log('Search', encqry, page)
+
+      const vm = this
+      vm.loading_error = ''
+      setTimeout(function() {
+        vm.loading_error = `Oops! seems like server is down, please come back later.
+        If the problem persists, please contact us.`
+      }, 2000)
     },
 
     onScroll() {
