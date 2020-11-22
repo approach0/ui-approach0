@@ -1,4 +1,8 @@
 <template>
+  <!-- progress bar (only for measuring snippet TeX render progress currently) -->
+  <ProgressBar :value="loading_percentage" class="progressbar"/>
+
+  <!-- Top bar (menu and secondary query boxes) -->
   <div id="topbar" v-if="!footer_overshadow"
    class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid">
 
@@ -27,6 +31,7 @@
 
   </div>
 
+  <!-- Initial query box -->
   <div id="sink_div" style="position: fixed; width: 100%;" v-if="qrybox_sinking"
     v-bind:style=" (footer_overshadow) ? 'z-index: -1' : 'z-index: 1'">
 
@@ -49,6 +54,7 @@
     </div>
   </div>
 
+  <!-- Loading spinner and error message -->
   <div id="sink_div" style="position: fixed; width: 100%; z-index: -1" v-if="loading">
 
     <div class="vspacer"/>
@@ -68,14 +74,35 @@
     </div>
   </div>
 
-  <div v-if="!qrybox_sinking" style="height: 100vh; width: 0px;">
+  <!-- Loading height placeholder -->
+  <div v-if="loading" style="height: 100vh; width: 0px;">
   </div>
 
+  <!-- Search results -->
+  <div v-if="search_results !== null">
+    <div class="p-d-flex p-flex-column p-ai-center p-jc-center">
+      <div v-for="hit in search_results" :key="hit.docid" class="p-p-4 p-m-3 p-card search-res">
+        <span class="docid"> {{hit.docid}} </span>
+        <span class="score"> {{hit.score}} </span>
+        <a class="title" target="_blank" :href="hit.url">
+          {{hit.title}}
+        </a>
+        <span class="url"> {{hit.url}} </span>
+        <div class="snippet">
+          <p v-html="snippetPreprocess(hit.snippet)"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <Footer v-bind:footerStyle="footer_style"/>
 </template>
 
 <script>
 const axios = require('axios')
+const TeX_render = require('./tex-render.js')
+
 import qrybox from './qrybox.vue'
 import footer from './footer.vue'
 
@@ -112,6 +139,16 @@ export default {
       }
     },
 
+    search_results: function() {
+      this.$nextTick(function() {
+        TeX_render.render('.search-res', (a, b) => {
+          let percentage = Math.ceil((a * 100) / b)
+          if (percentage > 90) percentage = 100
+          this.loading_percentage = percentage
+        })
+      })
+    },
+
     qrybox_sinking: function() {
       /* update footer stickiness on sinking state change */
       this.footer_style = this.footerStickiness()
@@ -125,13 +162,16 @@ export default {
       nightTheme: false,
 
       qrybox_sinking: true,
-      qrybox_model: '',
+      qrybox_model: 'this',
       anti_shake_timer: null,
 
       loading: false,
       loading_error: '',
+      loading_percentage: 100,
 
-      pagination_curpage: 0,
+      search_results: null,
+      pagination_curpage: 1,
+      pagination_totpage: 0,
 
       footer_style: '',
       footer_overshadow: false
@@ -154,16 +194,37 @@ export default {
     },
 
     search(encqry, page) {
+      /* setup loading page */
+      const vm = this
+      this.search_results = null
+      this.loading = true
+      this.loading_error = ''
+
+      /* perform search */
       $.ajax({
         url: 'http://localhost:8080/search-relay.php',
         data: `p=${page}&q=${encqry}`,
         dataType: 'json'
 
       }).done(function(res) {
-        console.log(res)
+        const ret_code = (res['ret_code'] === undefined) ? 101 : res['ret_code']
+        if (ret_code == 0) {
+          vm.loading = false
+
+          const ret_hits = res['hits']
+          const tot_pages = res['tot_pages']
+          vm.search_results = ret_hits
+          vm.pagination_totpage = tot_pages
+
+        } else {
+          const ret_str = res['ret_str'] || 'Invalid AJAX JSON'
+          vm.loading_error = `${ret_str} (return code: #${ret_code}).`
+        }
 
       }).fail(function(res, err) {
-        console.log(err)
+        console.error('[search ajax failed]', err)
+        vm.loading_error = `Oops! seems like server is down, please come back later.
+        If the problem persists, please contact us.`
       })
     },
 
@@ -174,19 +235,38 @@ export default {
       $("html, body").animate({ scrollTop: 0 })
       this.qrybox_sinking = false
 
-      /* setup loading page */
-      const vm = this
-      this.loading = true
-      this.loading_error = ''
-      setTimeout(function() {
-        vm.loading_error = `Oops! seems like server is down, please come back later.
-        If the problem persists, please contact us.`
-      }, 2000)
-
       /* perform search */
       const encqry = encodeURIComponent(rawqry)
       const page = this.pagination_curpage
       this.search(encqry, page)
+    },
+
+    snippetPreprocess(snippet) {
+      /* ensure $a<b$ is converted into $a < b$, otherwise it may render incorrectly */
+      snippet = snippet.replace(/\[imath\]([\s\S]+?)\[\/imath\]/g, function (match, group) {
+        return '[imath]' + group.split('<').join(' < ') + '[/imath]'
+      })
+
+      /* remove leading unpaired [imath] such as "bla bla [/imath]" */
+      snippet = snippet.replace(/^(.*?)\[\/imath\]/, function (match, group) {
+        if (group.indexOf('[imath]') == -1) {
+          return '... '
+        } else {
+          return match
+        }
+      })
+
+      /* remove trailing unpaired [imath] such as "[imath] bla bla" */
+      const idx = snippet.lastIndexOf('[imath]')
+      if (idx !== -1) {
+        const headstring = snippet.slice(0, idx)
+        const tailstring = snippet.substring(idx)
+        if (tailstring.indexOf('[/imath]' == -1)) {
+          snippet = headstring + ' ...'
+        }
+      }
+
+      return snippet
     },
 
     onScroll() {
@@ -243,6 +323,12 @@ body {
   overflow-x: hidden;
 }
 
+.progressbar {
+  top: 0;
+  z-index: 1000; /* 999 + 1 */
+  width: 100%;
+}
+
 a {
   text-decoration: none;
   color: rgb(202 103 136);
@@ -282,7 +368,7 @@ img.sinking-logo {
 }
 
 div.p-toolbar {
-  background-color: var(--surface-c);
+  background-color: var(--surface-d);
 }
 
 .topbar {
@@ -327,5 +413,42 @@ div.vspacer {
   .topbar-qrybox-second {
     display: none;
   }
+}
+
+.search-res {
+  max-width: 892px; /* 932 - 40 */
+}
+
+.search-res > .docid,.score {
+  display: none;
+}
+
+.search-res > a.title {
+  text-decoration: none;
+  font-size: 1.2em;
+  display: block;
+  word-break: break-all;
+  color: #003dbf;
+}
+
+.search-res > a.title:visited {
+  color: #609;
+}
+
+.search-res > span.url {
+  color: #006d21;
+  display: block;
+  word-break: break-all;
+}
+
+.search-res > div.snippet {
+  overflow-x: hidden;
+}
+
+.search-res > div.snippet > p {
+}
+
+em.hl {
+  background-color: #FFC;
 }
 </style>
