@@ -131,16 +131,19 @@ export default {
     const vm = this
     this.footer_style = this.footerStickiness()
     $(window).resize(function() {
-      vm.footer_style = vm.footerStickiness()
+      vm.onResize()
     })
 
     /* handle browser back/forward button */
     window.addEventListener('popstate', function(event) {
-      const state = event.state
+      vm.onPopState(event.state)
     })
 
     /* ensure we are at the top of the page */
     $("html, body").animate({ scrollTop: 0 })
+
+    /* push initial state */
+    this.pushState()
   },
 
   watch: {
@@ -178,7 +181,6 @@ export default {
 
       qrybox_sinking: true,
       qrybox_model: '',
-      anti_shake_timer: null,
 
       loading: false,
       loading_error: '',
@@ -208,11 +210,47 @@ export default {
       document.head.appendChild(theme)
     },
 
+    onPopState(state) {
+      if (state) {
+        const rawqry = state.rawqry
+        this.qrybox_model = rawqry || ''
+
+        if (rawqry === undefined) {
+          this.qrybox_sinking = true
+          this.search_results = null
+        } else {
+          const encqry = encodeURIComponent(rawqry)
+          const page = state.page
+          this.qrybox_sinking = false
+          this.search(encqry, page)
+        }
+
+        $("html, body").animate({ scrollTop: 0 })
+      }
+    },
+
+    pushState(rawqry, page_) {
+      if (rawqry === undefined) {
+        /* initial landing page */
+        history.pushState({}, '', '')
+      } else {
+        const page = page_ || 1
+        const searchState = {
+          "rawqry": rawqry,
+          "page": page
+        }
+        const title = JSON.stringify(searchState)
+        const encqry = encodeURIComponent(rawqry)
+        history.pushState(searchState, title, "?q=" + encqry + "&p=" + page)
+      }
+    },
+
     onGotoPage(page) {
       const rawqry = this.qrybox_model
       $("html, body").animate({ scrollTop: 0 })
       const encqry = encodeURIComponent(rawqry)
       this.search(encqry, page)
+      this.pushState(rawqry, page)
     },
 
     search(encqry, page) {
@@ -262,6 +300,7 @@ export default {
       /* perform search */
       const encqry = encodeURIComponent(rawqry)
       this.search(encqry, 1)
+      this.pushState(encqry, 1)
     },
 
     snippetPreprocess(snippet) {
@@ -307,6 +346,11 @@ export default {
 
       ceil_ele.length && ceil_ele.fadeTo(0, opacity)
       this.ceil_opacity = opacity
+    },
+
+    onResize() {
+      this.footer_style = this.footerStickiness()
+      this.onScroll()
     },
 
     footerStickiness() {
