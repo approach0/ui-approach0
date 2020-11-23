@@ -385,7 +385,7 @@ export default {
     },
 
     onClickIcon() {
-      location.reload()
+      window.location.href = window.location.pathname
     }
   }
 }
