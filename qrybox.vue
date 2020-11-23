@@ -63,7 +63,7 @@
               to get you started.
               Also, why not to try a few
               <a href="javascript: void(0)" @click="onExampleQuery"><i class="fa fa-lightbulb-o"></i>
-              random queries </a>
+              example queries </a>
               to get a sense?</p>
 
               <p>To quickly input math symbols, use the
