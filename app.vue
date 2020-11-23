@@ -6,7 +6,7 @@
   <div id="topbar" class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid"
       :style="emerge_style">
 
-    <div class="p-d-flex p-ai-center p-m-3" v-if="!qrybox_sinking">
+    <div class="p-d-flex p-ai-center" v-if="!qrybox_sinking">
       <img :src="logo32" class="logo p-m-1" @click="onClickIcon"/>
       <div class="p-d-flex p-flex-column">
         <span class="logo-text no-select">Approach Zero</span>
