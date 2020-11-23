@@ -177,7 +177,7 @@ export default {
       nightTheme: false,
 
       qrybox_sinking: true,
-      qrybox_model: 'this',
+      qrybox_model: '',
       anti_shake_timer: null,
 
       loading: false,
@@ -249,7 +249,7 @@ export default {
           vm.loading_error = `Oops! seems like server is down, please come back later.
           If the problem persists, please contact us.`
         })
-      }, 2000) /* change timeout to debug loading */
+      }, 0) /* change timeout to debug loading */
     },
 
     onClickSearch(rawqry) {
