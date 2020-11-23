@@ -54,7 +54,7 @@
 
       <div style="position: absolute; left: 0; top: 3rem; width: 100%" v-if="menu_on">
 
-        <div class="p-message p-component p-message-info" v-if="menu_on === 'help'">
+        <div class="p-message p-component p-message-info" v-if="menu_on === 'help'" style="z-index: 1">
           <div class="p-message-wrapper p-d-flex p-ai-center">
             <div class="p-message-text">
               <p>First time using this tool?
@@ -97,7 +97,7 @@
 
   <!-- Math Keyboard -->
   <Button icon="fa fa-th" class="p-button-rounded p-button-secondary" @click="onPullKeyboard()"
-          style="position: fixed; left: 2rem; bottom: 2rem; z-index: 99"/>
+          style="position: fixed; left: 2rem; bottom: 2rem; z-index: -1"/>
 
   <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
     <div style="position: absolute; top: -1rem; right: 0; z-index: 100">
