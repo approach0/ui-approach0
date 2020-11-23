@@ -2,8 +2,8 @@
   <div id="footer" class="footer no-select" :style="footerStyle">
     <div class="shape-separator">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path fill="#54c6c0" fill-opacity="0.3" d="M0,320L120,314.7C240,309,480,299,720,250.7C960,203,1200,117,1320,74.7L1440,32L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
-        <path fill="#54c6c0" fill-opacity="0.4" d="M0,320L120,314.7C240,309,480,299,720,282.7C960,267,1200,245,1320,234.7L1440,224L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+        <path fill="#36a4a9" fill-opacity="0.5" d="M0,320L120,314.7C240,309,480,299,720,250.7C960,203,1200,117,1320,74.7L1440,32L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+        <path fill="#263238" fill-opacity="0.7" d="M0,320L120,314.7C240,309,480,299,720,282.7C960,267,1200,245,1320,234.7L1440,224L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
       </svg>
     </div>
 
@@ -87,17 +87,16 @@
 
     </div>
 
-    <div class="footer-copyleft p-pt-3 p-px-6">
-      <div class="p-d-grid p-d-flex p-jc-between p-py-4" style="border-top: 1px #99dcd9 solid;">
-        <div></div>
-        <div> <strong>Approach Zero - {{ new Date().getFullYear() }}</strong> </div>
-        <div class="social-icons">
-          <a><i class="fa fa-lg fa-comment"></i></a>
-          <a><i class="fa fa-lg fa-github"></i></a>
-          <a><i class="fa fa-lg fa-twitter"></i></a>
-          <a><i class="fa fa-lg fa-reddit"></i></a>
-          <a><i class="fa fa-lg fa-envelope-o"></i></a>
-        </div>
+    <div class="p-pt-3 p-px-6 footer-bottom">
+      <div class="p-d-grid p-d-flex p-jc-center p-pt-4 footer-copyleft">
+        <div> Approach Zero - {{ new Date().getFullYear() }} </div>
+      </div>
+      <div class="p-d-grid p-d-flex p-jc-center p-py-4 social-icons">
+        <a><i class="fa fa-lg fa-comment"></i></a>
+        <a><i class="fa fa-lg fa-github"></i></a>
+        <a><i class="fa fa-lg fa-twitter"></i></a>
+        <a><i class="fa fa-lg fa-reddit"></i></a>
+        <a><i class="fa fa-lg fa-envelope-o"></i></a>
       </div>
     </div>
 
@@ -111,13 +110,13 @@ div.footer {
 }
 
 div.shape-separator svg {
-  vertical-align: top;
+  /* vertical-align: top; */
 }
 
 div.footer-main {
-  color: var(--surface-f);
+  color: white;
   /* background-color: #4eb5b0; */
-  background-color: #39928e;
+  background-color: #263238;
 }
 
 .thanksgiving a {
@@ -127,6 +126,7 @@ div.footer-main {
 h2.ft-title {
   font-size: 1.4rem;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .p-grid {
@@ -154,23 +154,27 @@ ul.ft-items > li > img {
 
 div.footer a {
   text-decoration: none;
-  color: var(--surface-e);
+  color: #ccc;
 }
 
 .footer a:hover {
-  color: #376552;
+  color: white;
 }
 
 ul {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 1.2rem;
+}
+
+div.footer-bottom {
+  background-color: #263238;
 }
 
 div.footer-copyleft {
-  color: var(--surface-e);
-  background-color: #39928e;
+  color: white;
+  border-top: 2px #99dcd9 solid;
+  font-weight: bold;
 }
 
 div.social-icons i {
