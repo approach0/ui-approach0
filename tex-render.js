@@ -46,40 +46,35 @@ function mathjax_tex_render(scope_select, progress_callbk) {
   var replace_regex = /\[imath\]([\s\S]+?)\[\/imath\]/g;
   var tex_tag_open  = '<span class="imathjax">';
   var tex_tag_close = '</span>';
-  var render_select = "span.imathjax";
-  var remove_class =  "imathjax";
+  var remove_class = "imathjax";
   var replace_class = "imathjax-rendered";
 
   var err_tag_open_0  = '<span class="imath-err" title="';
   var err_tag_open_1  = '">';
   var err_tag_close = '</span>';
 
-  var workload = 0;
-  var progress = 0;
-
   $(scope_select).each(function() {
     var origin = $(this).html();
     var repl = origin.replace(
       replace_regex,
       function (_, tex) {
-        workload += 1;
         return tex_tag_open + tex + tex_tag_close;
     });
     $(this).html(repl);
   });
 
+  var workload = $(scope_select + ' ' + `.${remove_class},.${replace_class}`).length || 1;
+  var progress = $(scope_select + ' ' + `.${replace_class}`).length || 0;
+
   progress_callbk && progress_callbk(progress, workload);
 
   MathJax.texReset();
 
-  var intv = setInterval(function () {
-    var leftover = 0;
-    $(scope_select + ' ' + render_select).each(function(index) {
-      if (index > 64)
-        return false;
-      var vm = $(this);
-      var tex = vm.text();
-      var ele = vm.get(0);
+  $(scope_select + ' ' + `.${remove_class}`).each(function(index) {
+    var vm = $(this);
+    var tex = vm.text();
+    var ele = vm.get(0);
+    setTimeout(function() {
       try {
         var math_ele = MathJax.tex2svg(tex, {
           display: false
@@ -112,11 +107,9 @@ function mathjax_tex_render(scope_select, progress_callbk) {
         progress += 1;
         progress_callbk && progress_callbk(progress, workload);
 
-        leftover = 1;
-
       } catch(err) {
         if (err.toString().indexOf('retry') != -1) {
-          // console.log('retry', tex);
+          console.error('[MathJax tex-render retry]', tex);
           return;
         }
         vm.html(
@@ -124,11 +117,8 @@ function mathjax_tex_render(scope_select, progress_callbk) {
           tex + err_tag_close
         );
       }
-    });
-    if (leftover == 0) {
-      clearInterval(intv);
-    }
-  }, 500);
+    }, Math.floor(index / 64) * 500)
+  });
 }
 
 exports.render      = mathjax_tex_render;
