@@ -15,7 +15,7 @@
     </div>
 
     <div class="topbar-qrybox-first p-col p-mx-4" v-if="!qrybox_sinking">
-      <qrybox v-model="qrybox_model" @search="onSearch"/>
+      <qrybox v-model="qrybox_model" @search="onClickSearch"/>
     </div>
 
     <div class="p-d-flex p-jc-end p-ai-center p-m-2">
@@ -26,7 +26,7 @@
 
     <!-- p-col-11 instead of 12 leaves nice padding in small device screen -->
     <div class="topbar-qrybox-second p-col-11 p-mx-4" v-if="!qrybox_sinking">
-      <qrybox v-model="qrybox_model" @search="onSearch"/>
+      <qrybox v-model="qrybox_model" @search="onClickSearch"/>
     </div>
 
   </div>
@@ -48,7 +48,7 @@
 
     <div class="p-d-flex p-jc-center">
       <div class="p-mx-3" style="width: 100%;">
-        <qrybox v-model="qrybox_model" @search="onSearch"/>
+        <qrybox v-model="qrybox_model" @search="onClickSearch"/>
       </div>
     </div>
   </div>
@@ -91,6 +91,10 @@
           <p v-html="snippetPreprocess(hit.snippet)"></p>
         </div>
       </div>
+
+      <div style="margin-top: 4rem; p-d-flex; p-grid;">
+        <paging style="" @goto="onGotoPage" :cur_page="pagination_curpage" :tot_pages="pagination_totpage"/>
+      </div>
     </div>
   </div>
 
@@ -103,10 +107,11 @@ const axios = require('axios')
 const TeX_render = require('./tex-render.js')
 
 import qrybox from './qrybox.vue'
+import paging from './paging.vue'
 import footer from './footer.vue'
 
 export default {
-  components: { qrybox, Footer: footer },
+  components: { qrybox, Footer: footer, paging },
 
   computed: {
     emerge_style() {
@@ -203,6 +208,13 @@ export default {
       document.head.appendChild(theme)
     },
 
+    onGotoPage(page) {
+      const rawqry = this.qrybox_model
+      $("html, body").animate({ scrollTop: 0 })
+      const encqry = encodeURIComponent(rawqry)
+      this.search(encqry, page)
+    },
+
     search(encqry, page) {
       /* setup loading page */
       const vm = this
@@ -224,6 +236,7 @@ export default {
             const tot_pages = res['tot_pages']
             vm.search_results = ret_hits
             vm.pagination_totpage = tot_pages
+            vm.pagination_curpage = page
             vm.loading = false
 
           } else {
@@ -236,10 +249,10 @@ export default {
           vm.loading_error = `Oops! seems like server is down, please come back later.
           If the problem persists, please contact us.`
         })
-      }, 0) /* change timeout to debug loading */
+      }, 2000) /* change timeout to debug loading */
     },
 
-    onSearch(rawqry) {
+    onClickSearch(rawqry) {
       if (rawqry.trim() == '') return
 
       /* move viewbox and querybox on top */
@@ -248,8 +261,7 @@ export default {
 
       /* perform search */
       const encqry = encodeURIComponent(rawqry)
-      const page = this.pagination_curpage
-      this.search(encqry, page)
+      this.search(encqry, 1)
     },
 
     snippetPreprocess(snippet) {
