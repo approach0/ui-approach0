@@ -471,6 +471,11 @@ div.vspacer {
 .search-res > div.snippet > p {
 }
 
+em.hl > span > svg {
+  background-color: #FFC;
+  color: black;
+}
+
 em.hl {
   background-color: #FFC;
   color: black;
