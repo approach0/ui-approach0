@@ -534,6 +534,7 @@ div.vspacer {
 }
 
 .search-res > div.snippet > p {
+  line-height: 1.5;
 }
 
 em.hl > span > svg {
