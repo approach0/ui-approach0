@@ -7,7 +7,7 @@
       :style="emerge_style">
 
     <div class="p-d-flex p-ai-center p-m-3" v-if="!qrybox_sinking">
-      <img :src="logo32" class="p-m-1" @click="onClickIcon"/>
+      <img :src="logo32" class="logo p-m-1" @click="onClickIcon"/>
       <div class="p-d-flex p-flex-column">
         <span class="logo-text no-select">Approach Zero</span>
         <div class="logo-text no-select">A math-aware search engine.</div>
@@ -38,7 +38,7 @@
 
     <div class="rellax" style="height: 100%;" data-rellax-speed="1">
       <div class="p-d-flex p-jc-center p-mb-6">
-        <img class="sinking-logo" :src="logo128" @click="onClickIcon"/>
+        <img class="logo sinking-logo" :src="logo128" @click="onClickIcon"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-3">
           <span class="logo-text-large no-select">Approach Zero</span>
           <div class="logo-text-large no-select">A math-aware search engine.</div>
@@ -211,30 +211,32 @@ export default {
       this.loading_error = ''
 
       /* perform search */
-      $.ajax({
-        url: 'http://localhost:8080/search-relay.php',
-        data: `p=${page}&q=${encqry}`,
-        dataType: 'json'
+      setTimeout(function() {
+        $.ajax({
+          url: 'http://localhost:8080/search-relay.php',
+          data: `p=${page}&q=${encqry}`,
+          dataType: 'json'
 
-      }).done(function(res) {
-        const ret_code = (res['ret_code'] === undefined) ? 101 : res['ret_code']
-        if (ret_code == 0) {
-          const ret_hits = res['hits']
-          const tot_pages = res['tot_pages']
-          vm.search_results = ret_hits
-          vm.pagination_totpage = tot_pages
-          vm.loading = false
+        }).done(function(res) {
+          const ret_code = (res['ret_code'] === undefined) ? 101 : res['ret_code']
+          if (ret_code == 0) {
+            const ret_hits = res['hits']
+            const tot_pages = res['tot_pages']
+            vm.search_results = ret_hits
+            vm.pagination_totpage = tot_pages
+            vm.loading = false
 
-        } else {
-          const ret_str = res['ret_str'] || 'Invalid AJAX JSON'
-          vm.loading_error = `${ret_str} (return code: #${ret_code}).`
-        }
+          } else {
+            const ret_str = res['ret_str'] || 'Invalid AJAX JSON'
+            vm.loading_error = `${ret_str} (return code: #${ret_code}).`
+          }
 
-      }).fail(function(res, err) {
-        console.error('[search ajax failed]', err)
-        vm.loading_error = `Oops! seems like server is down, please come back later.
-        If the problem persists, please contact us.`
-      })
+        }).fail(function(res, err) {
+          console.error('[search ajax failed]', err)
+          vm.loading_error = `Oops! seems like server is down, please come back later.
+          If the problem persists, please contact us.`
+        })
+      }, 0) /* change timeout to debug loading */
     },
 
     onSearch(rawqry) {
@@ -306,7 +308,7 @@ export default {
     },
 
     onClickIcon() {
-      this.qrybox_sinking = !this.qrybox_sinking
+      location.reload()
     }
   }
 }
@@ -367,6 +369,10 @@ a:hover {
   font-size: 1.0rem;
 }
 
+img.logo {
+  cursor: pointer;
+}
+
 img.sinking-logo {
   height: 5rem;
 }
@@ -385,7 +391,7 @@ div.p-toolbar {
 .doodle {
   position: absolute;
   right: 10%;
-  bottom: -10vh;
+  bottom: -20vh;
   z-index: -1;
 }
 
