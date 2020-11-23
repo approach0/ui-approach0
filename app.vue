@@ -123,13 +123,16 @@ export default {
   },
 
   mounted: function() {
+    /* some setups */
     this.attachDefaultTheme()
     new Rellax('.rellax')
+    this.footer_style = this.footerStickiness()
+
+    /* scroll event listener */
     window.addEventListener("scroll", this.onScroll)
 
-    /* update footer stickiness on mounting and window resizing */
+    /* window resizing listener */
     const vm = this
-    this.footer_style = this.footerStickiness()
     $(window).resize(function() {
       vm.onResize()
     })
@@ -142,8 +145,28 @@ export default {
     /* ensure we are at the top of the page */
     $("html, body").animate({ scrollTop: 0 })
 
-    /* push initial state */
-    this.pushState()
+    /* take URI Query parameters (if any) */
+    const getUriQueryParam = function(key, defaultVal) {
+      const params = window.location.search
+      const match = params.match(new RegExp(`${key}=([^&]+)`, 'i'))
+      if (match && match[1]) {
+        return decodeURIComponent(match[1])
+      } else {
+        return defaultVal
+      }
+    }
+    const rawqry = getUriQueryParam('q', null)
+    const page = getUriQueryParam('p', 1)
+
+    /* set initial state */
+    if (rawqry != null) {
+      this.qrybox_model = rawqry
+      this.qrybox_sinking = false
+      this.performSearch(rawqry, page)
+      this.pushState(rawqry, page)
+    } else {
+      this.pushState()
+    }
   },
 
   watch: {
@@ -219,10 +242,9 @@ export default {
           this.qrybox_sinking = true
           this.search_results = null
         } else {
-          const encqry = encodeURIComponent(rawqry)
           const page = state.page
           this.qrybox_sinking = false
-          this.search(encqry, page)
+          this.performSearch(rawqry, page)
         }
 
         $("html, body").animate({ scrollTop: 0 })
@@ -248,14 +270,14 @@ export default {
     onGotoPage(page) {
       const rawqry = this.qrybox_model
       $("html, body").animate({ scrollTop: 0 })
-      const encqry = encodeURIComponent(rawqry)
-      this.search(encqry, page)
+      this.performSearch(rawqry, page)
       this.pushState(rawqry, page)
     },
 
-    search(encqry, page) {
+    performSearch(rawqry, page) {
       /* setup loading page */
       const vm = this
+      const encqry = encodeURIComponent(rawqry)
       this.search_results = null
       this.loading = true
       this.loading_error = ''
@@ -298,9 +320,8 @@ export default {
       this.qrybox_sinking = false
 
       /* perform search */
-      const encqry = encodeURIComponent(rawqry)
-      this.search(encqry, 1)
-      this.pushState(encqry, 1)
+      this.performSearch(rawqry, 1)
+      this.pushState(rawqry, 1)
     },
 
     snippetPreprocess(idx, snippet) {
