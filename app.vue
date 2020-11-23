@@ -455,5 +455,6 @@ div.vspacer {
 
 em.hl {
   background-color: #FFC;
+  color: black;
 }
 </style>

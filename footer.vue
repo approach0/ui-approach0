@@ -28,8 +28,7 @@
           Furthermore, I want to shout out to <a>Martin Sleziak</a> for his very first kind donation and various help,
           and shout to <a>@Sil</a> for his code contribution.
           There are others who have contributed to this project (including me!),
-          their kudos will be kept in
-          <a target="_blank" href="/docs/content/en/contributors.html">this page</a>.
+          kudos to them in <a target="_blank" href="/docs/content/en/contributors.html">this page</a>.
           </p>
         </div>
       </div>
