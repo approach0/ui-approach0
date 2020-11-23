@@ -3,8 +3,8 @@
   <ProgressBar :value="loading_percentage" class="progressbar" v-if="search_results !== null"/>
 
   <!-- Top bar (menu and secondary query boxes) -->
-  <div id="topbar" v-if="!footer_overshadow"
-   class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid">
+  <div id="topbar" class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid"
+      :style="emerge_style">
 
     <div class="p-d-flex p-ai-center p-m-3" v-if="!qrybox_sinking">
       <img :src="logo32" class="p-m-1" @click="onClickIcon"/>
@@ -32,8 +32,7 @@
   </div>
 
   <!-- Initial query box -->
-  <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking"
-    v-bind:style=" (footer_overshadow) ? 'z-index: -1' : 'z-index: 1'">
+  <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking" :style="emerge_style">
 
     <div class="vspacer"/>
 
@@ -55,7 +54,7 @@
   </div>
 
   <!-- Loading spinner and error message -->
-  <div id="sink-div" style="position: fixed; width: 100%; z-index: -1" v-if="loading">
+  <div id="sink-div" style="position: fixed; width: 100%;" v-if="loading" :style="emerge_style">
 
     <div class="vspacer"/>
 
@@ -108,6 +107,15 @@ import footer from './footer.vue'
 
 export default {
   components: { qrybox, Footer: footer },
+
+  computed: {
+    emerge_style() {
+      return {
+        'z-index': (this.ceil_opacity == 0 ? '-1' : '1'),
+        'visibility': (this.ceil_opacity < 0.5 ? 'hidden': 'visible')
+      }
+    }
+  },
 
   mounted: function() {
     this.attachDefaultTheme()
@@ -175,8 +183,8 @@ export default {
       pagination_curpage: 1,
       pagination_totpage: 0,
 
-      footer_style: '',
-      footer_overshadow: false
+      ceil_opacity: 1,
+      footer_style: ''
     }
   },
 
@@ -211,12 +219,11 @@ export default {
       }).done(function(res) {
         const ret_code = (res['ret_code'] === undefined) ? 101 : res['ret_code']
         if (ret_code == 0) {
-          vm.loading = false
-
           const ret_hits = res['hits']
           const tot_pages = res['tot_pages']
           vm.search_results = ret_hits
           vm.pagination_totpage = tot_pages
+          vm.loading = false
 
         } else {
           const ret_str = res['ret_str'] || 'Invalid AJAX JSON'
@@ -274,7 +281,7 @@ export default {
     onScroll() {
       /* get jQuery element */
       const ceil_ele = (this.qrybox_sinking) ? $('#sink-div') : $('#topbar')
-      const footer_ele = $('#footer') /* this should always present */
+      const footer_ele = $('#footer')
 
       /* calculate opacity based on gaps */
       const ceil_bottom = (ceil_ele.offset() === undefined) ?
@@ -285,19 +292,13 @@ export default {
       const opacity = 1 - Math.min(over_depth, grace_gaps) / grace_gaps
 
       ceil_ele.length && ceil_ele.fadeTo(0, opacity)
-
-      /* update footer_overshadow state (anti-shaking) */
-      const vm = this
-      if (this.anti_shake_timer) clearTimeout(this.anti_shake_timer)
-      this.anti_shake_timer = setTimeout(function() {
-        vm.footer_overshadow = (opacity < 0.5)
-      }, 500)
+      this.ceil_opacity = opacity
     },
 
     footerStickiness() {
       if (this.qrybox_sinking) {
         const footer_ele = $('#footer')
-	      const footer_height = footer_ele.outerHeight() || window.innerHeight
+        const footer_height = footer_ele.outerHeight() || window.innerHeight
         return `position: absolute; bottom: -${footer_height}px;`
       } else {
         return 'position: static;'
