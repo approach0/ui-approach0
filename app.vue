@@ -80,7 +80,7 @@
   <!-- Search results -->
   <div v-if="search_results !== null">
     <div class="p-d-flex p-flex-column p-ai-center p-jc-center">
-      <div v-for="hit in search_results" :key="hit.docid" class="p-p-4 p-m-3 p-card search-res">
+      <div v-for="(hit, idx) in search_results" :key="hit.docid" class="p-p-4 p-m-3 p-card search-res">
         <span class="docid"> {{hit.docid}} </span>
         <span class="score"> {{hit.score}} </span>
         <a class="title" target="_blank" :href="hit.url">
@@ -88,7 +88,7 @@
         </a>
         <span class="url"> {{hit.url}} </span>
         <div class="snippet">
-          <p v-html="snippetPreprocess(hit.snippet)"></p>
+          <p v-html="snippetPreprocess(idx, hit.snippet)"></p>
         </div>
       </div>
 
@@ -303,7 +303,7 @@ export default {
       this.pushState(encqry, 1)
     },
 
-    snippetPreprocess(snippet) {
+    snippetPreprocess(idx, snippet) {
       /* ensure $a<b$ is converted into $a < b$, otherwise it may render incorrectly */
       snippet = snippet.replace(/\[imath\]([\s\S]+?)\[\/imath\]/g, function (match, group) {
         return '[imath]' + group.split('<').join(' < ') + '[/imath]'
@@ -319,11 +319,11 @@ export default {
       })
 
       /* remove trailing unpaired [imath] such as "[imath] bla bla" */
-      const idx = snippet.lastIndexOf('[imath]')
-      if (idx !== -1) {
-        const headstring = snippet.slice(0, idx)
-        const tailstring = snippet.substring(idx)
-        if (tailstring.indexOf('[/imath]' == -1)) {
+      const lastOpenTag = snippet.lastIndexOf('[imath]')
+      if (lastOpenTag !== -1) {
+        const headstring = snippet.slice(0, lastOpenTag)
+        const tailstring = snippet.substring(lastOpenTag)
+        if (tailstring.indexOf('[/imath]') === -1) {
           snippet = headstring + ' ...'
         }
       }
