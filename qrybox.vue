@@ -135,6 +135,7 @@
 <script>
 const TeX_render = require('./tex-render.js')
 const symbol_keys = require('./symbol-keyboard.js').symbol_keys
+const example_queries = require('./example-queries.js').example_queries
 
 export default {
   props : {
@@ -194,23 +195,39 @@ export default {
 
   data: function() {
     return {
+      example_queries: example_queries,
+      example_query_idx: 0,
+
       focus_style: false,
+      menu_on: null,
+
       chips: [
         /*{type: "word", str: "hello world", boolop: 'OR'},
           {type: "tex", str: "\\frac a b", boolop: 'OR'} */
       ],
       entering: '',
       rawqry: '',
+
       mq_dom: false,
       MQ: null,
       mq: null,
-      menu_on: null,
+
       keyboard_keys: symbol_keys,
       keyboard_show: false
     }
   },
 
   methods: {
+    onExampleQuery() {
+      const examples = this.example_queries
+      const example_idx = this.example_query_idx
+      this.example_query_idx = (1 + example_idx) % examples.length
+      this.onClear()
+      this.menu_on = null
+      this.rawqry = examples[example_idx]
+      this.$emit('search', this.rawqry)
+    },
+
     registerFocusBlurWatcher() {
       this.$nextTick(function() {
         const vm = this
