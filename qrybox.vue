@@ -81,7 +81,7 @@
             <InputText id="rawqry" style="width: 100%" type="text"
              class="p-inputtext-sm" aria-describedby="rawqry-help" v-model="rawqry"/>
             <label for="rawqry">Enter raw query ...</label>
-            <small id="rawqry-help">
+            <small id="rawqry-help" style="background-color: var(--surface-b)">
               In <i>raw query</i>, you can edit math keyword in TeX directly (separate keywords by commas).
             </small>
           </span>
