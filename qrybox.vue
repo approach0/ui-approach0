@@ -203,7 +203,6 @@ export default {
   data: function() {
     return {
       example_queries: example_queries,
-      example_query_idx: 0,
 
       focus_style: false,
       menu_on: null,
@@ -228,11 +227,11 @@ export default {
   methods: {
     onExampleQuery() {
       const examples = this.example_queries
-      const example_idx = this.example_query_idx
-      this.example_query_idx = (1 + example_idx) % examples.length
+      const idx = Math.floor(Math.random() * examples.length)
       this.onClear()
       this.menu_on = null
-      this.rawqry = examples[example_idx]
+      this.rawqry = examples[idx]
+      this.rawstr2chips()
       this.$emit('search', this.rawqry)
     },
 
