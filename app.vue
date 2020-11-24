@@ -71,10 +71,10 @@
       </div>
 
     </div>
+  </div>
 
-    <!-- Loading height placeholder -->
-    <div style="height: 100vh; width: 0px;">
-    </div>
+  <!-- Loading height placeholder -->
+  <div style="height: 100vh; width: 0px;" v-if="loading">
   </div>
 
   <!-- Search results -->

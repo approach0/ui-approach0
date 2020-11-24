@@ -104,17 +104,15 @@
       <Button class="p-button-text" icon="fa fa-times" @click="keyboard_show = false"/>
     </div>
 
-    <TabView style="overflow-y: auto; height: 100%;">
+    <TabView style="overflow-y: auto; height: 100%;" v-model:activeIndex="keyboard_active_tab">
       <TabPanel :header="keyboard_keys[0].keyset">
         <Button v-for="key in keyboard_keys[0].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
          @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
 
-        <Button v-for="key in keyboard_keys[1].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
-      </TabPanel>
-
-      <TabPanel :header="keyboard_keys[2].keyset">
         <Button v-for="key in keyboard_keys[2].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+
+        <Button v-for="key in keyboard_keys[1].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
          @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
       </TabPanel>
 
@@ -125,6 +123,11 @@
 
       <TabPanel :header="keyboard_keys[4].keyset">
         <Button v-for="key in keyboard_keys[4].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+      </TabPanel>
+
+      <TabPanel :header="keyboard_keys[5].keyset">
+        <Button v-for="key in keyboard_keys[5].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
          @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
       </TabPanel>
     </TabView>
@@ -182,6 +185,10 @@ export default {
       }
     },
 
+    keyboard_active_tab: function() {
+      this.onFocus()
+    },
+
     rawqry: function() {
       this.rawstr2chips()
       /* update props */
@@ -213,6 +220,7 @@ export default {
       mq: null,
 
       keyboard_keys: symbol_keys,
+      keyboard_active_tab: 0,
       keyboard_show: false
     }
   },
@@ -257,6 +265,16 @@ export default {
     onPullKeyboard() {
       this.menu_on = null
       this.keyboard_show = true
+      this.onFocus()
+    },
+
+    mqCMD(cmd) {
+      const mq = this.mq
+      const vm = this
+      const cmd_ = cmd + ' '
+      vm.mqEditorCreate((mq) => {
+        vm.mqEditorInput(mq, 'stroke', cmd_)
+      })
     },
 
     anySpecialChar(str, chars) {
@@ -429,15 +447,6 @@ export default {
       } else {
         console.error('Undefined MQ Editor input.')
       }
-    },
-
-    mqCMD(cmd) {
-      const mq = this.mq
-      const vm = this
-      const cmd_ = cmd + ' '
-      vm.mqEditorCreate((mq) => {
-        vm.mqEditorInput(mq, 'stroke', cmd_)
-      })
     },
 
     onClear() {

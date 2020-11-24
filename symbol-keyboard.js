@@ -36,6 +36,18 @@ exports.symbol_keys = [
     {'desc': 'maximal', 'cmd': '\\max', 'disp': '\\max()'},
     {'desc': 'mod', 'cmd': '\\pmod\tx', 'disp': '\\text{mod}'},
   ]},
+  {"keyset": "Numbers", "buttons": [
+    {'desc': 'zero', 'cmd': '0', 'disp': '0'},
+    {'desc': 'one', 'cmd': '1', 'disp': '1'},
+    {'desc': 'two', 'cmd': '2', 'disp': '2'},
+    {'desc': 'three', 'cmd': '3', 'disp': '3'},
+    {'desc': 'four', 'cmd': '4', 'disp': '4'},
+    {'desc': 'five', 'cmd': '5', 'disp': '5'},
+    {'desc': 'six', 'cmd': '6', 'disp': '6'},
+    {'desc': 'seven', 'cmd': '7', 'disp': '7'},
+    {'desc': 'eight', 'cmd': '8', 'disp': '8'},
+    {'desc': 'nine', 'cmd': '9', 'disp': '9'}
+  ]},
   {"keyset": "Set/Calculus", "buttons": [
     {'desc': 'empty set', 'cmd': '\\varnothing', 'disp': '\\varnothing'},
     {'desc': 'not', 'cmd': '\\neg', 'disp': '\\neg'},
