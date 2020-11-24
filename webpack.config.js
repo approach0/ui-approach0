@@ -114,6 +114,7 @@ module.exports = (env, options) => {
         filename: '[name].css'
       }),
       new webpack.DefinePlugin({
+        A0_RELAY_URL: JSON.stringify(mode === 'production' ? process.env.A0_RELAY_URL : 'http://localhost:8080'),
         __VUE_OPTIONS_API__: true,
         __VUE_PROD_DEVTOOLS__: false
       })

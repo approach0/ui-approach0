@@ -294,7 +294,7 @@ export default {
       /* perform search */
       setTimeout(function() {
         $.ajax({
-          url: '/test2/',
+          url: A0_RELAY_URL,
           data: `p=${page}&q=${encqry}`,
           dataType: 'json'
 
