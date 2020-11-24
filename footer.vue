@@ -13,11 +13,19 @@
         <h2 class="ft-title p-d-flex p-jc-center p-ai-center">
           Special Thanks
         </h2>
-        <div class="p-d-flex p-grid p-jc-around">
-          <a><img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"/></a>
-          <img src="https://www.linode.com/wp-content/uploads/2018/10/linode-logo-blk-rgb-minified.svg"/>
-          <a><img src="https://math.stackexchange.com/users/flair/8297.png"/></a>
-          <a><img src="https://math.stackexchange.com/users/flair/290240.png"/></a>
+        <div class="p-d-flex p-grid p-jc-around thank-banner">
+          <a target="_blank" href="https://www.cs.rit.edu/~dprl/">
+            <img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"/>
+          </a>
+          <a target="_blank" href="https://www.linode.com/">
+            <img src="https://www.linode.com/wp-content/uploads/2018/10/linode-logo-blk-rgb-minified.svg"/>
+          </a>
+          <a target="_blank" href="https://math.stackexchange.com/users/8297">
+            <img src="https://math.stackexchange.com/users/flair/8297.png"/>
+          </a>
+          <a target="_blank" href="https://math.stackexchange.com/users/290240">
+            <img src="https://math.stackexchange.com/users/flair/290240.png"/>
+          </a>
         </div>
 
         <div class="p-m-2 thanksgiving">
@@ -38,6 +46,19 @@
 
       <div class="p-lg-3 p-md-6 p-sm-12 p-d-flex p-jc-center">
         <div class="ft-block">
+
+          <h2 class="ft-title">Links</h2>
+          <ul class="ft-items">
+            <li title="About This Project">
+              <i class="fa fa-id-card"></i>
+              <a @click="onClick">About</a>
+            </li>
+            <li title="Community AD">
+              <i class="fa fa-unsorted"></i>
+              <a @click="onClick">Community AD</a>
+            </li>
+          </ul>
+
           <h2 class="ft-title">Contribute</h2>
           <ul class="ft-items">
             <li title="User Guide">
@@ -48,10 +69,6 @@
               <i class="fa fa-paint-brush"></i>
               <a @click="onClick">This Webpage</a>
             </li>
-            <li title="Backend of This Site">
-              <i class="fa fa-cogs"></i>
-              <a @click="onClick">Open Backend</a>
-            </li>
             <li title="Sponsor Me">
               <i class="fa fa-heart-o"></i>
               <a @click="onClick">Sponsorship</a>
@@ -61,11 +78,13 @@
               <a @click="onClick">Developer Docs</a>
             </li>
           </ul>
+
         </div>
       </div>
 
       <div class="p-lg-3 p-md-6 p-sm-12 p-d-flex p-jc-center">
         <div class="ft-block">
+
           <h2 class="ft-title">Current Index</h2>
           <ul class="ft-items">
             <li class="p-d-flex p-ai-start" title="Math StackExchange">
@@ -81,6 +100,23 @@
               <a @click="onClick">Help to Add More ...</a>
             </li>
           </ul>
+
+          <h2 class="ft-title">Open Source</h2>
+          <ul class="ft-items">
+            <li title="Backend of This Site">
+              <i class="fa fa-cogs"></i>
+              <a @click="onClick">Open Backend</a>
+            </li>
+            <li title="Search Engine">
+              <i class="fa fa-motorcycle"></i>
+              <a @click="onClick">Search Engine</a>
+            </li>
+            <li title="Simple Math Solver">
+              <i class="fa fa-superscript"></i>
+              <a @click="onClick">Step-by-Step Solver</a>
+            </li>
+          </ul>
+
         </div>
       </div>
 
@@ -179,6 +215,10 @@ div.footer-copyleft {
 div.social-icons i {
   padding: 0 6px;
 }
+
+div.thank-banner > a > img {
+  height: 65px;
+}
 </style>
 
 <script>
@@ -203,21 +243,30 @@ export default {
       const alt = $(anchor).attr('title')
 
       switch (alt) {
+
+      /* Links */
+      case 'About This Project':
+        gotoURL('/docs/content/en/about.html')
+        break
+      case 'Community AD':
+        gotoURL('https://math.meta.stackexchange.com/questions/31296')
+        break
+
+      /* Contribute */
       case 'User Guide':
         gotoURL('/guide')
-        break
-      case 'Developer Documentation':
-        gotoURL('/docs')
         break
       case 'Source Code of This Page':
         gotoURL('https://github.com/approach0/ui-approach0')
         break
-      case 'Backend of This Site':
-        gotoURL('/backend')
-        break
       case 'Sponsor Me':
         gotoURL('https://github.com/sponsors/t-k-')
         break
+      case 'Developer Documentation':
+        gotoURL('/docs')
+        break
+
+      /* Current Index */
       case 'Math StackExchange':
         gotoURL('https://math.stackexchange.com/')
         break
@@ -227,6 +276,19 @@ export default {
       case 'Add more data source':
         gotoURL('https://github.com/approach0/a0-crawlers')
         break
+
+      /* Open Source */
+      case 'Backend of This Site':
+        gotoURL('/backend')
+        break
+      case 'Search Engine':
+        gotoURL('https://github.com/approach0/search-engine')
+        break
+      case 'Simple Math Solver':
+        gotoURL('https://github.com/approach0/mathsteps-v2')
+        break
+
+      /* Social Medium */
       case 'email':
         window.location.
         break
@@ -242,6 +304,7 @@ export default {
       case 'comment':
         gotoURL('https://chat.stackexchange.com/rooms/46148/in-the-search-of-a-question')
         break
+
       }
     }
   }
