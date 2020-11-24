@@ -22,11 +22,14 @@
 
         <div class="p-m-2 thanksgiving">
           <p>As a side project reaching this far, I am thankful to my advisor
-          <a>Richard Zanibbi</a> and my previous advisor
-          <a>Fang Hui</a> for supporting and encouraging me to work on the idea of creating a math-aware search engine.
-          Also thankful to <a>Linode</a> who covers our hosting cost and makes this site staying on real axis.
-          Furthermore, I want to shout out to <a>Martin Sleziak</a> for his very first kind donation and various help,
-          and shout to <a>@Sil</a> for his code contribution.
+          <a target="_blank" href="https://www.cs.rit.edu/~rlaz/">Richard Zanibbi</a> and my previous advisor
+          <a target="_blank" href="https://www.eecis.udel.edu/~hfang/">Fang Hui</a> for supporting and encouraging
+          me to work on the idea of creating a math-aware search engine. Also thankful to
+          <a target="_blank" href="https://linode.com/">Linode</a> who covers our hosting cost and
+          keeps this site staying on real axis. Furthermore, I want to shout out to
+          <a target="_blank" href="https://math.stackexchange.com/users/8297">Martin Sleziak</a> for his very first
+          kind donation and various help, and shout to
+          <a target="_blank" href="https://math.stackexchange.com/users/290240">@Sil</a> for his code contribution.
           There are others who have contributed to this project (including me!),
           kudos to them in <a target="_blank" href="/docs/content/en/contributors.html">this page</a>.
           </p>
@@ -37,29 +40,25 @@
         <div class="ft-block">
           <h2 class="ft-title">Contribute</h2>
           <ul class="ft-items">
-            <li>
-              <i class="fa fa-heart-o"></i>
-              <a href="#">Sponsorship</a>
-            </li>
-            <li>
+            <li title="User Guide">
               <i class="fa fa-map-o"></i>
-              <a href="#">User Guide</a>
+              <a @click="onClick">User Guide</a>
             </li>
-            <li>
-              <i class="fa fa-book"></i>
-              <a href="#">Developer Docs</a>
-            </li>
-            <li>
+            <li title="Source Code of This Page">
               <i class="fa fa-paint-brush"></i>
-              <a href="#">This Webpage</a>
+              <a @click="onClick">This Webpage</a>
             </li>
-            <li>
+            <li title="Backend of This Site">
               <i class="fa fa-cogs"></i>
-              <a href="#">Automation</a>
+              <a @click="onClick">Open Backend</a>
             </li>
-            <li>
-              <i class="fa fa-motorcycle"></i>
-              <a href="#">Search Engine</a>
+            <li title="Sponsor Me">
+              <i class="fa fa-heart-o"></i>
+              <a @click="onClick">Sponsorship</a>
+            </li>
+            <li title="Developer Documentation">
+              <i class="fa fa-book"></i>
+              <a @click="onClick">Developer Docs</a>
             </li>
           </ul>
         </div>
@@ -69,17 +68,17 @@
         <div class="ft-block">
           <h2 class="ft-title">Current Index</h2>
           <ul class="ft-items">
-            <li class="p-d-flex p-ai-start">
+            <li class="p-d-flex p-ai-start" title="Math StackExchange">
               <img :src="icon_mse"/>
-              <a href="#">Math StackExchange</a>
+              <a @click="onClick">Math StackExchange</a>
             </li>
-            <li class="p-d-flex p-ai-start">
+            <li class="p-d-flex p-ai-start" title="Art of Problem Solving">
               <img :src="icon_aops"/>
-              <a href="#">Art of Problem Solving</a>
+              <a @click="onClick">Art of Problem Solving</a>
             </li>
-            <li class="p-d-flex p-ai-start">
+            <li class="p-d-flex p-ai-start" title="Add more data source">
               <i class="fa fa-lg fa-question" style="width: 56px;"></i>
-              <a href="#">Help to Add More ...</a>
+              <a @click="onClick">Help to Add More ...</a>
             </li>
           </ul>
         </div>
@@ -92,11 +91,11 @@
         <div> Approach Zero - {{ new Date().getFullYear() }} </div>
       </div>
       <div class="p-d-grid p-d-flex p-jc-center p-py-4 social-icons">
-        <a><i class="fa fa-lg fa-comment"></i></a>
-        <a><i class="fa fa-lg fa-github"></i></a>
-        <a><i class="fa fa-lg fa-twitter"></i></a>
-        <a><i class="fa fa-lg fa-reddit"></i></a>
-        <a><i class="fa fa-lg fa-envelope-o"></i></a>
+        <a title="comment" @click="onClick"><i class="fa fa-lg fa-comment"></i></a>
+        <a title="github"  @click="onClick"><i class="fa fa-lg fa-github"></i></a>
+        <a title="twitter" @click="onClick"><i class="fa fa-lg fa-twitter"></i></a>
+        <a title="reddit"   @click="onClick"><i class="fa fa-lg fa-reddit"></i></a>
+        <a title="email" href="mailto:clock126@126.com"><i alt="email" class="fa fa-lg fa-envelope-o"></i></a>
       </div>
     </div>
 
@@ -187,10 +186,63 @@ export default {
   props : {
     footerStyle: String
   },
+
   data: function() {
     return {
       icon_mse: require('./resource/mse.png'),
       icon_aops: require('./resource/aops.png')
+    }
+  },
+
+  methods: {
+    onClick(elem) {
+      const gotoURL = function(url) {
+        window.open(url, '_blank')
+      }
+      const anchor = $(elem.target).parent()
+      const alt = $(anchor).attr('title')
+
+      switch (alt) {
+      case 'User Guide':
+        gotoURL('/guide')
+        break
+      case 'Developer Documentation':
+        gotoURL('/docs')
+        break
+      case 'Source Code of This Page':
+        gotoURL('https://github.com/approach0/ui-approach0')
+        break
+      case 'Backend of This Site':
+        gotoURL('/backend')
+        break
+      case 'Sponsor Me':
+        gotoURL('https://github.com/sponsors/t-k-')
+        break
+      case 'Math StackExchange':
+        gotoURL('https://math.stackexchange.com/')
+        break
+      case 'Art of Problem Solving':
+        gotoURL('https://artofproblemsolving.com/community')
+        break
+      case 'Add more data source':
+        gotoURL('https://github.com/approach0/a0-crawlers')
+        break
+      case 'email':
+        window.location.
+        break
+      case 'github':
+        gotoURL('https://github.com/approach0/')
+        break
+      case 'reddit':
+        gotoURL('http://www.reddit.com/submit?url=https%3A%2F%2Fwww.approach0.xyz&title=Check%20out%20this%20math-aware%20search%20engine!')
+        break
+      case 'twitter':
+        gotoURL('https://twitter.com/approach0')
+        break
+      case 'comment':
+        gotoURL('https://chat.stackexchange.com/rooms/46148/in-the-search-of-a-question')
+        break
+      }
     }
   }
 }
