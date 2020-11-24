@@ -32,11 +32,11 @@
           <p>As a side project reaching this far, I am thankful to my advisor
           <a target="_blank" href="https://www.cs.rit.edu/~rlaz/">Richard Zanibbi</a> and my previous advisor
           <a target="_blank" href="https://www.eecis.udel.edu/~hfang/">Fang Hui</a> for supporting and encouraging
-          me to work on the idea of creating a math-aware search engine. Also thankful to
+          me to work on the idea of creating a math-aware search engine. Also I am thankful to
           <a target="_blank" href="https://linode.com/">Linode</a> who covers our hosting cost and
           keeps this site staying on real axis. Furthermore, I want to shout out to
           <a target="_blank" href="https://math.stackexchange.com/users/8297">Martin Sleziak</a> for his very first
-          kind donation and various help, and shout to
+          donation to this project and all kinds of support. And shout to
           <a target="_blank" href="https://math.stackexchange.com/users/290240">@Sil</a> for his code contribution.
           There are others who have contributed to this project (including me!),
           kudos to them in <a target="_blank" href="/docs/content/en/contributors.html">this page</a>.
