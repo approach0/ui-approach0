@@ -387,7 +387,8 @@ export default {
       if (this.qrybox_sinking) {
         const footer_ele = $('#footer')
         const footer_height = footer_ele.outerHeight() || window.innerHeight
-        return `position: absolute; bottom: -${footer_height}px;`
+        const offset = 400 + footer_height
+        return `position: absolute; bottom: -${offset}px;`
       } else {
         return 'position: static;'
       }
