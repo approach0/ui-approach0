@@ -71,10 +71,10 @@
       </div>
 
     </div>
-  </div>
 
-  <!-- Loading height placeholder -->
-  <div v-if="loading" style="height: 100vh; width: 0px;">
+    <!-- Loading height placeholder -->
+    <div style="height: 100vh; width: 0px;">
+    </div>
   </div>
 
   <!-- Search results -->
@@ -126,7 +126,6 @@ export default {
     /* some setups */
     this.attachDefaultTheme()
     new Rellax('.rellax')
-    this.footer_style = this.footerStickiness()
 
     /* scroll event listener */
     window.addEventListener("scroll", this.onScroll)
@@ -167,6 +166,10 @@ export default {
     } else {
       this.pushState()
     }
+
+    this.$nextTick(function() {
+      this.footer_style = this.footerStickiness()
+    })
   },
 
   watch: {
@@ -233,6 +236,12 @@ export default {
       document.head.appendChild(theme)
     },
 
+    resetSearchResults() {
+      this.search_results = null
+      this.loading_error = ''
+      this.loading = false
+    },
+
     onPopState(state) {
       if (state) {
         const rawqry = state.rawqry
@@ -240,7 +249,7 @@ export default {
 
         if (rawqry === undefined) {
           this.qrybox_sinking = true
-          this.search_results = null
+          this.resetSearchResults()
         } else {
           const page = state.page
           this.qrybox_sinking = false
@@ -270,6 +279,7 @@ export default {
     onGotoPage(page) {
       const rawqry = this.qrybox_model
       $("html, body").animate({ scrollTop: 0 })
+      this.resetSearchResults()
       this.performSearch(rawqry, page)
       this.pushState(rawqry, page)
     },
@@ -278,14 +288,13 @@ export default {
       /* setup loading page */
       const vm = this
       const encqry = encodeURIComponent(rawqry)
-      this.search_results = null
+      this.resetSearchResults()
       this.loading = true
-      this.loading_error = ''
 
       /* perform search */
       setTimeout(function() {
         $.ajax({
-          url: 'http://localhost:8080/search-relay.php',
+          url: '/test2/',
           data: `p=${page}&q=${encqry}`,
           dataType: 'json'
 
@@ -429,11 +438,12 @@ a:hover {
 }
 
 .logo-text:first-child {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px #4eb5b0;
 }
 
 .logo-text:last-child {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .logo-text-large:first-child {
@@ -483,6 +493,10 @@ div.vspacer {
     flex: 0 0 auto;
     padding: 0.5rem;
     width: 100%;
+  }
+
+  .logo-text:last-child {
+    display: none !important;
   }
 }
 

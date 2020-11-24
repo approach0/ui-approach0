@@ -640,6 +640,11 @@ div.chip-item {
   margin: 0px 5px 8px 0;
 }
 
+/* space between the two icons of math chips */
+span.chip-append-icon:nth-child(3) {
+  margin-left: 5px;
+}
+
 span.chip-append-icon {
   line-height: 15px;
   height: 1rem;
@@ -707,6 +712,12 @@ button.keyboard-key {
   line-height: 1;
   width: 1.7rem;
   height: 2.7rem;
+}
+
+/* below are overwriting some PrimeVue themes */
+
+.p-toolbar {
+  padding: 0.5rem !important;
 }
 
 .p-tag {
