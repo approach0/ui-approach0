@@ -39,7 +39,7 @@
     <div class="rellax" style="height: 100%;" data-rellax-speed="1">
       <div class="p-d-flex p-jc-center p-mb-6">
         <img class="logo sinking-logo" :src="logo128" @click="onClickIcon"/>
-        <div class="p-d-flex p-flex-column p-jc-center p-mx-3">
+        <div class="p-d-flex p-flex-column p-jc-center p-mx-1">
           <span class="logo-text-large no-select">Approach Zero</span>
           <div class="logo-text-large no-select">A math-aware search engine.</div>
         </div>
@@ -448,7 +448,7 @@ a:hover {
 }
 
 .logo-text-large:first-child {
-  font-size: 2.0rem;
+  font-size: 1.8rem;
   text-shadow: 1px 1px #4eb5b0;
   font-weight: bold;
 }
