@@ -9,6 +9,52 @@
 
     <div class="footer-main p-grid p-d-flex p-py-5 p-jc-around">
 
+      <div class="p-lg-3 p-md-6 p-sm-12 p-d-flex p-jc-center">
+        <div class="ft-block">
+
+          <h2 class="ft-title">Links</h2>
+          <ul class="ft-items">
+            <li title="About This Project">
+              <i class="fa fa-id-card"></i>
+              <a @click="onClick">About</a>
+            </li>
+            <li title="Query Logs">
+              <i class="fa fa-history"></i>
+              <a @click="onClick">Query Logs</a>
+            </li>
+            <li title="Community AD">
+              <i class="fa fa-unsorted"></i>
+              <a @click="onClick">Community AD</a>
+            </li>
+            <li title="Backend of This Site">
+              <i class="fa fa-cogs"></i>
+              <a @click="onClick">Open Backend</a>
+            </li>
+          </ul>
+
+          <h2 class="ft-title">Contribute</h2>
+          <ul class="ft-items">
+            <li title="User Guide">
+              <i class="fa fa-map-o"></i>
+              <a @click="onClick">User Guide</a>
+            </li>
+            <li title="Source Code of This Page">
+              <i class="fa fa-paint-brush"></i>
+              <a @click="onClick">This Webpage</a>
+            </li>
+            <li title="Sponsor Me">
+              <i class="fa fa-heart-o"></i>
+              <a @click="onClick">Sponsorship</a>
+            </li>
+            <li title="Developer Documentation">
+              <i class="fa fa-book"></i>
+              <a @click="onClick">Developer Docs</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+
       <div class="p-lg-6 p-md-12 p-sm-12" style="padding: 0 3rem">
         <h2 class="ft-title p-d-flex p-jc-center p-ai-center">
           Special Thanks
@@ -47,44 +93,6 @@
       <div class="p-lg-3 p-md-6 p-sm-12 p-d-flex p-jc-center">
         <div class="ft-block">
 
-          <h2 class="ft-title">Links</h2>
-          <ul class="ft-items">
-            <li title="About This Project">
-              <i class="fa fa-id-card"></i>
-              <a @click="onClick">About</a>
-            </li>
-            <li title="Community AD">
-              <i class="fa fa-unsorted"></i>
-              <a @click="onClick">Community AD</a>
-            </li>
-          </ul>
-
-          <h2 class="ft-title">Contribute</h2>
-          <ul class="ft-items">
-            <li title="User Guide">
-              <i class="fa fa-map-o"></i>
-              <a @click="onClick">User Guide</a>
-            </li>
-            <li title="Source Code of This Page">
-              <i class="fa fa-paint-brush"></i>
-              <a @click="onClick">This Webpage</a>
-            </li>
-            <li title="Sponsor Me">
-              <i class="fa fa-heart-o"></i>
-              <a @click="onClick">Sponsorship</a>
-            </li>
-            <li title="Developer Documentation">
-              <i class="fa fa-book"></i>
-              <a @click="onClick">Developer Docs</a>
-            </li>
-          </ul>
-
-        </div>
-      </div>
-
-      <div class="p-lg-3 p-md-6 p-sm-12 p-d-flex p-jc-center">
-        <div class="ft-block">
-
           <h2 class="ft-title">Current Index</h2>
           <ul class="ft-items">
             <li class="p-d-flex p-ai-start" title="Math StackExchange">
@@ -98,22 +106,6 @@
             <li class="p-d-flex p-ai-start" title="Add more data source">
               <i class="fa fa-lg fa-question" style="width: 56px;"></i>
               <a @click="onClick">Help to Add More ...</a>
-            </li>
-          </ul>
-
-          <h2 class="ft-title">Open Source</h2>
-          <ul class="ft-items">
-            <li title="Backend of This Site">
-              <i class="fa fa-cogs"></i>
-              <a @click="onClick">Open Backend</a>
-            </li>
-            <li title="Search Engine">
-              <i class="fa fa-motorcycle"></i>
-              <a @click="onClick">Search Engine</a>
-            </li>
-            <li title="Simple Math Solver">
-              <i class="fa fa-superscript"></i>
-              <a @click="onClick">Step-by-Step Solver</a>
             </li>
           </ul>
 
@@ -248,8 +240,14 @@ export default {
       case 'About This Project':
         gotoURL('/docs/content/en/about.html')
         break
+      case 'Query Logs':
+        gotoURL('/stats')
+        break
       case 'Community AD':
         gotoURL('https://math.meta.stackexchange.com/questions/31296')
+        break
+      case 'Backend of This Site':
+        gotoURL('/backend')
         break
 
       /* Contribute */
@@ -275,17 +273,6 @@ export default {
         break
       case 'Add more data source':
         gotoURL('https://github.com/approach0/a0-crawlers')
-        break
-
-      /* Open Source */
-      case 'Backend of This Site':
-        gotoURL('/backend')
-        break
-      case 'Search Engine':
-        gotoURL('https://github.com/approach0/search-engine')
-        break
-      case 'Simple Math Solver':
-        gotoURL('https://github.com/approach0/mathsteps-v2')
         break
 
       /* Social Medium */
