@@ -13,3 +13,9 @@ $ npm install
 $ npm run watch
 ```
 View the webpage at `http://localhost:19985`.
+
+### Deployment Setup
+Set environment variable `A0_RELAY_URL` (so that the AJAX request will target to `$A0_RELAY_URL/?p=1&q=your_query`) and issue
+```sh
+$ npm serve
+```
