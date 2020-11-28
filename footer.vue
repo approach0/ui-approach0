@@ -238,7 +238,7 @@ export default {
 
       /* Links */
       case 'About This Project':
-        gotoURL('/docs/content/en/about.html')
+        gotoURL('https://github.com/approach0/search-engine/blob/master/README.md')
         break
       case 'Query Logs':
         gotoURL('/stats')
@@ -252,7 +252,7 @@ export default {
 
       /* Contribute */
       case 'User Guide':
-        gotoURL('/guide')
+        gotoURL('/guide/content/en/index.html')
         break
       case 'Source Code of This Page':
         gotoURL('https://github.com/approach0/ui-approach0')
@@ -261,7 +261,7 @@ export default {
         gotoURL('https://github.com/sponsors/t-k-')
         break
       case 'Developer Documentation':
-        gotoURL('/docs')
+        gotoURL('/docs/content/en/index.html')
         break
 
       /* Current Index */
