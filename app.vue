@@ -4,7 +4,7 @@
 
   <!-- Top bar (menu and secondary query boxes) -->
   <div id="topbar" class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid"
-      :style="emerge_style">
+      :style="emerge_style(2)">
 
     <div class="p-d-flex p-ai-center" v-if="!qrybox_sinking">
       <img :src="logo32" class="logo p-m-1" @click="onClickIcon"/>
@@ -32,7 +32,7 @@
   </div>
 
   <!-- Initial query box -->
-  <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking" :style="emerge_style">
+  <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking" :style="emerge_style(2)">
 
     <div class="vspacer"/>
 
@@ -54,7 +54,7 @@
   </div>
 
   <!-- Loading spinner and error message -->
-  <div id="sink-div" style="position: fixed; width: 100%;" v-if="loading" :style="emerge_style">
+  <div id="sink-div" style="position: fixed; width: 100%;" v-if="loading" :style="emerge_style(1)">
 
     <div class="vspacer"/>
 
@@ -112,15 +112,6 @@ import footer from './footer.vue'
 
 export default {
   components: { qrybox, Footer: footer, paging },
-
-  computed: {
-    emerge_style() {
-      return {
-        'z-index': (this.ceil_opacity == 0 ? '-1' : '1'),
-        'visibility': (this.ceil_opacity < 0.5 ? 'hidden': 'visible')
-      }
-    }
-  },
 
   mounted: function() {
     /* some setups */
@@ -234,6 +225,13 @@ export default {
       theme.id = "theme"
       theme.href = 'light.css' /* default */
       document.head.appendChild(theme)
+    },
+
+    emerge_style(defaultZIndex) {
+      return {
+        'z-index': (this.ceil_opacity == 0 ? '-1' : `${defaultZIndex || 0}`),
+        'visibility': (this.ceil_opacity < 0.5 ? 'hidden': 'visible')
+      }
     },
 
     resetSearchResults() {
