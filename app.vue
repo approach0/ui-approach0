@@ -151,6 +151,7 @@ export default {
     /* set initial state */
     if (rawqry != null) {
       this.qrybox_model = rawqry
+
       this.qrybox_sinking = false
       this.performSearch(rawqry, page)
       this.pushState(rawqry, page)
@@ -198,6 +199,7 @@ export default {
 
       qrybox_sinking: true,
       qrybox_model: '',
+      static_rawqry: '',
 
       loading: false,
       loading_error: '',
@@ -244,6 +246,8 @@ export default {
       if (state) {
         const rawqry = state.rawqry
         this.qrybox_model = rawqry || ''
+        /* update static_rawqry */
+        this.static_rawqry = rawqry || ''
 
         if (rawqry === undefined) {
           this.qrybox_sinking = true
@@ -271,11 +275,13 @@ export default {
         const title = JSON.stringify(searchState)
         const encqry = encodeURIComponent(rawqry)
         history.pushState(searchState, title, "?q=" + encqry + "&p=" + page)
+        /* update static_rawqry */
+        this.static_rawqry = rawqry
       }
     },
 
     onGotoPage(page) {
-      const rawqry = this.qrybox_model
+      const rawqry = this.static_rawqry
       $("html, body").animate({ scrollTop: 0 })
       this.resetSearchResults()
       this.performSearch(rawqry, page)
