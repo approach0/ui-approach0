@@ -12,5 +12,5 @@ RUN apt-get install -y nodejs
 RUN mkdir -p /code
 ADD . /code
 WORKDIR /code
-RUN npm install
+RUN npm install --production
 CMD ./entrypoint.sh
