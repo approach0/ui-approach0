@@ -164,6 +164,8 @@ export default {
   watch: {
     chips: {
       handler() {
+        this.chips2rawstr()
+
         this.$nextTick(function() {
           TeX_render.render_fast('.chip-tex')
         })
@@ -296,7 +298,6 @@ export default {
       })
 
       this.entering = ''
-      this.chips2rawstr()
     },
 
     onKeydown(ev) {
@@ -366,9 +367,11 @@ export default {
         vm.mqEditorCreate((mq) => {
           vm.mqEditorInput(mq, 'typing', keyword)
         })
-      }
 
-      this.chips2rawstr()
+      } else {
+        /* most of the typing goes here */
+        this.chips2rawstr()
+      }
     },
 
     onFinishMathEdit() {
@@ -495,11 +498,11 @@ export default {
       })
 
       if (this.entering.trim().length > 0) {
-        if (this.mq_dom === null) {
-          arr.push(this.entering)
-        } else {
+        if (this.mq_dom) {
           const tex = vm.correct_mathtex(this.entering)
           arr.push(`$${tex}$`)
+        } else {
+          arr.push(this.entering)
         }
       }
 
