@@ -78,8 +78,8 @@
 
         <div style="width: 100%; padding-top: 1rem;" v-else-if="menu_on === 'raw'">
           <span style="width: 100%" class="p-float-label sizes">
-            <InputText id="rawqry" style="width: 100%" type="text"
-             class="p-inputtext-sm" aria-describedby="rawqry-help" v-model="rawqry"/>
+            <InputText id="rawqry" style="width: 100%" type="text" class="p-inputtext-sm" v-model="rawqry"
+            aria-describedby="rawqry-help" @focus="rawqry_focus = true" @blur="rawqry_focus = false"/>
             <label for="rawqry">Enter raw query ...</label>
             <small id="rawqry-help" style="background-color: var(--surface-b)">
               In <i>raw query</i>, you can edit math keyword in TeX directly (separate keywords by commas).
@@ -164,11 +164,13 @@ export default {
   watch: {
     chips: {
       handler() {
-        this.chips2rawstr()
-
         this.$nextTick(function() {
           TeX_render.render_fast('.chip-tex')
         })
+
+        /* avoid interupting user input in raw query bar */
+        if (!this.rawqry_focus)
+          this.chips2rawstr()
       },
       deep: true,
     },
@@ -214,7 +216,9 @@ export default {
           {type: "tex", str: "\\frac a b", boolop: 'OR'} */
       ],
       entering: '',
+
       rawqry: '',
+      rawqry_focus: false,
 
       mq_dom: false,
       MQ: null,
