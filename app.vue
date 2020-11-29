@@ -25,10 +25,11 @@
     </div>
 
     <!-- p-col-11 instead of 12 leaves nice padding in small device screen -->
-    <div class="topbar-qrybox-second p-col-11 p-mx-4" v-if="!qrybox_sinking">
+    <div class="topbar-qrybox-second p-col-11 p-mx-4" v-if="!qrybox_sinking && !collapse">
       <qrybox v-model="qrybox_model" @search="onClickSearch"/>
     </div>
 
+    <i class="fa collapse" :class="collapse ? 'fa-chevron-down': 'fa-chevron-up'" @click="onToggleCollapse"></i>
   </div>
 
   <!-- Initial query box -->
@@ -200,6 +201,7 @@ export default {
       logo128: require('./resource/logo128.png'),
       logo32: require('./resource/logo32.png'),
       nightTheme: false,
+      collapse: false,
 
       qrybox_sinking: true,
       qrybox_model: '',
@@ -405,6 +407,10 @@ export default {
 
     onClickIcon() {
       window.location.href = window.location.pathname
+    },
+
+    onToggleCollapse() {
+      this.collapse = !this.collapse
     }
   }
 }
@@ -496,6 +502,10 @@ div.vspacer {
   height: 25vh;
 }
 
+i.collapse {
+  display: none;
+}
+
 /* query box layout media CSS */
 @media screen and (max-width: 576px) {
   .p-sm-12 {
@@ -507,6 +517,16 @@ div.vspacer {
 
   .logo-text:last-child {
     display: none !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  i.collapse {
+    color: gray;
+    position: absolute;
+    bottom: -5px;
+    right: 1rem;
+    display: inline-block !important;
   }
 }
 
@@ -527,7 +547,7 @@ div.vspacer {
 }
 
 .search-res {
-  max-width: 892px; /* 932 - 40 */
+  max-width: 728px; /* 768 - 40 */
   width: 100%;
 }
 

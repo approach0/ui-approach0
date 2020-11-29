@@ -90,7 +90,7 @@
       </div>
 
     </div>
-    <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
+    <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px; height: 0; padding: 0;">
       <!-- Placeholder -->
     </div>
   </div>
