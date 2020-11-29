@@ -142,7 +142,8 @@ const example_queries = require('./example-queries.js').example_queries
 
 export default {
   props : {
-    modelValue: String
+    modelValue: String,
+    squeeze: Boolean
   },
 
   emits: ['update:modelValue', 'search'],
@@ -201,6 +202,14 @@ export default {
 
     modelValue: function(newVal) {
       this.rawqry = this.rawqry
+    },
+
+    menu_on: function(val) {
+      let isMobile = window.matchMedia("only screen and (max-width: 576px)").matches;
+      if (val === null || !isMobile)
+        this.$emit('update:squeeze', false)
+      else
+        this.$emit('update:squeeze', true)
     }
   },
 

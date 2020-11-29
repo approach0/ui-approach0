@@ -4,7 +4,7 @@
 
   <!-- Top bar (menu and secondary query boxes) -->
   <div id="topbar" class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid"
-      :style="emerge_style(2)">
+      :style="emerge_style(3)">
 
     <div class="p-d-flex p-ai-center" v-if="!qrybox_sinking">
       <img :src="logo32" class="logo p-m-1" @click="onClickIcon"/>
@@ -34,10 +34,10 @@
   <!-- Initial query box -->
   <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking" :style="emerge_style(2)">
 
-    <div class="vspacer"/>
+    <div class="vspacer" :style="{'display': qrybox_squeeze ? 'none' : 'flex'}" />
 
     <div class="rellax" style="height: 100%;" data-rellax-speed="1">
-      <div class="p-d-flex p-jc-center p-mb-6">
+      <div class="p-d-flex p-jc-center" :class="{ 'p-mb-6': qrybox_squeeze ? false : true }">
         <img class="logo sinking-logo" :src="logo128" @click="onClickIcon"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-1">
           <span class="logo-text-large no-select">Approach Zero</span>
@@ -48,7 +48,7 @@
 
     <div class="p-d-flex p-jc-center">
       <div class="p-mx-3" style="width: 100%;">
-        <qrybox v-model="qrybox_model" @search="onClickSearch"/>
+        <qrybox v-model="qrybox_model" v-model:squeeze="qrybox_squeeze" @search="onClickSearch"/>
       </div>
     </div>
   </div>
@@ -188,6 +188,10 @@ export default {
     qrybox_sinking: function() {
       /* update footer stickiness on sinking state change */
       this.footer_style = this.footerStickiness()
+    },
+
+    qrybox_squeeze: function(val) {
+      if (val) $("html, body").animate({ scrollTop: 0 })
     }
   },
 
@@ -199,6 +203,7 @@ export default {
 
       qrybox_sinking: true,
       qrybox_model: '',
+      qrybox_squeeze: false, /* avoid small screen keyboard out-of-space */
       static_rawqry: '',
 
       loading: false,
