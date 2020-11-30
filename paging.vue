@@ -59,7 +59,8 @@ export default {
       const page = this.cur_page
       const tot_pages = this.tot_pages
 
-      const wind = 5; /* better be odd for symmetry */
+      let isMobile = window.matchMedia("only screen and (max-width: 576px)").matches
+      const wind = isMobile ? 3 : 5 /* better be odd for symmetry */
       const half = Math.ceil((wind - 1) / 2)
       let left = Math.max(1, page - half)
       let right = Math.min(tot_pages, page + half)
