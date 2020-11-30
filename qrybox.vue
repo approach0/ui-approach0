@@ -59,14 +59,15 @@
             <div class="p-message-text">
               <p>First time using this tool?
               Let's walk through our
-              <a target="_blank" href="/guide"><i class="fa fa-external-link"></i> user guide </a>
+              <a target="_blank" href="/guide/content/en/index.html">
+              <i class="fa fa-external-link"></i> user guide </a>
               to get you started.
-              Also, why not to try a few
-              <a href="javascript: void(0)" @click="onExampleQuery"><i class="fa fa-lightbulb-o"></i>
-              example queries </a>
-              to get a sense?</p>
+              Also, why not to try some
+              <a href="javascript: void(0)" @click="onExampleQuery">
+              <i class="fa fa-lightbulb-o"></i>
+              example queries </a>? </p>
 
-              <p>To quickly input math symbols, use the
+              <p>To quickly lookup and input math symbols, check out our
               <a href="javascript: void(0)" @click="onPullKeyboard"><i class="fa fa-th"></i>
               symbol-keyboard</a>.</p>
 
