@@ -36,9 +36,9 @@
   <!-- Initial query box -->
   <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking" :style="emerge_style(2)">
 
-    <div class="vspacer" :style="qrybox_squeeze ? 'display: none' : ''"/>
+    <div class="vspacer" v-if="!qrybox_squeeze"/>
 
-    <div class="rellax" style="height: 100%;" data-rellax-speed="1" :style="qrybox_squeeze ? 'display: none' : ''">
+    <div class="rellax" style="height: 100%;" data-rellax-speed="1" v-if="!qrybox_squeeze">
       <div class="p-d-flex p-jc-center p-mb-5">
         <img class="logo sinking-logo" :src="logo128" @click="onClickIcon"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-1">
