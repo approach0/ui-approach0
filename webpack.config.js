@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
 
 /* listen port */
 const PORT = 19985
@@ -112,6 +113,12 @@ module.exports = (env, options) => {
       new VueLoaderPlugin(),
       new MiniCssExtractPlugin({
         filename: '[name].css'
+      }),
+      new PreloadWebpackPlugin({
+        rel: 'preload',
+        as: 'font',
+        include: 'allAssets',
+        fileWhitelist: [/\.(woff2?|eot|ttf|otf)(\?.*)?$/i],
       }),
       new webpack.DefinePlugin({
         A0_RELAY_URL: JSON.stringify(mode === 'production' ? process.env.A0_RELAY_URL : 'http://localhost:8080'),
