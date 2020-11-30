@@ -29,7 +29,8 @@
       <qrybox v-model="qrybox_model" @search="onClickSearch"/>
     </div>
 
-    <i class="fa collapse" :class="collapse ? 'fa-chevron-down': 'fa-chevron-up'" @click="onToggleCollapse"></i>
+    <i class="fa collapse" :class="collapse ? 'fa-chevron-down': 'fa-chevron-up'"
+       @click="onToggleCollapse" v-if="!qrybox_sinking"></i>
   </div>
 
   <!-- Initial query box -->
