@@ -37,8 +37,9 @@
 
     <div class="vspacer" :style="{'display': qrybox_squeeze ? 'none' : 'flex'}" />
 
-    <div class="rellax" style="height: 100%;" data-rellax-speed="1">
-      <div class="p-d-flex p-jc-center" :class="{ 'p-mb-6': qrybox_squeeze ? false : true }">
+    <div class="rellax" style="height: 100%;" data-rellax-speed="1"
+        :style="{'display': qrybox_squeeze ? 'none' : 'flex'}">
+      <div class="p-d-flex p-jc-center p-mb-5">
         <img class="logo sinking-logo" :src="logo128" @click="onClickIcon"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-1">
           <span class="logo-text-large no-select">Approach Zero</span>
@@ -47,7 +48,7 @@
       </div>
     </div>
 
-    <div class="p-d-flex p-jc-center">
+    <div class="p-d-flex p-jc-center p-mt-1">
       <div class="p-mx-3" style="width: 100%;">
         <qrybox v-model="qrybox_model" v-model:squeeze="qrybox_squeeze" @search="onClickSearch"/>
       </div>
