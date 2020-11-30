@@ -30,6 +30,10 @@
               <i class="fa fa-cogs"></i>
               <a @click="onClick">Open Backend</a>
             </li>
+            <li title="Developer Documentation">
+              <i class="fa fa-book"></i>
+              <a @click="onClick">Developer Docs</a>
+            </li>
           </ul>
 
           <h2 class="ft-title">Contribute</h2>
@@ -45,10 +49,6 @@
             <li title="Sponsor Me">
               <i class="fa fa-heart-o"></i>
               <a @click="onClick">Sponsorship</a>
-            </li>
-            <li title="Developer Documentation">
-              <i class="fa fa-book"></i>
-              <a @click="onClick">Developer Docs</a>
             </li>
           </ul>
 
