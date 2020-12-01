@@ -101,16 +101,18 @@
 
           <h2 class="ft-title">Current Index</h2>
           <ul class="ft-items">
-            <li class="p-d-flex p-ai-start" title="Math StackExchange">
+            <li class="p-d-flex p-ai-center" title="Math StackExchange">
               <img :src="icon_mse" style="width: 32px; height: 32px" alt="MSE"/>
               <a @click="onClick">Math StackExchange</a>
             </li>
-            <li class="p-d-flex p-ai-start" title="Art of Problem Solving">
+            <li class="p-d-flex p-ai-center" title="Art of Problem Solving">
               <img :src="icon_aops" style="width: 32px; height: 32px" alt="AoPS"/>
               <a @click="onClick">Art of Problem Solving</a>
             </li>
-            <li class="p-d-flex p-ai-start" title="Add more data source">
-              <i class="fa fa-lg fa-question" style="width: 32px; height: 32px; text-align: center"></i>
+            <li class="p-d-flex p-ai-center" title="Add more data source">
+              <div style="width: 32px; height: 32px; text-align: center; margin: 0.5rem 1rem;">
+                <i class="fa fa-lg fa-question"></i>
+              </div>
               <a @click="onClick">Help to Add More ...</a>
             </li>
           </ul>
