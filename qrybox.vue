@@ -33,7 +33,9 @@
 
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px;">
-      <Button label="Search" class="p-button-raised srch-btn" style="width: 100%" @click="onSearch()"/>
+      <Button label="Search" class="p-button-raised srch-btn" style="width: 100%" @click="onSearch()">
+        Search
+      </Button>
     </div>
   </div>
 
@@ -42,14 +44,20 @@
     <div class="p-d-flex p-lg-1 p-md-12 p-sm-12 p-p-2 p-jc-between input-stretch menu">
       <div>
         <Button label="Help" icon="fa fa-question-circle-o"  @click="menu_on = (menu_on === 'help' ? null : 'help')"
-         :class="'p-button-secondary p-button-sm ' + (menu_on === 'help' ? 'p-button-outlined' : 'p-button-text')"/>
+         :class="'p-button-secondary p-button-sm ' + (menu_on === 'help' ? 'p-button-outlined' : 'p-button-text')">
+         Help
+        </Button>
 
         <Button label="Raw Query" icon="fa fa-code" @click="menu_on = (menu_on === 'raw' ? null : 'raw')"
-         :class="'p-button-secondary p-button-sm ' + (menu_on === 'raw' ? 'p-button-outlined' : 'p-button-text')"/>
+         :class="'p-button-secondary p-button-sm ' + (menu_on === 'raw' ? 'p-button-outlined' : 'p-button-text')">
+         Raw Query
+        </Button>
       </div>
       <div>
         <Button label="Clear" icon="fa fa-times" @click="onClear()"
-         class="p-button-secondary p-button-text p-button-sm"/>
+         class="p-button-secondary p-button-text p-button-sm">
+         Clear
+        </Button>
       </div>
 
       <div style="position: absolute; left: 0; top: 3rem; width: 100%" v-if="menu_on">
@@ -72,8 +80,10 @@
               symbol-keyboard</a>.</p>
 
             </div>
-            <Button icon="fa fa-times" @click="menu_on = null"
-              class="p-button-rounded p-button-text p-button-secondary"/>
+            <Button icon="fa fa-times" @click="menu_on = null" label="Close"
+              class="p-button-rounded p-button-text p-button-secondary">
+              Close
+            </Button>
           </div>
         </div>
 
@@ -98,38 +108,54 @@
 
   <!-- Math Keyboard -->
   <Button icon="fa fa-th" class="p-button-rounded p-button-secondary" @click="onPullKeyboard()"
-          style="position: fixed; left: 2rem; bottom: 2rem; z-index: -1"/>
+          style="position: fixed; left: 2rem; bottom: 2rem; z-index: -1" label="Math Keyboard">
+    Math Keyboard
+  </Button>
 
   <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
     <div style="position: absolute; top: -1rem; right: 0; z-index: 100">
-      <Button class="p-button-text" icon="fa fa-times" @click="keyboard_show = false"/>
+      <Button class="p-button-text" icon="fa fa-times" @click="keyboard_show = false" label="Close">
+        Close
+      </Button>
     </div>
 
     <TabView style="overflow-y: auto; height: 100%;" v-model:activeIndex="keyboard_active_tab">
       <TabPanel :header="keyboard_keys[0].keyset">
         <Button v-for="key in keyboard_keys[0].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key">
+         {{key.desc}}
+        </Button>
 
         <Button v-for="key in keyboard_keys[2].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key">
+         {{key.desc}}
+        </Button>
 
         <Button v-for="key in keyboard_keys[1].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key">
+         {{key.desc}}
+        </Button>
       </TabPanel>
 
       <TabPanel :header="keyboard_keys[3].keyset">
         <Button v-for="key in keyboard_keys[3].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key">
+         {{key.desc}}
+        </Button>
       </TabPanel>
 
       <TabPanel :header="keyboard_keys[4].keyset">
         <Button v-for="key in keyboard_keys[4].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key">
+         {{key.desc}}
+        </Button>
       </TabPanel>
 
       <TabPanel :header="keyboard_keys[5].keyset">
         <Button v-for="key in keyboard_keys[5].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
-         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
+         @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key">
+         {{key.desc}}
+        </Button>
       </TabPanel>
     </TabView>
 
