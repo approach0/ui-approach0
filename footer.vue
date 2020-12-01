@@ -62,19 +62,19 @@
         <div class="p-d-flex p-grid p-jc-around thank-banner">
           <a target="_blank" href="https://www.cs.rit.edu/~dprl/">
             <img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"
-                 style="width: 220px; height: 73px;"/>
+                 style="width: 220px; height: 73px;" alt="DPRL"/>
           </a>
           <a target="_blank" href="https://www.linode.com/">
             <img src="https://www.linode.com/wp-content/uploads/2018/10/linode-logo-blk-rgb-minified.svg"
-                 style="width: 220px; height: 73px;"/>
+                 style="width: 220px; height: 73px;" alt="Linode"/>
           </a>
           <a target="_blank" href="https://math.stackexchange.com/users/8297">
             <img src="https://math.stackexchange.com/users/flair/8297.png"
-                 style="width: 208px; height: 58px;"/>
+                 style="width: 208px; height: 58px;" alt="MSE User 8297"/>
           </a>
           <a target="_blank" href="https://math.stackexchange.com/users/290240">
             <img src="https://math.stackexchange.com/users/flair/290240.png"
-                 style="width: 208px; height: 58px;"/>
+                 style="width: 208px; height: 58px;" alt="MSE User 290240"/>
           </a>
         </div>
 
@@ -100,11 +100,11 @@
           <h2 class="ft-title">Current Index</h2>
           <ul class="ft-items">
             <li class="p-d-flex p-ai-start" title="Math StackExchange">
-              <img :src="icon_mse" style="width: 32px; height: 32px"/>
+              <img :src="icon_mse" style="width: 32px; height: 32px" alt="MSE"/>
               <a @click="onClick">Math StackExchange</a>
             </li>
             <li class="p-d-flex p-ai-start" title="Art of Problem Solving">
-              <img :src="icon_aops" style="width: 32px; height: 32px"/>
+              <img :src="icon_aops" style="width: 32px; height: 32px" alt="AoPS"/>
               <a @click="onClick">Art of Problem Solving</a>
             </li>
             <li class="p-d-flex p-ai-start" title="Add more data source">
