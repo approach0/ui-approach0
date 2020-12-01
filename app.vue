@@ -7,7 +7,7 @@
       :style="emerge_style(3)">
 
     <div class="p-d-flex p-ai-center" v-if="!qrybox_sinking">
-      <img :src="logo32" class="logo p-m-1" @click="onClickIcon"/>
+      <img :src="logo32" style="width: 32px; height: 32px;" class="logo p-m-1" @click="onClickIcon"/>
       <div class="p-d-flex p-flex-column">
         <span class="logo-text no-select">Approach Zero</span>
         <div class="logo-text no-select">A math-aware search engine.</div>
@@ -40,7 +40,7 @@
 
     <div class="rellax" style="height: 100%;" data-rellax-speed="1" v-if="!qrybox_squeeze">
       <div class="p-d-flex p-jc-center p-mb-5">
-        <img class="logo sinking-logo" :src="logo128" @click="onClickIcon"/>
+        <img class="logo" style="width: 64px; height: 64px;" :src="logo128" @click="onClickIcon"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-1">
           <span class="logo-text-large no-select">Approach Zero</span>
           <div class="logo-text-large no-select">A math-aware search engine.</div>
@@ -475,10 +475,6 @@ a:hover {
 
 img.logo {
   cursor: pointer;
-}
-
-img.sinking-logo {
-  height: 5rem;
 }
 
 div.p-toolbar {

@@ -61,16 +61,20 @@
         </h2>
         <div class="p-d-flex p-grid p-jc-around thank-banner">
           <a target="_blank" href="https://www.cs.rit.edu/~dprl/">
-            <img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"/>
+            <img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"
+                 style="width: 220px; height: 73px;"/>
           </a>
           <a target="_blank" href="https://www.linode.com/">
-            <img src="https://www.linode.com/wp-content/uploads/2018/10/linode-logo-blk-rgb-minified.svg"/>
+            <img src="https://www.linode.com/wp-content/uploads/2018/10/linode-logo-blk-rgb-minified.svg"
+                 style="width: 220px; height: 73px;"/>
           </a>
           <a target="_blank" href="https://math.stackexchange.com/users/8297">
-            <img src="https://math.stackexchange.com/users/flair/8297.png"/>
+            <img src="https://math.stackexchange.com/users/flair/8297.png"
+                 style="width: 208px; height: 58px;"/>
           </a>
           <a target="_blank" href="https://math.stackexchange.com/users/290240">
-            <img src="https://math.stackexchange.com/users/flair/290240.png"/>
+            <img src="https://math.stackexchange.com/users/flair/290240.png"
+                 style="width: 208px; height: 58px;"/>
           </a>
         </div>
 
@@ -96,15 +100,15 @@
           <h2 class="ft-title">Current Index</h2>
           <ul class="ft-items">
             <li class="p-d-flex p-ai-start" title="Math StackExchange">
-              <img :src="icon_mse"/>
+              <img :src="icon_mse" style="width: 32px; height: 32px"/>
               <a @click="onClick">Math StackExchange</a>
             </li>
             <li class="p-d-flex p-ai-start" title="Art of Problem Solving">
-              <img :src="icon_aops"/>
+              <img :src="icon_aops" style="width: 32px; height: 32px"/>
               <a @click="onClick">Art of Problem Solving</a>
             </li>
             <li class="p-d-flex p-ai-start" title="Add more data source">
-              <i class="fa fa-lg fa-question" style="width: 56px;"></i>
+              <i class="fa fa-lg fa-question" style="width: 32px; height: 32px; text-align: center"></i>
               <a @click="onClick">Help to Add More ...</a>
             </li>
           </ul>
@@ -166,13 +170,7 @@ ul.ft-items > li {
 }
 
 ul.ft-items > li > i,img {
-  padding: 4px 1rem;
-  margin: 2px 0;
-  max-width: 220px;
-}
-
-ul.ft-items > li > img {
-  width: 56px;
+  margin: 0.5rem 1rem;
 }
 
 .ft-block {
