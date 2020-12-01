@@ -85,7 +85,7 @@
       <div v-for="(hit, idx) in search_results" :key="hit.docid" class="p-p-4 p-m-3 p-card search-res">
         <span class="docid"> {{hit.docid}} </span>
         <span class="score"> {{hit.score}} </span>
-        <a class="title" target="_blank" :href="hit.url">
+        <a class="title" target="_blank" :href="hit.url" rel="noopener">
           {{hit.title}}
         </a>
         <span class="url"> {{hit.url}} </span>

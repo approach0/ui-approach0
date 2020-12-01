@@ -60,19 +60,19 @@
           Special Thanks
         </h2>
         <div class="p-d-flex p-grid p-jc-around thank-banner">
-          <a target="_blank" href="https://www.cs.rit.edu/~dprl/">
+          <a target="_blank" href="https://www.cs.rit.edu/~dprl/" rel="noopener">
             <img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"
                  style="width: 220px; height: 73px;" alt="DPRL"/>
           </a>
-          <a target="_blank" href="https://www.linode.com/">
+          <a target="_blank" href="https://www.linode.com/" rel="noopener">
             <img src="https://www.linode.com/wp-content/uploads/2018/10/linode-logo-blk-rgb-minified.svg"
                  style="width: 220px; height: 73px;" alt="Linode"/>
           </a>
-          <a target="_blank" href="https://math.stackexchange.com/users/8297">
+          <a target="_blank" href="https://math.stackexchange.com/users/8297" rel="noopener">
             <img src="https://math.stackexchange.com/users/flair/8297.png"
                  style="width: 208px; height: 58px;" alt="MSE User 8297"/>
           </a>
-          <a target="_blank" href="https://math.stackexchange.com/users/290240">
+          <a target="_blank" href="https://math.stackexchange.com/users/290240" rel="noopener">
             <img src="https://math.stackexchange.com/users/flair/290240.png"
                  style="width: 208px; height: 58px;" alt="MSE User 290240"/>
           </a>
@@ -80,16 +80,18 @@
 
         <div class="p-m-2 thanksgiving">
           <p>As a side project reaching this far, I am thankful to my advisor
-          <a target="_blank" href="https://www.cs.rit.edu/~rlaz/">Richard Zanibbi</a> and my previous advisor
-          <a target="_blank" href="https://www.eecis.udel.edu/~hfang/">Fang Hui</a> for supporting and encouraging
-          me to work on the idea of creating a math-aware search engine. Also I am thankful to
-          <a target="_blank" href="https://linode.com/">Linode</a> who covers our hosting cost and
+          <a target="_blank" href="https://www.cs.rit.edu/~rlaz/" rel="noopener">Richard Zanibbi</a>
+		  and my previous advisor
+          <a target="_blank" href="https://www.eecis.udel.edu/~hfang/" rel="noopener">Fang Hui</a>
+		  for supporting and encouraging me to work on the idea of creating a math-aware search engine.
+		  Also I am thankful to
+          <a target="_blank" href="https://linode.com/" rel="noopener">Linode</a> who covers our hosting cost and
           keeps this site staying on real axis. Furthermore, I want to shout out to
-          <a target="_blank" href="https://math.stackexchange.com/users/8297">Martin Sleziak</a> for his very first
-          donation to this project and all kinds of support. And shout to
-          <a target="_blank" href="https://math.stackexchange.com/users/290240">@Sil</a> for his code contribution.
-          There are others who have contributed to this project (including me!),
-          kudos to them in <a target="_blank" href="/docs/content/en/contributors.html">this page</a>.
+          <a target="_blank" href="https://math.stackexchange.com/users/8297" rel="noopener">Martin Sleziak</a>
+		  for his very first donation to this project and all kinds of support. And shout to
+          <a target="_blank" href="https://math.stackexchange.com/users/290240" rel="noopener">@Sil</a>
+		  for his code contribution.  There are others who have contributed to this project (including me!),
+          kudos to them in <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
           </p>
         </div>
       </div>
@@ -227,7 +229,7 @@ export default {
   methods: {
     onClick(elem) {
       const gotoURL = function(url) {
-        window.open(url, '_blank')
+        window.open(url, '_blank', 'noopener')
       }
       const anchor = $(elem.target).parent()
       const alt = $(anchor).attr('title')
