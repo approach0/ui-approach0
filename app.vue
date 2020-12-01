@@ -327,8 +327,7 @@ export default {
 
         }).fail(function(res, err) {
           console.error('[search ajax failed]', err)
-          vm.loading_error = `Oops! seems like server is down, please come back later.
-          If the problem persists, please contact us.`
+          vm.loading_error = "Oops! seems like server is down, please come back later."
         })
       }, 0) /* change timeout to debug loading */
     },
