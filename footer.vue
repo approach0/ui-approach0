@@ -92,7 +92,7 @@
 		  and my previous advisor
           <a target="_blank" href="https://www.eecis.udel.edu/~hfang/" rel="noopener">Fang Hui</a>
 		  for supporting and encouraging me to work on the idea of creating a math-aware search engine.
-		  I feel grateful for my cloud provider
+		  I feel grateful to my cloud provider
           <a target="_blank" href="https://linode.com/" rel="noopener">Linode</a> who offers a great
           infrastructure to keep this site staying on real axis. Also, I want to shout out to
           <a target="_blank" href="https://math.stackexchange.com/users/8297" rel="noopener">Martin Sleziak</a>
