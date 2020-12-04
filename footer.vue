@@ -93,6 +93,14 @@
 		  for his code contribution.  There are others who have contributed to this project (including me!),
           kudos to them in <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
           </p>
+
+          <div class="p-d-flex p-flex-column p-my-6" style="text-align: center;">
+            <a target="_blank" href="https://www.linode.com/" rel="noopener">
+              <img :src="icon_linode" style="width: 223.5px; height: 61px;" alt="Linode"/>
+            </a>
+            <span>Powered by Linode</span>
+          </div>
+
         </div>
       </div>
 
@@ -223,6 +231,7 @@ export default {
 
   data: function() {
     return {
+      icon_linode: require('./resource/linode.png'),
       icon_mse: require('./resource/mse.png'),
       icon_aops: require('./resource/aops.png')
     }
