@@ -56,6 +56,14 @@
       </div>
 
       <div class="p-lg-6 p-md-12 p-sm-12" style="padding: 0 3rem">
+
+          <div class="p-d-flex p-flex-column p-my-6" style="text-align: center;">
+            <a target="_blank" href="https://www.linode.com/" rel="noopener">
+              <img :src="icon_linode" style="width: 223.5px; height: 61px;" alt="Linode"/>
+            </a>
+            <span>Powered by Linode</span>
+          </div>
+
         <h2 class="ft-title p-d-flex p-jc-center p-ai-center">
           Special Thanks
         </h2>
@@ -93,14 +101,6 @@
 		  for his code contribution.  There are others who have contributed to this project (including me!),
           kudos to them in <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
           </p>
-
-          <div class="p-d-flex p-flex-column p-my-6" style="text-align: center;">
-            <a target="_blank" href="https://www.linode.com/" rel="noopener">
-              <img :src="icon_linode" style="width: 223.5px; height: 61px;" alt="Linode"/>
-            </a>
-            <span>Powered by Linode</span>
-          </div>
-
         </div>
       </div>
 
