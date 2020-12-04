@@ -84,13 +84,13 @@
 		  and my previous advisor
           <a target="_blank" href="https://www.eecis.udel.edu/~hfang/" rel="noopener">Fang Hui</a>
 		  for supporting and encouraging me to work on the idea of creating a math-aware search engine.
-		  Also I am thankful to
-          <a target="_blank" href="https://linode.com/" rel="noopener">Linode</a> who covers our hosting cost and
-          keeps this site staying on real axis. Furthermore, I want to shout out to
+		  I feel grateful to my cloud provider
+          <a target="_blank" href="https://linode.com/" rel="noopener">Linode</a> who offers a great
+          infrastructure to keep this site staying on real axis. I want to shout out to
           <a target="_blank" href="https://math.stackexchange.com/users/8297" rel="noopener">Martin Sleziak</a>
-		  for his very first donation to this project and all kinds of support. And shout to
+		  for his very first, generous donation to this project and all kinds of support. And also shout to
           <a target="_blank" href="https://math.stackexchange.com/users/290240" rel="noopener">@Sil</a>
-		  for his code contribution.  There are others who have contributed to this project (including me!),
+		  for his code contribution.  There are other contributors not mentioned here,
           kudos to them in <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
           </p>
         </div>
