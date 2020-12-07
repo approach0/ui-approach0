@@ -202,7 +202,7 @@ export default {
     },
 
     modelValue: function(newVal) {
-      this.rawqry = this.rawqry
+      this.rawqry = newVal
     },
 
     menu_on: function(val) {

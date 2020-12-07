@@ -285,6 +285,7 @@ export default {
         history.pushState(searchState, title, "?q=" + encqry + "&p=" + page)
         /* update static_rawqry */
         this.static_rawqry = rawqry
+        this.qrybox_model = rawqry
       }
     },
 
