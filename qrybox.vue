@@ -169,10 +169,6 @@ export default {
         this.$nextTick(function() {
           TeX_render.render_fast('.chip-tex')
         })
-
-        /* avoid interupting user input in raw query bar */
-        if (!this.rawqry_focus)
-          this.chips2rawstr()
       },
       deep: true,
     },
@@ -310,6 +306,10 @@ export default {
         str: keyword,
         boolop: 'OR'
       })
+      /* use nextTick() here to avoid loop feedback */
+      this.$nextTick(function() {
+        this.chips2rawstr()
+      })
 
       this.entering = ''
     },
@@ -320,6 +320,7 @@ export default {
       if (ev.code === 'Backspace') {
         if (keyword === '') {
           this.chips.pop()
+          this.chips2rawstr()
         }
       }
     },
@@ -481,10 +482,12 @@ export default {
 
     onDel(chipIdx) {
       this.chips.splice(chipIdx, 1)
+      this.chips2rawstr()
     },
 
     onEdit(chipIdx) {
       const chip = this.chips.splice(chipIdx, 1)[0]
+      this.chips2rawstr()
       const vm = this
       vm.entering = chip.str
       vm.mqEditorCreate((mq) => {
