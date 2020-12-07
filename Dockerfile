@@ -13,4 +13,6 @@ RUN mkdir -p /code
 ADD . /code
 WORKDIR /code
 RUN npm install
-CMD ./entrypoint.sh
+ARG A0_RELAY_URL=/search-relay/
+RUN npm run build
+CMD npm run serve
