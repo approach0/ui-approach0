@@ -155,8 +155,16 @@ export default {
       this.qrybox_model = rawqry
 
       this.qrybox_sinking = false
-      this.performSearch(rawqry, page)
-      this.pushState(rawqry, page)
+      /*
+       * Sometimes user has a math without a dollar,
+       * qrybox component will auto-correct it and update
+       * qrybox_model, in this case, wait the nextTick()
+       */
+      this.$nextTick(function() {
+        const corrected_rawqry = this.qrybox_model
+        this.performSearch(corrected_rawqry, page)
+        this.pushState(corrected_rawqry, page)
+      })
     } else {
       this.pushState()
     }
@@ -285,6 +293,7 @@ export default {
         history.pushState(searchState, title, "?q=" + encqry + "&p=" + page)
         /* update static_rawqry */
         this.static_rawqry = rawqry
+        this.qrybox_model = rawqry
       }
     },
 
