@@ -58,9 +58,9 @@
       <div class="p-lg-6 p-md-12 p-sm-12" style="padding: 0 3rem">
 
           <div class="p-d-flex p-flex-column p-my-6" style="text-align: center;">
-            <a target="_blank" href="https://www.linode.com/" rel="noopener">
+            <div>
               <img :src="icon_linode" style="width: 223.5px; height: 61px;" alt="Linode"/>
-            </a>
+            </div>
             <span>Powered by Linode</span>
           </div>
 
