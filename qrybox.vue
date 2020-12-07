@@ -79,8 +79,8 @@
 
         <div style="width: 100%; padding-top: 1rem;" v-else-if="menu_on === 'raw'">
           <span style="width: 100%" class="p-float-label sizes">
-            <InputText id="rawqry" style="width: 100%" type="text" class="p-inputtext-sm" v-model="rawqry"
-            aria-describedby="rawqry-help" @focus="rawqry_focus = true" @blur="rawqry_focus = false"/>
+            <InputText id="rawqry" type="text" style="width: 100%" class="p-inputtext-sm" aria-describedby="rawqry-help"
+              @keyup.enter="onSearch()" @focus="rawqry_focus = true" @blur="rawqry_focus = false" v-model="rawqry"/>
             <label for="rawqry">Enter raw query ...</label>
             <small id="rawqry-help" style="background-color: var(--surface-b)">
               In <i>raw query</i>, you can edit math keyword in TeX directly (separate keywords by commas).
