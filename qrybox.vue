@@ -661,7 +661,7 @@ div.chips-wrap {
   display: flex;
   justify-content: start;
   flex-wrap: wrap;
-  overflow: hidden; /* in case of long <input/> placeholder */
+  overflow: auto; /* in case of long <input/> placeholder */
 }
 
 div.chip-item {
