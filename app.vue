@@ -565,11 +565,13 @@ i.collapse {
   font-size: 1.2em;
   display: block;
   word-break: break-all;
-  color: #003dbf;
+  color: var(--primary-color);
+  font-weight: bold;
+  padding-bottom: 1rem;
 }
 
 .search-res > a.title:visited {
-  color: #609;
+  color: #753d90;
 }
 
 .search-res > span.url {
