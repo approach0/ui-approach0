@@ -7,7 +7,7 @@
   "scripts": {
     "watch": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode development --inline",
     "build": "./node_modules/webpack/bin/webpack.js --mode production --module-bind js=babel-loader --display-error-details",
-    "serve": "./node_modules/http-server/bin/http-server ./dist --port 19985 --gzip -c 31536000"
+    "serve": "./node_modules/http-server/bin/http-server ./dist --port 19985 --gzip -c 31536000 --proxy http://localhost:19985?"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.11.5",
