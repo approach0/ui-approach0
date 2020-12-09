@@ -99,7 +99,7 @@
 		  for his very first, generous donation to this project and all kinds of support. And also shout to
           <a target="_blank" href="https://math.stackexchange.com/users/290240" rel="noopener">@Sil</a>
 		  for his code contribution.  There are other contributors not mentioned here,
-          kudos to them in <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
+          kudos to them in <a target="_blank" href="/docs" rel="noopener">this page</a>.
           </p>
         </div>
       </div>
@@ -263,7 +263,7 @@ export default {
 
       /* Contribute */
       case 'User Guide':
-        gotoURL('/guide/content/en/index.html')
+        gotoURL('/guide')
         break
       case 'Source Code of This Page':
         gotoURL('https://github.com/approach0/ui-approach0')
@@ -272,7 +272,7 @@ export default {
         gotoURL('https://github.com/sponsors/t-k-')
         break
       case 'Developer Documentation':
-        gotoURL('/docs/content/en/index.html')
+        gotoURL('/docs')
         break
 
       /* Current Index */

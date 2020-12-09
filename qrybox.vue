@@ -59,7 +59,7 @@
             <div class="p-message-text">
               <p>First time using this tool?
               Let's walk through our
-              <a target="_blank" href="/guide/content/en/index.html">
+              <a target="_blank" href="/guide">
               <i class="fa fa-external-link"></i> user guide </a>
               to get you started.
               Also, why not to try some
