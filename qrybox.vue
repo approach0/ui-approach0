@@ -496,10 +496,11 @@ export default {
     },
 
     correct_mathtex(tex) {
-      /* correct common mistakes in math-mode TeX */
+      /* correct common mistakes in mathquill input */
       tex = tex.replace(/_\{[ ]*\}/g, " ")
       tex = tex.replace(/\^\{[ ]*\}/g, " ")
       tex = tex.replace(/\{_/g, "{")
+      tex = tex.replace(/\{,\}/g, ",")
       return tex
     },
 
