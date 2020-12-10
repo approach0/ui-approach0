@@ -570,6 +570,10 @@ i.collapse {
   padding-bottom: 1rem;
 }
 
+.search-res > a.title {
+  overflow-x: auto;
+}
+
 .search-res > a.title:visited {
   color: #753d90;
 }
