@@ -501,6 +501,7 @@ export default {
       tex = tex.replace(/\^\{[ ]*\}/g, " ")
       tex = tex.replace(/\{_/g, "{")
       tex = tex.replace(/\{,\}/g, ",")
+      tex = tex.replace(/"/g, "''")
       return tex
     },
 
