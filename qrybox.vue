@@ -725,6 +725,13 @@ div.math-chip {
   align-items: center;
 }
 
+span.imath-err::before {
+  color: red;
+  background: yellow;
+  content: "TeX Error in:";
+  margin-right: 5px;
+}
+
 .p-float-label label {
   top: 1.5rem !important;
 }
