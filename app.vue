@@ -463,8 +463,7 @@ a:hover {
 }
 
 .logo-text:first-child {
-  font-size: 1.1rem;
-  text-shadow: 1px 1px #4eb5b0;
+  font-size: 1.2rem;
 }
 
 .logo-text:last-child {
@@ -473,7 +472,6 @@ a:hover {
 
 .logo-text-large:first-child {
   font-size: 1.8rem;
-  text-shadow: 1px 1px #4eb5b0;
   font-weight: bold;
 }
 
