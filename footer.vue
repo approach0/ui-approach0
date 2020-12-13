@@ -240,7 +240,7 @@ export default {
 
       /* Links */
       case 'About This Project':
-        gotoURL('https://github.com/approach0/search-engine/blob/master/README.md')
+        gotoURL('/docs/content/en/about.html')
         break
       case 'Query Logs':
         gotoURL('/stats')
