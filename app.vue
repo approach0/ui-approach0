@@ -43,7 +43,7 @@
         <img class="logo" style="width: 64px; height: 64px;" :src="logo128" @click="onClickIcon" alt="logo"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-1">
           <span class="logo-text-large no-select">Approach Zero</span>
-          <div class="logo-text-large no-select">A math-aware search engine.</div>
+          <div class="logo-text-large no-select">A math-aware search engine</div>
         </div>
       </div>
     </div>
@@ -464,6 +464,7 @@ a:hover {
 
 .logo-text:first-child {
   font-size: 1.2rem;
+  text-shadow: 1px 1px #4eb5b0;
 }
 
 .logo-text:last-child {
