@@ -10,7 +10,7 @@
       <img :src="logo32" style="width: 32px; height: 32px;" class="logo p-m-1" @click="onClickIcon" alt="logo"/>
       <div class="p-d-flex p-flex-column">
         <span class="logo-text no-select">Approach Zero</span>
-        <div class="logo-text no-select">A math-aware search engine.</div>
+        <div class="logo-text no-select">A math-aware search engine</div>
       </div>
     </div>
 
