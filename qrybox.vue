@@ -27,7 +27,7 @@
           </span>
           <input class="text-editor" type="text"
            @paste="onPaste" v-model="entering" @keyup="onKeyup" @keydown="onKeydown"
-           placeholder="Enter keywords here, type $ for a math keyword." v-else/>
+           placeholder="Enter keywords here, type $ for a math formula." v-else/>
         </div>
       </div>
 
