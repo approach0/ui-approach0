@@ -439,11 +439,19 @@ html, body {
 
 body {
   color: var(--text-color);
+  font-family: var(--font-family);
   background-color: var(--surface-b);
   background-image: url("./resource/stars.png");
   background-size: cover;
   background-repeat: no-repeat;
   overflow-x: hidden;
+}
+
+/* main font */
+@font-face {
+  font-family: Roboto;
+  src: url(https://cdn.jsdelivr.net/npm/roboto-fontface@0.10.0/fonts/roboto/Roboto-Light.woff2);
+  font-display: swap;
 }
 
 .progressbar {
