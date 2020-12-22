@@ -88,7 +88,11 @@
         <a class="title" target="_blank" :href="hit.url" rel="noopener">
           {{hit.title}}
         </a>
-        <span class="url"> {{hit.url}} </span>
+        <span class="url">
+          <img v-if="hit.url.indexOf('math.stackexchange') >= 0" :src="logo_mse"/>
+          <img v-else-if="hit.url.indexOf('artofproblemsolving') >= 0" :src="logo_aops"/>
+          {{hit.url}}
+        </span>
         <div class="snippet">
           <p v-html="snippetPreprocess(idx, hit.snippet)"></p>
         </div>
@@ -209,6 +213,8 @@ export default {
     return {
       logo128: require('./resource/logo128.png'),
       logo32: require('./resource/logo32.png'),
+      logo_mse: require('./resource/mse.png'),
+      logo_aops: require('./resource/aops.png'),
       nightTheme: false,
       collapse: false,
 
@@ -575,6 +581,13 @@ i.collapse {
 
 .search-res > a.title:visited {
   color: #753d90;
+}
+
+.search-res > span.url > img {
+  vertical-align: text-top;
+  width: 16px;
+  height: 16px;
+  margin-right: 3px;
 }
 
 .search-res > span.url {

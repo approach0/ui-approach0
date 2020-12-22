@@ -173,7 +173,7 @@ ul.ft-items > li {
   margin: 10px 0;
 }
 
-ul.ft-items > li > i,img {
+ul.ft-items > li > img, ul.ft-items > li > i {
   margin: 0.5rem 1rem;
 }
 
