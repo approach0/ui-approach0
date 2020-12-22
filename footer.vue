@@ -181,8 +181,14 @@ ul.ft-items > li {
   margin: 10px 0;
 }
 
-ul.ft-items > li > img, ul.ft-items > li > i {
+ul.ft-items > li > img {
   margin: 0.5rem 1rem;
+}
+
+ul.ft-items > li > i {
+  margin-top: 0.5rem;
+  min-width: 2.5rem;
+  text-align: center;
 }
 
 .ft-block {
