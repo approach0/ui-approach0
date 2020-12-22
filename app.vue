@@ -447,13 +447,6 @@ body {
   overflow-x: hidden;
 }
 
-/* main font */
-@font-face {
-  font-family: Roboto;
-  src: url(https://cdn.jsdelivr.net/npm/roboto-fontface@0.10.0/fonts/roboto/Roboto-Light.woff2);
-  font-display: swap;
-}
-
 .progressbar {
   top: 0;
   z-index: 1000; /* 999 + 1 */
