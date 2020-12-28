@@ -393,8 +393,8 @@ export default {
       const latex = this.entering
       if (latex.length > 0) {
         this.pushChip(latex, 'tex')
-        this.clearEntering()
       }
+      this.clearEntering()
     },
 
     mqEditorCreate(callbk) {
