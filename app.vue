@@ -613,5 +613,6 @@ em.hl > span > svg {
 em.hl {
   background-color: #FFC;
   color: black;
+  font-style: normal;
 }
 </style>
