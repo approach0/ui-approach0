@@ -88,7 +88,7 @@
           <a target="_blank" href="https://linode.com/" rel="noopener">Linode</a> who offers a great
           infrastructure to keep this site staying on real axis. I want to shout out to
           <a target="_blank" href="https://math.stackexchange.com/users/8297" rel="noopener">Martin Sleziak</a>
-		  for his very first, generous donation to this project and all kinds of support. And also shout to
+		  for his very first, generous donation to this project and all kinds of support. And also shout out to
           <a target="_blank" href="https://math.stackexchange.com/users/290240" rel="noopener">@Sil</a>
 		  for his code contribution.  There are other contributors not mentioned here,
           kudos to them in <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
