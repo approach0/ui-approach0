@@ -208,7 +208,7 @@ div.footer-bottom {
 
 div.footer-copyleft {
   color: white;
-  border-top: 2px #99dcd9 solid;
+  border-top: 2px #476065 solid;
   font-weight: bold;
 }
 
