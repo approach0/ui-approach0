@@ -7,11 +7,15 @@
       <div class="chips-wrap" @click="onFocus()">
         <!-- Chips -->
         <div v-for="(chip, idx) in chips" :key="chip.str" class="p-mx-1">
-          <div v-if="chip.type=='word'" class="chip-item p-tag p-tag-info">
+          <div v-if="chip.type=='term'" class="chip-item p-tag p-tag-info">
+            <span class="p-tag p-tag-danger p-px-2" v-if="chip.op != 'OR'">{{chip.op}}</span>
+            <span class="p-tag p-tag-warning p-px-2" v-if="chip.field != 'content'">{{chip.field}}</span>
             <span class="chip-word p-px-2">{{chip.str}}</span>
             <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
           </div>
           <div v-else-if="chip.type=='tex'" class="chip-item p-tag p-tag-info math-chip">
+            <span class="p-tag p-tag-danger p-px-2" v-if="chip.op != 'OR'">{{chip.op}}</span>
+            <span class="p-tag p-tag-warning p-px-2" v-if="chip.field != 'content'">{{chip.field}}</span>
             <span class="chip-tex p-px-3">[imath] {{chip.str}} [/imath]</span>
             <span class="p-badge chip-append-icon" @click="onEdit(idx)"> <i class="fa fa-pencil"></i> </span>
             <span class="p-badge chip-append-icon" @click="onDel(idx)"> <i class="fa fa-times"></i> </span>
@@ -93,6 +97,7 @@
     </div>
     <div class="p-d-flex p-lg-fixed p-md-12 p-sm-12" style="width: 150px; height: 0; padding: 0;">
       <!-- Placeholder -->
+      <!-- DEBUG: {{chips}} -->
     </div>
   </div>
 
@@ -160,7 +165,6 @@ export default {
 
     /* get component property upon mounting */
     this.rawqry = this.modelValue
-    this.rawstr2chips()
   },
 
   watch: {
@@ -218,8 +222,7 @@ export default {
       menu_on: null,
 
       chips: [
-        /*{type: "word", str: "hello world", boolop: 'OR'},
-          {type: "tex", str: "\\frac a b", boolop: 'OR'} */
+        /* see pushChip() for format */
       ],
       entering: '',
 
@@ -243,7 +246,6 @@ export default {
       this.onClear()
       this.menu_on = null
       this.rawqry = examples[idx]
-      this.rawstr2chips()
       this.$emit('search', this.rawqry)
     },
 
@@ -264,12 +266,12 @@ export default {
       this.$emit('search', this.rawqry)
       this.focus_style = false
 
-      const entering = this.entering
+      const [op, field, keyword] = this.parseKeyword(this.entering)
       if (this.mq) {
-        this.pushChip(entering, 'tex')
+        this.pushChip(op, field, entering, 'tex')
         this.clearEntering(true)
       } else {
-        this.pushChip(entering)
+        this.pushChip(op, field, entering)
       }
     },
 
@@ -283,12 +285,12 @@ export default {
       const mq = this.mq
       const vm = this
       const cmd_ = cmd + ' '
-      vm.mqEditorCreate((mq) => {
+      vm.mqEditorCreate(mq.inject_op, mq.inject_field, (mq) => {
         vm.mqEditorInput(mq, 'stroke', cmd_)
       })
     },
 
-    anySpecialChar(str, chars) {
+    anySpecialChar(str) {
       const specialChars = "+*/\\!^_%()[]:;{}=<>"
       for (let i = 0; i < specialChars.length; i++) {
         if (str.indexOf(specialChars[i]) >= 0)
@@ -297,14 +299,40 @@ export default {
       return false
     },
 
-    pushChip(keyword, type) {
+    hasSpecifierPrefix(str) {
+      if (str.startsWith('AND'))
+        return true
+      else if (str.startsWith('NOT'))
+        return true
+      else if (str.startsWith('OR'))
+        return true
+      else
+        return false
+    },
+
+    parseKeyword(str) {
+      let r = new RegExp(/(AND\s+|NOT\s+|OR\s+)?([a-z]+:)?(.*)/);
+      let m = r.exec(str)
+      if (m === null) m = [null, null, null, null]
+      let bool_op = m[1] || 'OR'
+      let field = m[2] || 'content:'
+      let keyword = m[3] || ''
+      bool_op = bool_op.trim() /* strip space */
+      field = field.slice(0,-1) /* strip the ending colon */
+      keyword = keyword.trim() /* strip space */
+      //console.log([bool_op, field, keyword])
+      return [bool_op, field, keyword]
+    },
+
+    pushChip(op, field, keyword, type) {
       if (keyword.trim().length === 0)
         return
 
       this.chips.push({
-        type: type || "word",
+        type: type || "term",
+        op: op,
+        field: field,
         str: keyword,
-        boolop: 'OR'
       })
       /* use nextTick() here to avoid loop feedback */
       this.$nextTick(function() {
@@ -341,7 +369,6 @@ export default {
         else
           this.rawqry = `${rawstr}, ${pastedData}`
 
-        this.rawstr2chips()
         this.$nextTick(function() {
           this.clearEntering()
         })
@@ -349,12 +376,21 @@ export default {
     },
 
     onKeyup(ev) {
-      const keyword = this.entering.trim()
+      const entering = this.entering.trim()
+      let [op, field, keyword] = this.parseKeyword(entering)
 
-      if (ev.code === 'Space') {
-        /* split by this space */
-        if (keyword.length > 0) {
-          this.pushChip(keyword)
+      if (ev.code === 'KeyV') {
+        /* ignore paste (already handled in onPaste) */
+
+      } else if (ev.code === 'Space') {
+        if (this.hasSpecifierPrefix(entering) &&
+            this.hasSpecifierPrefix(keyword)) {
+          /* a bool specifier is entered, wait more to come.. */
+          ;
+        } else if (keyword === undefined) {
+          this.entering = ''
+        } else if (keyword.length > 0) {
+          this.pushChip(op, field, keyword)
         } else {
           this.entering = ''
         }
@@ -364,22 +400,21 @@ export default {
           /* search signal */
           this.onSearch()
         } else {
-          this.pushChip(keyword)
+          this.pushChip(op, field, keyword)
         }
 
       } else if (keyword.includes('$')) {
         const vm = this
-        const pushin = keyword.slice(0, -1)
-        vm.pushChip(pushin)
+        const tex = keyword.slice(0, -1)
         vm.entering = ''
-        vm.mqEditorCreate((mq) => {
+        vm.mqEditorCreate(op, field, (mq) => {
           vm.mqEditorInput(mq, 'latex', '')
         })
 
       } else if (this.anySpecialChar(keyword)) {
         const vm = this
-        vm.entering = keyword
-        vm.mqEditorCreate((mq) => {
+        vm.entering = ''
+        vm.mqEditorCreate(op, field, (mq) => {
           vm.mqEditorInput(mq, 'typing', keyword)
         })
 
@@ -390,14 +425,17 @@ export default {
     },
 
     onFinishMathEdit() {
+      const mq = this.mq
+      const op = mq.inject_op
+      const field = mq.inject_field
       const latex = this.entering
       if (latex.length > 0) {
-        this.pushChip(latex, 'tex')
+        this.pushChip(op, field, latex, 'tex')
       }
       this.clearEntering()
     },
 
-    mqEditorCreate(callbk) {
+    mqEditorCreate(op, field, callbk) {
       const vm = this
       vm.mq_dom = true
       vm.mq = null
@@ -430,6 +468,8 @@ export default {
 
         if (mq) {
           this.mq = mq
+          mq.inject_op = op
+          mq.inject_field = field
           callbk && callbk(mq)
 
           mq.focus()
@@ -454,7 +494,7 @@ export default {
           if (c === "\t") {
             mq.keystroke('Tab')
           } else {
-            /* uncomment for debugging */
+            /* uncomment to debug */
             //setTimeout(()=>{
             mq.typedText(c)
             //}, i * 500)
@@ -490,7 +530,7 @@ export default {
       this.chips2rawstr()
       const vm = this
       vm.entering = chip.str
-      vm.mqEditorCreate((mq) => {
+      vm.mqEditorCreate(chip.op, chip.field, (mq) => {
         vm.mqEditorInput(mq, 'latex', chip.str)
       })
     },
@@ -507,15 +547,21 @@ export default {
 
     chips2rawstr() {
       const vm = this
+      /* for fixed chips */
       const arr = this.chips.map(chip => {
+        let str = chip.str
         if (chip.type === 'tex') {
           const tex = vm.correct_mathtex(chip.str)
-          return `$${tex}$`
-        } else {
-          return chip.str
+          str = `$${tex}$`
         }
+
+        if (chip.op == 'OR' && chip.field == 'content')
+          return `${str}`
+        else
+          return `${chip.op} ${chip.field}:${str}`
       })
 
+      /* for currently entering content */
       if (this.entering.trim().length > 0) {
         if (this.mq_dom) {
           const tex = vm.correct_mathtex(this.entering)
@@ -530,10 +576,8 @@ export default {
 
     rawstr2chips() {
       let chips = []
-      let expect_comma = false
-      let dollar_open = false
       let keyword = ''
-
+      /* shortcut function to push keyword */
       const wrapup = function() {
         if (keyword.trim() !== '') {
           chips.push(keyword.trim())
@@ -544,7 +588,10 @@ export default {
       /* block here if user is typing on query box */
       if (this.entering) { return }
 
+      /* parse and convert rawqry */
       const rawstr = this.rawqry
+      let expect_comma = false
+      let dollar_open = false
       for (let i = 0; i < rawstr.length; i++) {
         if (rawstr[i] == '$' && i + 1 < rawstr.length && rawstr[i + 1] == '$')
           /* this is a double dollar, trim this $ */
@@ -599,23 +646,24 @@ export default {
       /* enforce chip to have specified structure */
       const vm = this
       let missing_dollar = false
-      this.chips = chips.map(keyword => {
-        if (keyword[0] == '$' || vm.anySpecialChar(keyword)) {
-          if (keyword[0] != '$') { missing_dollar = true }
+      console.log(chips)
+//      this.chips = chips.map(keyword => {
+//        if (keyword[0] == '$' || vm.anySpecialChar(keyword)) {
+//          if (keyword[0] != '$') { missing_dollar = true }
+//
+//          const trim_dollar = keyword.replace(/^\$|\$$/g, "")
+//          return { 'type': 'tex', 'str': trim_dollar, 'op': 'OR' }
+//        } else {
+//
+//          return { 'type': 'term', 'str': keyword, 'op': 'OR' }
+//        }
+//      })
 
-          const trim_dollar = keyword.replace(/^\$|\$$/g, "")
-          return { 'type': 'tex', 'str': trim_dollar, 'boolop': 'OR' }
-        } else {
-
-          return { 'type': 'word', 'str': keyword, 'boolop': 'OR' }
-        }
-      })
-
-      /* help user correct raw string due to some missing dollar */
-      if (missing_dollar) {
-        console.log('[auto correct]', chips)
-        this.chips2rawstr()
-      }
+//      /* help user correct raw string due to some missing dollar */
+//      if (missing_dollar) {
+//        console.log('[auto correct]', chips)
+//        this.chips2rawstr()
+//      }
     },
 
     clearEntering(left_blur) {
