@@ -85,16 +85,14 @@
       <div v-for="(hit, idx) in search_results" :key="hit.docid" class="p-p-4 p-m-3 p-card search-res">
         <span class="docid"> {{hit.docid}} </span>
         <span class="score"> {{hit.score}} </span>
-        <a class="title" target="_blank" :href="hit.url" rel="noopener">
-          {{hit.title}}
-        </a>
+        <a class="title" target="_blank" :href="hit.field_url" rel="noopener" v-html="hit.field_title"></a>
         <span class="url">
-          <img v-if="hit.url.indexOf('math.stackexchange') >= 0" :src="logo_mse"/>
-          <img v-else-if="hit.url.indexOf('artofproblemsolving') >= 0" :src="logo_aops"/>
-          {{hit.url}}
+          <img v-if="hit.field_url.indexOf('math.stackexchange') >= 0" :src="logo_mse"/>
+          <img v-else-if="hit.field_url.indexOf('artofproblemsolving') >= 0" :src="logo_aops"/>
+          {{hit.field_url}}
         </span>
         <div class="snippet">
-          <p v-html="snippetPreprocess(idx, hit.snippet)"></p>
+          <p v-html="snippetPreprocess(idx, hit.field_content)"></p>
         </div>
       </div>
 

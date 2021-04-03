@@ -280,10 +280,10 @@ export default {
 
       const [op, field, keyword] = this.parseKeyword(this.entering)
       if (this.mq) {
-        this.pushChip(op, field, entering, 'tex')
+        this.pushChip(op, field, this.entering, 'tex')
         this.clearEntering(true)
       } else {
-        this.pushChip(op, field, entering)
+        this.pushChip(op, field, this.entering)
       }
     },
 
