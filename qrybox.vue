@@ -617,9 +617,10 @@ export default {
           if (!dollar_open)
             expect_comma = true
 
-          /* encounter "word [$]tex$" case, has any specifier? */
+          /* encounter "word [$]tex$" case */
           if (dollar_open && keyword.trim() !== '') {
-            if (this.hasSpecifierPrefix(keyword))
+            /* any keyword specifier? */
+            if (this.hasSpecifierPrefix(keyword) || keyword.indexOf(':') != -1)
               ;/* fall through */
             else
               wrapup()
