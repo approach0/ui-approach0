@@ -243,13 +243,22 @@ export default {
   },
 
   methods: {
+    canonicalizeQuery(rawqry) {
+      const arr = rawqry.split(',').map(keyword => {
+		keyword = keyword.trim()
+        const [op, field, kw] = this.parseKeyword(keyword)
+        return `${op} ${field}:${kw}`
+      })
+      return arr.join(', ')
+    },
+
     onExampleQuery() {
       const examples = this.example_queries
       const idx = Math.floor(Math.random() * examples.length)
       this.onClear()
       this.menu_on = null
       this.rawqry = examples[idx]
-      this.$emit('search', this.rawqry)
+      this.$emit('search', this.canonicalizeQuery(this.rawqry))
     },
 
     registerFocusBlurWatcher() {
@@ -266,7 +275,7 @@ export default {
     },
 
     onSearch() {
-      this.$emit('search', this.rawqry)
+      this.$emit('search', this.canonicalizeQuery(this.rawqry))
       this.focus_style = false
 
       const [op, field, keyword] = this.parseKeyword(this.entering)
@@ -321,9 +330,9 @@ export default {
       let bool_op = m[1] || 'OR'
       let field = m[2] || 'content:'
       let keyword = m[3] || ''
-      bool_op = bool_op.trim() /* strip space */
+      bool_op = bool_op.trim() /* trim space */
       field = field.slice(0,-1) /* strip the ending colon */
-      keyword = keyword.trim() /* strip space */
+      keyword = keyword.trim() /* trim space */
       //console.log([bool_op, field, keyword])
       return [bool_op, field, keyword]
     },
