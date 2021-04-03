@@ -165,6 +165,9 @@ export default {
 
     /* get component property upon mounting */
     this.rawqry = this.modelValue
+
+    /* for browser console runtime debug */
+    window.$qrybox = this
   },
 
   watch: {
@@ -300,6 +303,7 @@ export default {
     },
 
     hasSpecifierPrefix(str) {
+      str = str.trim() /* trim space */
       if (str.startsWith('AND'))
         return true
       else if (str.startsWith('NOT'))
@@ -604,26 +608,29 @@ export default {
           if (!dollar_open)
             expect_comma = true
 
-          /* encounter "word [.] $tex$" case, user forgets comma? */
-          if (dollar_open && keyword.trim() !== '') { wrapup() }
-
-          /* fall through to push this dollar sign */
+          /* encounter "word [$]tex$" case, has any specifier? */
+          if (dollar_open && keyword.trim() !== '') {
+            if (this.hasSpecifierPrefix(keyword))
+              ;/* fall through */
+            else
+              wrapup()
+          }
 
         } else {
 
           if (this.anySpecialChar(rawstr[i])) {
             /* encounter "word [t]ex" case, user forgets dollar? */
-            dollar_open = true
+            if (rawstr[i] !== ':') /* as long as it's not a field specifier */
+              dollar_open = true /* treat this keyword as math keyword */
           }
 
           /* NOT in dollar-enclosed chip */
           if (!dollar_open) {
-
             if (rawstr[i] == ',') {
               /* skip this comma and wrap up this keyword */
               expect_comma = false
               wrapup()
-              continue
+              continue /* skip comma */
 
             } else if (expect_comma && rawstr[i] != ' ') {
               /* encounter "$tex$ [w]ord" case, user forgets comma? */
@@ -637,33 +644,35 @@ export default {
 
         /* concatenate */
         keyword += rawstr[i]
+
       } /* end loop */
 
       /* wrap up the remaining, if any */
       wrapup()
-      //console.log(chips.join(' | ')); return /* DEBUG */
 
       /* enforce chip to have specified structure */
       const vm = this
       let missing_dollar = false
-      console.log(chips)
-//      this.chips = chips.map(keyword => {
-//        if (keyword[0] == '$' || vm.anySpecialChar(keyword)) {
-//          if (keyword[0] != '$') { missing_dollar = true }
-//
-//          const trim_dollar = keyword.replace(/^\$|\$$/g, "")
-//          return { 'type': 'tex', 'str': trim_dollar, 'op': 'OR' }
-//        } else {
-//
-//          return { 'type': 'term', 'str': keyword, 'op': 'OR' }
-//        }
-//      })
+      this.chips = chips.map(keyword => {
+        const [op, field, kw] = this.parseKeyword(keyword)
+        /* is this a math keyword? */
+        if (kw[0] == '$' || vm.anySpecialChar(kw)) {
+          /* user forgot to wrap dollar? */
+          if (kw[0] != '$') { missing_dollar = true }
 
-//      /* help user correct raw string due to some missing dollar */
-//      if (missing_dollar) {
-//        console.log('[auto correct]', chips)
-//        this.chips2rawstr()
-//      }
+          const tex = kw.replace(/^\$|\$$/g, "") /* trim dollar */
+          return {'type': 'tex', 'str': tex, 'op': op, 'field': field}
+
+        } else {
+          return {'type': 'term', 'str': kw, 'op': op, 'field': field}
+        }
+      })
+
+      /* help user correct raw string due to some missing dollar */
+      if (missing_dollar) {
+        console.log('[auto correct]', chips)
+        this.chips2rawstr()
+      }
     },
 
     clearEntering(left_blur) {
