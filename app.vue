@@ -392,17 +392,25 @@ export default {
     },
 
     splitTags(tags_field) {
-      if (tags_field.trim() == '')
+      tags_field = tags_field.trim()
+      if (tags_field == '') {
         return []
-      else {
-        tags_field = tags_field.replace(/-/g, '&#8209;') /* use non-breaking hyphen */
+      } else {
+        /* use non-breaking hyphen */
+        tags_field = tags_field.replace(/-/g, '&#8209;')
         return tags_field.split(' ')
       }
     },
 
     onClickTag(tag) {
-      tag = tag.replace(/&#8209;/g, '-') /* recover hyphen(s) */
-      console.log(tag)
+      /* recover hyphen(s) */
+      tag = tag.replace(/&#8209;/g, '-')
+      /* append and rewrite current query */
+      let arr = this.static_rawqry.split(',')
+      arr.push(`AND tags:${tag}`)
+      this.static_rawqry = arr.join(', ')
+      /* search with tag constraint */
+      this.onGotoPage(0)
     },
 
     onScroll() {
