@@ -63,14 +63,14 @@ module.exports = (env, options) => {
             // Requires sass-loader@^7.0.0
             options: {
               implementation: require('sass'),
-              fiber: require('fibers'),
+              //fiber: require('fibers'),
               indentedSyntax: true // optional
             },
             // Requires sass-loader@^8.0.0
             options: {
               implementation: require('sass'),
               sassOptions: {
-                fiber: require('fibers'),
+                //fiber: require('fibers'),
                 indentedSyntax: true // optional
               },
             },
