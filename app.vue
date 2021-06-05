@@ -94,6 +94,11 @@
         <div class="snippet">
           <p v-html="snippetPreprocess(idx, hit.field_content)"></p>
         </div>
+        <div class="tags">
+          <span v-for="tag in splitTags(hit.field_tags)" class="p-tag p-m-1"
+                v-html="tag" @click.self="onClickTag(tag)" :key="tag">
+          </span>
+        </div>
       </div>
 
       <div style="margin-top: 4rem; p-d-flex; p-grid;">
@@ -189,7 +194,8 @@ export default {
       this.loading_percentage = 100
 
       this.$nextTick(function() {
-        TeX_render.render('.search-res', (a, b) => {
+        TeX_render.render('.search-res > .title')
+        TeX_render.render('.search-res > .snippet', (a, b) => {
           let percentage = Math.ceil((a * 100) / b)
           if (percentage > 90) percentage = 100
           this.loading_percentage = percentage
@@ -383,6 +389,20 @@ export default {
       }
 
       return snippet
+    },
+
+    splitTags(tags_field) {
+      if (tags_field.trim() == '')
+        return []
+      else {
+        tags_field = tags_field.replace(/-/g, '&#8209;') /* use non-breaking hyphen */
+        return tags_field.split(' ')
+      }
+    },
+
+    onClickTag(tag) {
+      tag = tag.replace(/&#8209;/g, '-') /* recover hyphen(s) */
+      console.log(tag)
     },
 
     onScroll() {
@@ -601,6 +621,16 @@ i.collapse {
 
 .search-res > div.snippet > p {
   line-height: 1.5;
+}
+
+.search-res > div.tags {
+  word-break: break-word;
+  vertical-align: middle;
+}
+
+.search-res > div.tags > span {
+  display: inline-block;
+  cursor: pointer;
 }
 
 em.hl > span > svg {
