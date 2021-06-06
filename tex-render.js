@@ -27,7 +27,8 @@ function katex_tex_render(scope_select) {
       katex.render(tex, ele, {
         displayMode: true,
         macros: {
-          "\\qvar": "\\color{blue}"
+          "\\qvar": "{\\color{blue} #1}",
+          "\\exact": "{\\color{red} #1}"
         }
       });
     } catch(err) {
