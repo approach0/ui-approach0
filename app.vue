@@ -156,7 +156,7 @@ export default {
       }
     }
     const rawqry = getUriQueryParam('q', null)
-    const page = parseInt(getUriQueryParam('p', 1), 1)
+    const page = parseInt(getUriQueryParam('p', 1))
 
     /* set initial state */
     if (rawqry != null) {
