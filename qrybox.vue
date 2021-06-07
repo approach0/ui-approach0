@@ -605,6 +605,7 @@ export default {
 
       /* parse and convert rawqry */
       const rawstr = this.rawqry
+      let missing_comma = false
       let expect_comma = false
       let dollar_open = false
       for (let i = 0; i < rawstr.length; i++) {
@@ -648,6 +649,9 @@ export default {
               /* encounter "$tex$ [w]ord" case, user forgets comma? */
               expect_comma = false
 
+              /* flag missing_comma to invoke auto correct later */
+              missing_comma = true
+
               /* wrap up this keyword */
               wrapup()
             }
@@ -680,7 +684,7 @@ export default {
       })
 
       /* help user correct raw string due to some missing dollar */
-      if (missing_dollar) {
+      if (missing_dollar || missing_comma) {
         console.log('[auto correct]', chips)
         this.chips2rawstr()
       }
