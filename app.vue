@@ -156,7 +156,7 @@ export default {
       }
     }
     const rawqry = getUriQueryParam('q', null)
-    const page = getUriQueryParam('p', 1)
+    const page = parseInt(getUriQueryParam('p', 1), 1)
 
     /* set initial state */
     if (rawqry != null) {
@@ -411,8 +411,8 @@ export default {
       $("html, body").animate({ scrollTop: 0 })
       this.resetSearchResults()
       const rawqry = this.qrybox_model
-      this.performSearch(rawqry, 0)
-      this.pushState(rawqry, 0)
+      this.performSearch(rawqry, 1)
+      this.pushState(rawqry, 1)
     },
 
     onScroll() {

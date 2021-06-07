@@ -1,11 +1,14 @@
 import 'babel-polyfill'
+
 import { createApp } from 'vue'
+import PrimeVueConfig from 'primevue/config'
 import App from './app.vue'
 
 import 'primevue/resources/primevue.min.css'
 import 'primeflex/primeflex.css'
 
 const app = createApp(App)
+app.use(PrimeVueConfig)
 
 import InputSwitch from 'primevue/inputswitch'
 app.component('InputSwitch', InputSwitch)
