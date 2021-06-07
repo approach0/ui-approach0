@@ -243,22 +243,22 @@ export default {
   },
 
   methods: {
-    canonicalizeQuery(rawqry) {
-      const arr = rawqry.split(',').map(keyword => {
-		keyword = keyword.trim()
-        const [op, field, kw] = this.parseKeyword(keyword)
-        return `${op} ${field}:${kw}`
-      })
-      return arr.join(', ')
-    },
-
     onExampleQuery() {
       const examples = this.example_queries
       const idx = Math.floor(Math.random() * examples.length)
       this.onClear()
       this.menu_on = null
       this.rawqry = examples[idx]
-      this.$emit('search', this.canonicalizeQuery(this.rawqry))
+      this.$emit('search', this.rawqry)
+    },
+
+    canonicalizeQuery(rawqry) {
+      const arr = rawqry.split(',').map(keyword => {
+        keyword = keyword.trim()
+        const [op, field, kw] = this.parseKeyword(keyword)
+        return `${op} ${field}:${kw}`
+      })
+      return arr.join(', ')
     },
 
     registerFocusBlurWatcher() {
@@ -275,7 +275,7 @@ export default {
     },
 
     onSearch() {
-      this.$emit('search', this.canonicalizeQuery(this.rawqry))
+      this.$emit('search', this.rawqry)
       this.focus_style = false
 
       const [op, field, keyword] = this.parseKeyword(this.entering)

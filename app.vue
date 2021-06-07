@@ -161,8 +161,6 @@ export default {
     /* set initial state */
     if (rawqry != null) {
       this.qrybox_model = rawqry
-
-      this.qrybox_sinking = false
       /*
        * Sometimes user has a math without a dollar,
        * qrybox component will auto-correct it and update
@@ -170,8 +168,7 @@ export default {
        */
       this.$nextTick(function() {
         const corrected_rawqry = this.qrybox_model
-        this.performSearch(corrected_rawqry, page)
-        this.pushState(corrected_rawqry, page)
+        vm.onClickSearch(corrected_rawqry)
       })
     } else {
       this.pushState()
@@ -360,6 +357,7 @@ export default {
       this.qrybox_sinking = false
 
       /* perform search */
+      rawqry = window.$qrybox.canonicalizeQuery(rawqry)
       this.performSearch(rawqry, 1)
       this.pushState(rawqry, 1)
     },
