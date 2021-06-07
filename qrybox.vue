@@ -588,11 +588,13 @@ export default {
     },
 
     rawstr2chips() {
+      const vm = this
       let chips = []
       let keyword = ''
       /* shortcut function to push keyword */
       const wrapup = function() {
-        if (keyword.trim() !== '') {
+        const [op, field, kw] = vm.parseKeyword(keyword)
+        if (kw.trim() !== '') {
           chips.push(keyword.trim())
           keyword = ''
         }
@@ -661,7 +663,6 @@ export default {
       wrapup()
 
       /* enforce chip to have specified structure */
-      const vm = this
       let missing_dollar = false
       this.chips = chips.map(keyword => {
         const [op, field, kw] = this.parseKeyword(keyword)
