@@ -113,7 +113,6 @@
 </template>
 
 <script>
-const axios = require('axios')
 const TeX_render = require('./tex-render.js')
 
 import qrybox from './qrybox.vue'
