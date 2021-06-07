@@ -95,9 +95,10 @@
           <p v-html="snippetPreprocess(idx, hit.field_content)"></p>
         </div>
         <div class="tags">
-          <span v-for="tag in splitTags(hit.field_tags)" class="p-tag p-m-1"
-                v-html="tag" @click.self="onClickTag(tag)" :key="tag">
-          </span>
+          <Tag v-for="tag in splitTags(hit.field_tags)" class="p-m-1" rounded
+               style="font-size: 0.9rem !important; font-weight: 500 !important;"
+               @click="onClickTag(tag)" :key="tag" :value="'⋅ ' + tag">
+          </Tag>
         </div>
       </div>
 
@@ -396,21 +397,22 @@ export default {
       if (tags_field == '') {
         return []
       } else {
-        /* use non-breaking hyphen */
-        tags_field = tags_field.replace(/-/g, '&#8209;')
         return tags_field.split(' ')
       }
     },
 
     onClickTag(tag) {
-      /* recover hyphen(s) */
-      tag = tag.replace(/&#8209;/g, '-')
       /* append and rewrite current query */
-      let arr = this.static_rawqry.split(',')
+      let arr = this.qrybox_model.split(',')
       arr.push(`AND tags:${tag}`)
-      this.static_rawqry = arr.join(', ')
-      /* search with tag constraint */
-      this.onGotoPage(0)
+      this.qrybox_model = arr.join(', ')
+
+      /* then, perform search */
+      $("html, body").animate({ scrollTop: 0 })
+      this.resetSearchResults()
+      const rawqry = this.qrybox_model
+      this.performSearch(rawqry, 0)
+      this.pushState(rawqry, 0)
     },
 
     onScroll() {

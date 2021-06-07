@@ -31,4 +31,7 @@ app.component('ProgressSpinner', ProgressSpinner)
 import ProgressBar from 'primevue/progressbar'
 app.component('ProgressBar', ProgressBar)
 
+import Tag from 'primevue/tag';
+app.component('Tag', Tag)
+
 app.mount('#app')
