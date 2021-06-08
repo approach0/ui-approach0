@@ -14,8 +14,9 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const PORT = 19985
 
 module.exports = (env, options) => {
-  const mode = options.mode;
-  console.log(`[ this is ${mode} mode, listen port = ${PORT} ]`);
+  const mode = options.mode
+  console.log(`[ this is ${mode} mode, listen port = ${PORT} ]`)
+  console.log(`A0_RELAY_URL=${process.env.A0_RELAY_URL}`)
 
   return {
     /* default is development mode, run 'yarn run build' for production. */
