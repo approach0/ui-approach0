@@ -85,7 +85,8 @@
       <div v-for="(hit, idx) in search_results" :key="hit.docid" class="p-p-4 p-m-3 p-card search-res">
         <span class="docid"> {{hit.docid}} </span>
         <span class="score"> {{hit.score}} </span>
-        <a class="title" target="_blank" :href="hit.field_url" rel="noopener" v-html="hit.field_title"></a>
+        <a class="title" target="_blank" :href="hit.field_url" rel="noopener" v-html="hit.field_title"
+         @click="onClickURL(idx)" @click.middle="onClickURL(idx)"></a>
         <span class="url">
           <img v-if="hit.field_url.indexOf('math.stackexchange') >= 0" :src="logo_mse"/>
           <img v-else-if="hit.field_url.indexOf('artofproblemsolving') >= 0" :src="logo_aops"/>
@@ -396,6 +397,29 @@ export default {
       } else {
         return tags_field.split(' ')
       }
+    },
+
+    onClickURL(idx) {
+      let results = this.search_results || []
+      let page = this.pagination_curpage
+      let qry = this.qrybox_model
+
+      /* collect click-through data */
+      const clicks = []
+      for (let i = 0; i <= Math.min(results.length - 1, idx); i++) {
+        let res = results[i]
+        let url = res.field_url
+        let rank = res.rank || 0
+        let clicked = (i == idx) ? 1 : 0;
+        clicks.push([rank, page, url, clicked])
+      }
+
+      /* send click-through data */
+      $.post(`${A0_RELAY_URL}/click-relay.php`,
+        JSON.stringify({qry, clicks}) /* transfer JSON */
+      ).fail(function(res, err) {
+        console.error('[click-through ajax failed]', err)
+      })
     },
 
     onClickTag(tag) {
