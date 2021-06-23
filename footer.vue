@@ -262,7 +262,7 @@ export default {
         gotoURL('/stats')
         break
       case 'Community AD':
-        gotoURL('https://math.meta.stackexchange.com/questions/31296')
+        gotoURL('https://math.meta.stackexchange.com/questions/33720')
         break
       case 'Backend of This Site':
         gotoURL('/backend')
