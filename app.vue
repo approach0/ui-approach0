@@ -356,8 +356,11 @@ export default {
       $("html, body").animate({ scrollTop: 0 })
       this.qrybox_sinking = false
 
+      /* canonicalize search query */
+      const arr = window.$qrybox.canonicalizedQueryArr(false)
+      rawqry = arr.join(', ')
+
       /* perform search */
-      rawqry = window.$qrybox.canonicalizeQuery(rawqry)
       this.performSearch(rawqry, 1)
       this.pushState(rawqry, 1)
     },

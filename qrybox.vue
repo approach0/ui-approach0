@@ -252,13 +252,20 @@ export default {
       this.$emit('search', this.rawqry)
     },
 
-    canonicalizeQuery(rawqry) {
-      const arr = rawqry.split(',').map(keyword => {
-        keyword = keyword.trim()
-        const [op, field, kw] = this.parseKeyword(keyword)
-        return `${op} ${field}:${kw}`
+    canonicalizedQueryArr(shorthand) {
+      const vm = this
+      return this.chips.map(chip => {
+        let str = chip.str
+        if (chip.type === 'tex') {
+          const tex = vm.correct_mathtex(chip.str)
+          str = `$${tex}$`
+        }
+
+        if (shorthand && chip.op == 'OR' && chip.field == 'content')
+          return `${str}`
+        else
+          return `${chip.op} ${chip.field}:${str}`
       })
-      return arr.join(', ')
     },
 
     registerFocusBlurWatcher() {
@@ -275,9 +282,6 @@ export default {
     },
 
     onSearch() {
-      this.$emit('search', this.rawqry)
-      this.focus_style = false
-
       const [op, field, keyword] = this.parseKeyword(this.entering)
       if (this.mq) {
         this.pushChip(op, field, this.entering, 'tex')
@@ -285,6 +289,10 @@ export default {
       } else {
         this.pushChip(op, field, this.entering)
       }
+
+      /* fix the chips, then emit search event */
+      this.$emit('search', this.rawqry)
+      this.focus_style = false
     },
 
     onPullKeyboard() {
@@ -559,22 +567,10 @@ export default {
     },
 
     chips2rawstr() {
-      const vm = this
-      /* for fixed chips */
-      const arr = this.chips.map(chip => {
-        let str = chip.str
-        if (chip.type === 'tex') {
-          const tex = vm.correct_mathtex(chip.str)
-          str = `$${tex}$`
-        }
-
-        if (chip.op == 'OR' && chip.field == 'content')
-          return `${str}`
-        else
-          return `${chip.op} ${chip.field}:${str}`
-      })
+      let arr = this.canonicalizedQueryArr(true)
 
       /* for currently entering content */
+      const vm = this
       if (this.entering.trim().length > 0) {
         if (this.mq_dom) {
           const tex = vm.correct_mathtex(this.entering)
