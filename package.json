@@ -5,8 +5,8 @@
   "author": "Wei Zhong",
   "license": "MIT",
   "scripts": {
-    "watch": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode development --inline",
-    "build": "./node_modules/webpack/bin/webpack.js --mode production --module-bind js=babel-loader --display-error-details",
+    "watch": "./node_modules/webpack/bin/webpack.js serve --mode development --inline",
+    "build": "./node_modules/webpack/bin/webpack.js --mode production",
     "serve": "./node_modules/http-server/bin/http-server ./dist --port 19985 --gzip -c 31536000 --proxy http://localhost:19985?"
   },
   "dependencies": {
@@ -23,7 +23,8 @@
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
     "@vue/compiler-sfc": "^3.0.2",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^4.3.0",
     "eslint": "^7.12.0",
     "eslint-loader": "^4.0.2",
@@ -39,8 +40,8 @@
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
     "vue-loader": "^16.0.0-beta.8",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
+    "webpack": "^5.42.0",
+    "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.0"
   }
 }

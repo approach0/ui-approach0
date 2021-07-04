@@ -9,6 +9,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 /* listen port */
 const PORT = 19985
@@ -120,6 +121,11 @@ module.exports = (env, options) => {
         as: 'font',
         include: 'allAssets',
         fileWhitelist: [/\.(woff2?|eot|ttf|otf)(\?.*)?$/i],
+      }),
+      new CopyPlugin({
+        patterns: [
+          { from: "resource/*.xml", to: "." }
+        ],
       }),
       new webpack.DefinePlugin({
         A0_RELAY_URL: JSON.stringify(mode === 'production' ? process.env.A0_RELAY_URL : 'http://localhost:8080'),
