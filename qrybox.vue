@@ -249,7 +249,10 @@ export default {
       this.onClear()
       this.menu_on = null
       this.rawqry = examples[idx]
-      this.$emit('search', this.rawqry)
+      /* wait until chip shows up so that canonicalizedQueryArr() will work */
+      this.$nextTick(function() {
+        this.$emit('search', this.rawqry)
+      })
     },
 
     canonicalizedQueryArr(shorthand) {
@@ -282,6 +285,7 @@ export default {
     },
 
     onSearch() {
+      /* fix the entering input */
       const [op, field, keyword] = this.parseKeyword(this.entering)
       if (this.mq) {
         this.pushChip(op, field, this.entering, 'tex')
@@ -290,7 +294,7 @@ export default {
         this.pushChip(op, field, this.entering)
       }
 
-      /* fix the chips, then emit search event */
+      /* then emit search event */
       this.$emit('search', this.rawqry)
       this.focus_style = false
     },

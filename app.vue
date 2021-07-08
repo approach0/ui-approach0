@@ -352,13 +352,13 @@ export default {
     onClickSearch(rawqry) {
       if (rawqry.trim() == '') return
 
-      /* move viewbox and querybox on top */
-      $("html, body").animate({ scrollTop: 0 })
-      this.qrybox_sinking = false
-
       /* canonicalize search query */
       const arr = window.$qrybox.canonicalizedQueryArr(false)
       rawqry = arr.join(', ')
+
+      /* move viewbox and querybox on top */
+      $("html, body").animate({ scrollTop: 0 })
+      this.qrybox_sinking = false
 
       /* perform search */
       this.performSearch(rawqry, 1)
