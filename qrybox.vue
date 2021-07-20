@@ -306,10 +306,12 @@ export default {
     },
 
     mqCMD(cmd) {
-      const mq = this.mq
       const vm = this
-      const cmd_ = cmd + ' '
-      vm.mqEditorCreate(mq.inject_op, mq.inject_field, (mq) => {
+      const mq = vm.mq || {}
+      const op = mq.inject_op || 'OR'
+      const field = mq.inject_field || 'content'
+      vm.mqEditorCreate(op, field, (mq) => {
+        const cmd_ = cmd + ' '
         vm.mqEditorInput(mq, 'stroke', cmd_)
       })
     },
