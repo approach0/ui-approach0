@@ -88,7 +88,7 @@
         </div>
 
         <div class="p-m-2 thanksgiving">
-          <p>As a side project reaching this far, I am thankful to my (current and previous) advisors
+          <p>For a side project reaching this far, I am thankful to my (current and previous) advisors
           <a target="_blank" href="https://cs.uwaterloo.ca/~jimmylin/" rel="noopener">Jimmy Lin</a>,
           <a target="_blank" href="https://www.cs.rit.edu/~rlaz/" rel="noopener">Richard Zanibbi</a> and
           <a target="_blank" href="https://www.eecis.udel.edu/~hfang/" rel="noopener">Fang Hui</a>
