@@ -27,17 +27,17 @@ exports.example_queries = [
     'showcase':
       {
         'tags': ['probability'],
-        'content': 'How to interpret Bayes theorem [imath]P(A \\mid B) = \\frac{P(A, B)}{P(B)}[/imath]'
+        'content': 'The intuition behind Bayes theorem [imath]P(A \\mid B) = \\frac{P(A, B)}{P(B)}[/imath]'
       },
-    'keywords': 'interpret, $P(A \\mid B) = \\frac{P(A, B)}{P(B)}$'
+    'keywords': 'intuition, $P(A \\mid B) = \\frac{P(A, B)}{P(B)}$'
   },
   {
     'showcase':
       {
         'tags': ['polyhedra', 'analytic-geometry'],
-        'content': 'Derive Euler\'s Formula for polyhedra: [imath]F-E+V=2[/imath]'
+        'content': 'Derive Euler\'s Formula for polyhedron: [imath]F-E+V=2[/imath]'
       },
-    'keywords': '$F-E+V=2$, derivation'
+    'keywords': '$F-E+V=2$, polyhedron'
   },
   {
     'showcase':
