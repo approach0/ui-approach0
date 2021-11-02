@@ -103,12 +103,13 @@
   </div>
 
   <!-- Math Keyboard -->
-  <Button icon="fa fa-th" class="p-button-rounded p-button-secondary" @click="onPullKeyboard()"
-          style="position: fixed; left: 2rem; bottom: 2rem; z-index: -1"/>
+  <Button icon="fa fa-th" class="p-button-rounded p-button-secondary"
+   @click="onPullKeyboard()" id="keyboard-btn"
+   style="position: fixed; left: 2rem; bottom: 2rem; z-index: 1000"/>
 
   <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
     <div style="width: 100%; height: 1rem;"></div> <!-- placeholder for the close button below -->
-    <div style="position: absolute; top: 0rem; right: 2rem; z-index: 100;">
+    <div style="position: absolute; top: 0rem; right: 2rem; z-index: 1000;">
       <Button class="p-button-text p-button-rounded" icon="fa fa-times" @click="keyboard_show = false"/>
     </div>
 

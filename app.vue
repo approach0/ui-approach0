@@ -3,8 +3,7 @@
   <ProgressBar :value="loading_percentage" class="progressbar" v-if="search_results !== null"/>
 
   <!-- Top bar (menu and secondary query boxes) -->
-  <div id="topbar" class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid"
-      :style="emerge_style(3)">
+  <div id="topbar" class="topbar p-component p-toolbar p-d-flex p-ai-start p-jc-between p-grid">
 
     <div class="p-d-flex p-ai-center" v-if="!qrybox_sinking">
       <img :src="logo32" class="logo p-m-2" style="width: 32px; height: 32px;"
@@ -35,11 +34,12 @@
   </div>
 
   <!-- Initial query box -->
-  <div id="sink-div" style="position: fixed; width: 100%;" v-if="qrybox_sinking" :style="emerge_style(2)">
+  <div v-if="qrybox_sinking">
 
     <div class="vspacer" v-if="!qrybox_squeeze"/>
 
-    <div class="rellax" style="height: 100%;" data-rellax-speed="1" v-if="!qrybox_squeeze">
+    <div style="height: 100%;" v-if="!qrybox_squeeze"
+         class="rellax" data-rellax-speed="1">
       <div class="p-d-flex p-jc-center p-mb-5">
         <img :src="logo128" class="logo p-mx-3" style="width: 64px; height: 64px;"
          @click="onClickIcon" alt="logo"/>
@@ -61,29 +61,36 @@
     <!-- Carousel Showcase -->
     <div class="carousel-overlay">
       <Carousel :value="example_queries" :responsiveOptions="carousel_opts" :page="0"
-        class="carousel-container" :circular="true" :numVisible="3" :numScroll="2">
+        class="carousel-container" :numVisible="3" :numScroll="1">
         <template #header>
           <h5 class="carousel-title">Try the sample queries below!</h5>
         </template>
         <template #item="carousel_item">
-          <div class="p-p-3 p-m-2 p-card">
-            <!-- Sample Tags -->
-            <div class="tags carousel-tags">
-              <Tag v-for="tag in carousel_item.data.showcase.tags" class="p-m-1"
-                @click="onClickTag(tag)" :key="tag" :value="'⋅ ' + tag">
-              </Tag>
-            </div>
-            <!-- Sample Content -->
-            <div class="p-d-flex p-jc-between p-ai-center">
-              <div class="carousel-content">
-                <p>{{carousel_item.data.showcase.content}}</p>
+          <div class="p-d-flex p-jc-center p-ai-center"
+               style="height: 100%; min-width: 200px;">
+            <div class="p-p-3 p-m-2 p-card" v-if="carousel_item.data"
+                 style="max-width: 70vw; overflow-x: hidden;">
+              <!-- Sample Tags -->
+              <div class="tags carousel-tags">
+                <Tag v-for="tag in carousel_item.data.showcase.tags" class="p-m-1"
+                  @click="onClickTag(tag)" :key="tag" :value="'⋅ ' + tag">
+                </Tag>
               </div>
-              <div class="p-px-1">
-                <button type="button" class="carousel-srchbtn"
-                  @click="onClickShowcase(carousel_item.data)">
-                  <span class="fa fa-search p-button-icon"></span>
-                </button>
+              <!-- Sample Content -->
+              <div class="p-d-flex p-flex-wrap p-jc-center p-ai-center">
+                <div class="carousel-content" style="max-width: 330px;">
+                  <p style="line-height: 2.5">
+                    {{carousel_item.data.showcase.content}}
+                  </p>
+                </div>
+                <div class="p-px-3">
+                  <button type="button" class="carousel-srchbtn"
+                    @click="onClickShowcase(carousel_item.data)">
+                    <span class="fa fa-search p-button-icon"></span>
+                  </button>
+                </div>
               </div>
+              <!-- End -->
             </div>
           </div>
         </template>
@@ -92,10 +99,11 @@
 
   </div>
 
-  <!-- Loading spinner and error message -->
-  <div id="sink-div" style="position: fixed; width: 100%;" v-if="loading" :style="emerge_style(1)">
+  <!-- Spinner loader and error message -->
+  <div style="position: fixed; width: 100%;" v-if="loading"
+      :style="emerge_style(1)">
 
-    <div class="vspacer_large"/>
+    <div class="vspacer"/>
 
     <div class="p-d-flex p-jc-center">
       <ProgressSpinner v-if="loading_error.length == 0"/>
@@ -112,7 +120,7 @@
     </div>
   </div>
 
-  <!-- Loading height placeholder -->
+  <!-- Loader height placeholder -->
   <div style="height: 100vh; width: 0px;" v-if="loading">
   </div>
 
@@ -263,11 +271,15 @@ export default {
 
       nightTheme: false,
       collapse: false,
-      example_queries: example_queries,
+      example_queries: example_queries
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
+        .concat(null),
       carousel_opts: [
         {
           breakpoint: '1024px',
-          numVisible: 1,
+          numVisible: 2,
           numScroll: 1
         }
       ],
@@ -501,7 +513,7 @@ export default {
 
     onScroll() {
       /* get jQuery element */
-      const ceil_ele = (this.qrybox_sinking) ? $('#sink-div') : $('#topbar')
+      const ceil_ele = (this.qrybox_sinking) ? $('#keyboard-btn') : $('#topbar')
       const footer_ele = $('#footer')
 
       /* calculate opacity based on gaps */
@@ -525,7 +537,7 @@ export default {
       if (this.qrybox_sinking) {
         const footer_ele = $('#footer')
         const footer_height = footer_ele.outerHeight() || window.innerHeight
-        const offset = 400 + footer_height
+        const offset = 100 + footer_height
         return `position: absolute; bottom: -${offset}px;`
       } else {
         return 'position: static;'
@@ -625,10 +637,6 @@ div.vspacer {
   height: 15vh;
 }
 
-div.vspacer_large {
-  height: 25vh;
-}
-
 i.collapse {
   display: none;
 }
@@ -691,8 +699,8 @@ i.collapse {
     display: inline-block !important;
   }
 
-  .carousel-overlay {
-    display: none;
+  div.carousel-container {
+    display: none !important;
   }
 }
 
@@ -701,16 +709,8 @@ i.collapse {
     display: none;
   }
 
-  div.vspacer {
-    height: 10vh;
-  }
-
-  div.vspacer_large {
-    height: 15vh;
-  }
-
   .carousel-container {
-    width: 70vw;
+    width: 100vw;
   }
 }
 
