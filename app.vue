@@ -206,10 +206,7 @@ export default {
        * qrybox component will auto-correct it and update
        * qrybox_model, in this case, wait the nextTick()
        */
-      this.$nextTick(function() {
-        const corrected_rawqry = this.qrybox_model
-        vm.onClickSearch(corrected_rawqry)
-      })
+      vm.onClickSearch()
     } else {
       this.pushState()
     }
@@ -363,7 +360,6 @@ export default {
     onGotoPage(page) {
       const rawqry = this.static_rawqry
       $("html, body").animate({ scrollTop: 0 })
-      this.resetSearchResults()
       this.performSearch(rawqry, page)
       this.pushState(rawqry, page)
     },
@@ -404,22 +400,6 @@ export default {
       }, 0) /* change timeout to debug loading */
     },
 
-    onClickSearch(rawqry) {
-      if (rawqry.trim() == '') return
-
-      /* canonicalize search query */
-      const arr = window.$qrybox.canonicalizedQueryArr(false)
-      rawqry = arr.join(', ')
-
-      /* move viewbox and querybox on top */
-      $("html, body").animate({ scrollTop: 0 })
-      this.qrybox_sinking = false
-
-      /* perform search */
-      this.performSearch(rawqry, 1)
-      this.pushState(rawqry, 1)
-    },
-
     snippetPreprocess(idx, snippet) {
       /* ensure $a<b$ is converted into $a < b$, otherwise it may render incorrectly */
       snippet = snippet.replace(/\[imath\]([\s\S]+?)\[\/imath\]/g, function (match, group) {
@@ -457,6 +437,28 @@ export default {
       }
     },
 
+    onClickSearch() {
+      const rawqry = this.qrybox_model
+      if (rawqry.trim() == '') return
+
+      /* NOTE: The canonicalizedQueryArr() function requires updated chips in
+       * qrybox (need one cycle of conversion from qrybox_model raw string). */
+      this.$nextTick(function() {
+        /* canonicalize what is inside of the qrybox */
+        const arr = window.$qrybox.canonicalizedQueryArr(false)
+        const canonicalized_rawqry = arr.join(', ')
+        console.log(canonicalized_rawqry)
+
+        /* move viewbox and querybox on top */
+        $("html, body").animate({ scrollTop: 0 })
+        this.qrybox_sinking = false
+
+        /* actually perform search */
+        this.performSearch(canonicalized_rawqry, 1)
+        this.pushState(canonicalized_rawqry, 1)
+      })
+    },
+
     onClickURL(idx) {
       let results = this.search_results || []
       let page = this.pagination_curpage
@@ -486,15 +488,7 @@ export default {
       arr.push(`AND tags:${tag}`)
       this.qrybox_model = arr.join(', ')
 
-      /* prepare searching */
-      $("html, body").animate({ scrollTop: 0 })
-      this.qrybox_sinking = false /* in case it is a landing page click */
-      this.resetSearchResults()
-
-      /* then, perform search */
-      const rawqry = this.qrybox_model
-      this.performSearch(rawqry, 1)
-      this.pushState(rawqry, 1)
+      this.onClickSearch()
     },
 
     onClickShowcase(carousel_item) {
@@ -502,14 +496,7 @@ export default {
       const keywords = carousel_item.keywords
       this.qrybox_model = keywords
 
-      /* prepare searching */
-      $("html, body").animate({ scrollTop: 0 })
-      this.qrybox_sinking = false
-
-      /* perform search */
-      const rawqry = this.qrybox_model
-      this.performSearch(rawqry, 1)
-      this.pushState(rawqry, 1)
+      this.onClickSearch()
     },
 
     onScroll() {
