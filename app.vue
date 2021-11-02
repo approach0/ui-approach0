@@ -59,8 +59,8 @@
     <div class="vspacer" v-if="!qrybox_squeeze"/>
 
     <div class="carousel-overlay">
-      <Carousel :value="example_queries" :responsiveOptions="carousel_opt"
-        class="carousel-container" :circular="true" :numVisible="3" :numScroll="2">
+      <Carousel :value="example_queries" :responsiveOptions="carousel_opts"
+        class="carousel-container" :circular="true" :numVisible="3" :numScroll="3">
         <template #header>
           <h5 class="carousel-title">Try the sample queries below!</h5>
         </template>
@@ -259,7 +259,7 @@ export default {
       nightTheme: false,
       collapse: false,
       example_queries: example_queries,
-      carousel_opt: [
+      carousel_opts: [
         {
           breakpoint: '1024px',
           numVisible: 1,
