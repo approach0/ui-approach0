@@ -134,9 +134,9 @@
           <p v-html="snippetPreprocess(idx, hit.field_content)"></p>
         </div>
         <div class="tags">
-          <Tag v-for="tag in splitTags(hit.field_tags)" class="p-m-1" rounded
+          <Tag v-for="tag in splitTags(hit.field_tags)" class="p-m-1"
                style="font-size: 0.9rem !important; font-weight: 500 !important;"
-               @click="onClickTag(tag)" :key="tag" :value="'⋅ ' + tag">
+               @click="onClickTag(tag)" :key="tag" :value="'⋅ ' + tag" rounded>
           </Tag>
         </div>
       </div>
@@ -766,7 +766,7 @@ i.collapse {
   vertical-align: middle;
 }
 
-.search-res > div.tags > span {
+div.tags > span {
   display: inline-block;
   cursor: pointer;
 }
