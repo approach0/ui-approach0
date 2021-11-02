@@ -58,6 +58,7 @@
 
     <div class="vspacer" v-if="!qrybox_squeeze"/>
 
+    <!-- Carousel Showcase -->
     <div class="carousel-overlay">
       <Carousel :value="example_queries" :responsiveOptions="carousel_opts"
         class="carousel-container" :circular="true" :numVisible="3" :numScroll="3">
@@ -66,17 +67,19 @@
         </template>
         <template #item="carousel_item">
           <div class="p-p-3 p-m-2 p-card">
+            <!-- Sample Tags -->
             <div class="tags carousel-tags">
-              <Tag v-for="tag in carousel_item.data.showcase.tags"
-                class="p-m-1" :key="tag" :value="'⋅ ' + tag">
+              <Tag v-for="tag in carousel_item.data.showcase.tags" class="p-m-1"
+                @click="onClickTag(tag)" :key="tag" :value="'⋅ ' + tag">
               </Tag>
             </div>
+            <!-- Sample Content -->
             <div class="p-d-flex p-jc-between p-ai-center">
               <div class="carousel-content">
                 <p>{{carousel_item.data.showcase.content}}</p>
               </div>
               <div class="p-px-1">
-                <Button icon="fa fa-search"
+                <Button icon="fa fa-search" @click="onClickShowcase(carousel_item.data)"
                  class="p-button-rounded p-button-raised p-button-info">
                 </Button>
               </div>
@@ -210,9 +213,13 @@ export default {
       this.pushState()
     }
 
-    TeX_render.render('.carousel-content')
+    /* detect back button click and rerender TeX in Carousel */
+    window.addEventListener('popstate', () => {
+      TeX_render.render('.carousel-content')
+    })
 
     this.$nextTick(function() {
+      TeX_render.render('.carousel-content')
       this.footer_style = this.footerStickiness()
     })
   },
@@ -478,9 +485,27 @@ export default {
       arr.push(`AND tags:${tag}`)
       this.qrybox_model = arr.join(', ')
 
-      /* then, perform search */
+      /* prepare searching */
       $("html, body").animate({ scrollTop: 0 })
+      this.qrybox_sinking = false /* in case it is a landing page click */
       this.resetSearchResults()
+
+      /* then, perform search */
+      const rawqry = this.qrybox_model
+      this.performSearch(rawqry, 1)
+      this.pushState(rawqry, 1)
+    },
+
+    onClickShowcase(carousel_item) {
+      /* rewrite current query */
+      const keywords = carousel_item.keywords
+      this.qrybox_model = keywords
+
+      /* prepare searching */
+      $("html, body").animate({ scrollTop: 0 })
+      this.qrybox_sinking = false
+
+      /* perform search */
       const rawqry = this.qrybox_model
       this.performSearch(rawqry, 1)
       this.pushState(rawqry, 1)

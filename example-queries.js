@@ -37,7 +37,7 @@ exports.example_queries = [
         'tags': ['polyhedra', 'analytic-geometry'],
         'content': 'Derive Euler\'s Formula for polyhedra: [imath]F-E+V=2[/imath]'
       },
-    'keywords': 'Euler, polyhedra, $F-E+V=2$, derivation'
+    'keywords': '$F-E+V=2$, derivation'
   },
   {
     'showcase':
