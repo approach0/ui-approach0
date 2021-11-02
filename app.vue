@@ -60,8 +60,8 @@
 
     <!-- Carousel Showcase -->
     <div class="carousel-overlay">
-      <Carousel :value="example_queries" :responsiveOptions="carousel_opts"
-        class="carousel-container" :circular="true" :numVisible="3" :numScroll="3">
+      <Carousel :value="example_queries" :responsiveOptions="carousel_opts" :page="0"
+        class="carousel-container" :circular="true" :numVisible="3" :numScroll="2">
         <template #header>
           <h5 class="carousel-title">Try the sample queries below!</h5>
         </template>
@@ -79,9 +79,10 @@
                 <p>{{carousel_item.data.showcase.content}}</p>
               </div>
               <div class="p-px-1">
-                <Button icon="fa fa-search" @click="onClickShowcase(carousel_item.data)"
-                 class="p-button-rounded p-button-raised p-button-info">
-                </Button>
+                <button type="button" class="carousel-srchbtn"
+                  @click="onClickShowcase(carousel_item.data)">
+                  <span class="fa fa-search p-button-icon"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -658,6 +659,26 @@ i.collapse {
   padding-left: 1rem;
   backdrop-filter: blur(3px);
   pointer-events: auto; /* accept clicks again */
+}
+
+/*
+ * For some unknown reason, it has to use non-vueprime
+ * button here. Otherwise the first hover on these
+ * buttons will make the entire carousel disappear.
+ */
+.carousel-srchbtn {
+  cursor: pointer;
+  width: 2.357rem;
+  border-radius: 50%;
+  height: 2.357rem;
+  background: #54c6c0;
+  color: var(--primary-color-text);
+  border: none;
+  margin: 0;
+  user-select: none;
+  text-align: center;
+  font-size: 1rem;
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
 }
 
 /* query box layout media CSS */
