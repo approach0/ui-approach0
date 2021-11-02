@@ -7,7 +7,8 @@
       :style="emerge_style(3)">
 
     <div class="p-d-flex p-ai-center" v-if="!qrybox_sinking">
-      <img :src="logo32" class="logo p-m-2" style="width: 32px; height: 32px;" @click="onClickIcon" alt="logo"/>
+      <img :src="logo32" class="logo p-m-2" style="width: 32px; height: 32px;"
+           @click="onClickIcon" alt="logo"/>
       <div class="p-d-flex p-flex-column">
         <span class="logo-text no-select">Approach Zero</span>
         <div class="logo-text no-select">A math-aware search engine</div>
@@ -40,7 +41,8 @@
 
     <div class="rellax" style="height: 100%;" data-rellax-speed="1" v-if="!qrybox_squeeze">
       <div class="p-d-flex p-jc-center p-mb-5">
-        <img :src="logo128" class="logo p-mx-3" style="width: 64px; height: 64px;" @click="onClickIcon" alt="logo"/>
+        <img :src="logo128" class="logo p-mx-3" style="width: 64px; height: 64px;"
+         @click="onClickIcon" alt="logo"/>
         <div class="p-d-flex p-flex-column p-jc-center p-mx-1">
           <span class="logo-text-large no-select">Approach Zero</span>
           <div class="logo-text-large no-select">A math-aware search engine</div>
@@ -53,12 +55,43 @@
         <qrybox v-model="qrybox_model" v-model:squeeze="qrybox_squeeze" @search="onClickSearch"/>
       </div>
     </div>
+
+    <div class="vspacer" v-if="!qrybox_squeeze"/>
+
+    <div class="carousel-overlay">
+      <Carousel :value="example_queries" :responsiveOptions="carousel_opt"
+        class="carousel-container" :circular="true" :numVisible="3" :numScroll="2">
+        <template #header>
+          <h5 class="carousel-title">Try the sample queries below!</h5>
+        </template>
+        <template #item="carousel_item">
+          <div class="p-p-3 p-m-2 p-card">
+            <div class="tags carousel-tags">
+              <Tag v-for="tag in carousel_item.data.showcase.tags"
+                class="p-m-1" :key="tag" :value="'⋅ ' + tag">
+              </Tag>
+            </div>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <div class="carousel-content">
+                <p>{{carousel_item.data.showcase.content}}</p>
+              </div>
+              <div class="p-px-1">
+                <Button icon="fa fa-search"
+                 class="p-button-rounded p-button-raised p-button-info">
+                </Button>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Carousel>
+    </div>
+
   </div>
 
   <!-- Loading spinner and error message -->
   <div id="sink-div" style="position: fixed; width: 100%;" v-if="loading" :style="emerge_style(1)">
 
-    <div class="vspacer"/>
+    <div class="vspacer_large"/>
 
     <div class="p-d-flex p-jc-center">
       <ProgressSpinner v-if="loading_error.length == 0"/>
@@ -82,11 +115,13 @@
   <!-- Search results -->
   <div v-if="search_results !== null">
     <div class="p-d-flex p-flex-column p-ai-center p-jc-center">
-      <div v-for="(hit, idx) in search_results" :key="hit.docid" class="p-p-4 p-m-3 p-card search-res">
+      <div v-for="(hit, idx) in search_results" :key="hit.docid"
+           class="p-p-4 p-m-3 p-card search-res">
         <span class="docid"> {{hit.docid}} </span>
         <span class="score"> {{hit.score}} </span>
-        <a class="title" target="_blank" :href="hit.field_url" rel="noopener" v-html="hit.field_title"
-         @click="onClickURL(idx)" @click.middle="onClickURL(idx)"></a>
+        <a class="title" target="_blank" :href="hit.field_url" rel="noopener"
+         v-html="hit.field_title" @click="onClickURL(idx)" @click.middle="onClickURL(idx)">
+        </a>
         <span class="url">
           <img v-if="hit.field_url.indexOf('math.stackexchange') >= 0" :src="logo_mse"/>
           <img v-else-if="hit.field_url.indexOf('artofproblemsolving') >= 0" :src="logo_aops"/>
@@ -115,6 +150,7 @@
 
 <script>
 const TeX_render = require('./tex-render.js')
+const example_queries = require('./example-queries.js').example_queries
 
 import qrybox from './qrybox.vue'
 import paging from './paging.vue'
@@ -174,6 +210,8 @@ export default {
       this.pushState()
     }
 
+    TeX_render.render('.carousel-content')
+
     this.$nextTick(function() {
       this.footer_style = this.footerStickiness()
     })
@@ -217,8 +255,17 @@ export default {
       logo32: require('./resource/logo32.png'),
       logo_mse: require('./resource/mse.png'),
       logo_aops: require('./resource/aops.png'),
+
       nightTheme: false,
       collapse: false,
+      example_queries: example_queries,
+      carousel_opt: [
+        {
+          breakpoint: '1024px',
+          numVisible: 1,
+          numScroll: 1
+        }
+      ],
 
       qrybox_sinking: true,
       qrybox_model: '',
@@ -562,11 +609,30 @@ div.p-toolbar {
 }
 
 div.vspacer {
+  height: 15vh;
+}
+
+div.vspacer_large {
   height: 25vh;
 }
 
 i.collapse {
   display: none;
+}
+
+.carousel-overlay {
+  pointer-events: none; /* let through keyboard btn clicks */
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-container {
+  width: 80vw;
+  border-radius: 12px;
+  border: 2px solid var(--surface-c);
+  padding-left: 1rem;
+  backdrop-filter: blur(3px);
+  pointer-events: auto; /* accept clicks again */
 }
 
 /* query box layout media CSS */
@@ -591,6 +657,10 @@ i.collapse {
     right: 1rem;
     display: inline-block !important;
   }
+
+  .carousel-overlay {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -599,10 +669,19 @@ i.collapse {
   }
 
   div.vspacer {
+    height: 10vh;
+  }
+
+  div.vspacer_large {
     height: 15vh;
+  }
+
+  .carousel-container {
+    width: 70vw;
   }
 }
 
+/* a min-width to hide second qrybox after search is performed */
 @media screen and (min-width: 1024px) {
   .topbar-qrybox-second {
     display: none;
@@ -676,5 +755,29 @@ em.hl {
   background-color: #FFC;
   color: black;
   font-style: normal;
+}
+
+.carousel-title, .carousel-tags, .carousel-content {
+  user-select: none;
+}
+
+.p-carousel-prev:before {
+  display:inline-block;
+  font:normal normal normal 14px/1 FontAwesome;
+  font-size:inherit;
+  text-rendering:auto;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  content:"\f053"
+}
+
+.p-carousel-next:before {
+  display:inline-block;
+  font:normal normal normal 14px/1 FontAwesome;
+  font-size:inherit;
+  text-rendering:auto;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  content:"\f054"
 }
 </style>

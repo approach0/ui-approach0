@@ -56,7 +56,8 @@
          class="p-button-secondary p-button-text p-button-sm"/>
       </div>
 
-      <div style="position: absolute; left: 0; top: 3rem; width: 100%" v-if="menu_on">
+      <div style="position: absolute; left: 0; top: 3rem; width: 100%; z-index: 900;"
+           v-if="menu_on">
 
         <div class="p-message p-component p-message-info" v-if="menu_on === 'help'" style="z-index: 1">
           <div class="p-message-wrapper p-d-flex p-ai-center">
@@ -106,11 +107,12 @@
           style="position: fixed; left: 2rem; bottom: 2rem; z-index: -1"/>
 
   <Sidebar :visible="keyboard_show" class="p-sidebar-md" :showCloseIcon="false" position="bottom" :modal="false">
-    <div style="position: absolute; top: -1rem; right: 0; z-index: 100">
-      <Button class="p-button-text" icon="fa fa-times" @click="keyboard_show = false"/>
+    <div style="width: 100%; height: 1rem;"></div> <!-- placeholder for the close button below -->
+    <div style="position: absolute; top: 0rem; right: 2rem; z-index: 100;">
+      <Button class="p-button-text p-button-rounded" icon="fa fa-times" @click="keyboard_show = false"/>
     </div>
 
-    <TabView style="overflow-y: auto; height: 100%;" v-model:activeIndex="keyboard_active_tab">
+    <TabView v-model:activeIndex="keyboard_active_tab">
       <TabPanel :header="keyboard_keys[0].keyset">
         <Button v-for="key in keyboard_keys[0].buttons" :key="key.disp" :label="'[imath]' + key.disp + '[/imath]'"
          @click="mqCMD(key.cmd)" :alt="key.desc" class="p-button-outlined p-button-help p-p-2 p-m-2 keyboard-key"/>
@@ -219,7 +221,7 @@ export default {
 
   data: function() {
     return {
-      example_queries: example_queries,
+      example_queries: example_queries.map(x => x.keywords),
 
       focus_style: false,
       menu_on: null,
@@ -812,6 +814,10 @@ span.imath-err::before {
 
 div.p-sidebar-content {
   height: calc(100%);
+}
+
+div.p-sidebar-header {
+  display: none !important;
 }
 
 div.p-fieldset-content {

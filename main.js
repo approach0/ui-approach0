@@ -34,7 +34,10 @@ app.component('ProgressSpinner', ProgressSpinner)
 import ProgressBar from 'primevue/progressbar'
 app.component('ProgressBar', ProgressBar)
 
-import Tag from 'primevue/tag';
+import Tag from 'primevue/tag'
 app.component('Tag', Tag)
+
+import Carousel from 'primevue/carousel'
+app.component('Carousel', Carousel)
 
 app.mount('#app')

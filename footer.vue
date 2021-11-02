@@ -100,7 +100,7 @@
           for his very first, generous donation to this project and all kinds of support. And also shout out to
           <a target="_blank" href="https://math.stackexchange.com/users/290240" rel="noopener">@Sil</a>
           for his code contribution.  There are other contributors not mentioned here,
-          kudos to them in <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
+          kudos to them on <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
           </p>
         </div>
       </div>
