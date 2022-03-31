@@ -276,7 +276,7 @@ export default {
         gotoURL('https://github.com/approach0/ui-approach0')
         break
       case 'Sponsor Me':
-        gotoURL('https://github.com/sponsors/t-k-')
+        gotoURL('https://github.com/sponsors/w32zhong')
         break
       case 'Developer Documentation':
         gotoURL('/docs')
