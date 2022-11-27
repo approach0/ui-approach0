@@ -26,10 +26,10 @@ exports.example_queries = [
   {
     'showcase':
       {
-        'tags': ['probability'],
-        'content': 'The intuition behind Bayes theorem [imath]P(A \\mid B) = \\frac{P(A, B)}{P(B)}[/imath]'
+        'tags': ['general-relativity'],
+        'content': 'What is this equation: [imath]H^2=\\frac{8\\pi G}{3}\\rho+\\frac{kc^2}{a^2}[/imath]'
       },
-    'keywords': 'intuition, $P(A \\mid B) = \\frac{P(A, B)}{P(B)}$'
+    'keywords': 'equation, $H^2=\\frac{8\\pi G}{3}\\rho+\\frac{kc^2}{a^2}$'
   },
   {
     'showcase':
