@@ -55,7 +55,10 @@
         </div>
       </div>
 
-      <div class="p-lg-6 p-md-12 p-sm-12" style="padding: 0 3rem">
+      <div class="p-lg-3 p-md-12 p-sm-12" style="padding: 0 3rem">
+        <h2 class="ft-title p-d-flex p-jc-center p-ai-center">
+          Sponsor
+        </h2>
 
           <div class="p-d-flex p-flex-column p-my-6" style="text-align: center;">
             <div>
@@ -68,15 +71,6 @@
           Special Thanks
         </h2>
         <div class="p-d-flex p-grid p-jc-around thank-banner">
-          <!-- <a target="_blank" href="https://www.cs.rit.edu/~dprl/" rel="noopener">
-            <img src="https://www.cs.rit.edu/~dprl/assets/images/dprl-2019-350x116.jpg"
-                 style="width: 220px; height: 73px;" alt="DPRL"/>
-          </a>
-          -->
-          <a target="_blank" href="https://www.linode.com/" rel="noopener">
-            <img src="https://www.linode.com/wp-content/uploads/2018/10/linode-logo-blk-rgb-minified.svg"
-                 style="width: 220px; height: 73px;" alt="Linode"/>
-          </a>
           <a target="_blank" href="https://math.stackexchange.com/users/8297" rel="noopener">
             <img src="https://math.stackexchange.com/users/flair/8297.png"
                  style="width: 208px; height: 58px;" alt="MSE User 8297"/>
@@ -85,24 +79,11 @@
             <img src="https://math.stackexchange.com/users/flair/290240.png"
                  style="width: 208px; height: 58px;" alt="MSE User 290240"/>
           </a>
+          <div class="thanksgiving">
+            <p>Check out the <a target="_blank" href="/docs/content/en/contributors.html">kudos page</a>!</p>
+          </div>
         </div>
 
-        <div class="p-m-2 thanksgiving">
-          <p>For a side project reaching this far, I am thankful to my (current and previous) advisors
-          <a target="_blank" href="https://cs.uwaterloo.ca/~jimmylin/" rel="noopener">Jimmy Lin</a>,
-          <a target="_blank" href="https://www.cs.rit.edu/~rlaz/" rel="noopener">Richard Zanibbi</a> and
-          <a target="_blank" href="https://www.eecis.udel.edu/~hfang/" rel="noopener">Fang Hui</a>
-          for supporting me to work on the idea of creating a math-aware search engine.
-          I feel grateful to the cloud provider of this site
-          <a target="_blank" href="https://linode.com/" rel="noopener">Linode</a> who offers a great
-          infrastructure to keep this site staying on real axis. I want to shout out to
-          <a target="_blank" href="https://math.stackexchange.com/users/8297" rel="noopener">Martin Sleziak</a>
-          for his very first, generous donation to this project and all kinds of support. And also shout out to
-          <a target="_blank" href="https://math.stackexchange.com/users/290240" rel="noopener">@Sil</a>
-          for his code contribution.  There are other contributors not mentioned here,
-          kudos to them on <a target="_blank" href="/docs/content/en/contributors.html" rel="noopener">this page</a>.
-          </p>
-        </div>
       </div>
 
       <div class="p-lg-3 p-md-6 p-sm-12 p-d-flex p-jc-center">
