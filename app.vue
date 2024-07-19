@@ -58,11 +58,44 @@
 
     <div class="vspacer" v-if="!qrybox_squeeze"/>
 
-    <div class="ad">
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚀 Research News! 🚀<br><br>Announcing S3D, a memory-saving LLM acceleration technique from my work at LG. It achieves one of the best token generation speeds per GPU VRAM in low-memory settings.<br><br>Check out my Arxiv paper: <a href="https://t.co/fPGpZykBfb">https://t.co/fPGpZykBfb</a></p>&mdash; Approach Zero (@approach0) <a href="https://twitter.com/approach0/status/1796551960100733398?ref_src=twsrc%5Etfw">May 31, 2024</a></blockquote> <component :is="'script'" async src="https://platform.twitter.com/widgets.js" charset="utf-8"></component>
+    <!-- Carousel Showcase -->
+    <div class="carousel-overlay">
+      <Carousel :value="example_queries" :responsiveOptions="carousel_opts" :page="0"
+        class="carousel-container" :numVisible="3" :numScroll="1">
+        <template #header>
+          <h5 class="carousel-title">Try the sample queries below!</h5>
+        </template>
+        <template #item="carousel_item">
+          <div class="p-d-flex p-jc-center p-ai-center"
+               style="height: 100%; min-width: 200px;">
+            <div class="p-p-3 p-m-2 p-card" v-if="carousel_item.data"
+                 style="max-width: 70vw; overflow-x: hidden;">
+              <!-- Sample Tags -->
+              <div class="tags carousel-tags">
+                <Tag v-for="tag in carousel_item.data.showcase.tags" class="p-m-1"
+                  @click="onClickTag(tag)" :key="tag" :value="'⋅ ' + tag">
+                </Tag>
+              </div>
+              <!-- Sample Content -->
+              <div class="p-d-flex p-flex-wrap p-jc-center p-ai-center">
+                <div class="carousel-content" style="max-width: 330px;">
+                  <p style="line-height: 2.5">
+                    {{carousel_item.data.showcase.content}}
+                  </p>
+                </div>
+                <div class="p-px-3">
+                  <button type="button" class="carousel-srchbtn"
+                    @click="onClickShowcase(carousel_item.data)">
+                    <span class="fa fa-search p-button-icon"></span>
+                  </button>
+                </div>
+              </div>
+              <!-- End -->
+            </div>
+          </div>
+        </template>
+      </Carousel>
     </div>
-
-
 
   </div>
 
@@ -610,11 +643,6 @@ i.collapse {
 
 .carousel-overlay {
   pointer-events: none; /* let through keyboard btn clicks */
-  display: flex;
-  justify-content: center;
-}
-
-.ad {
   display: flex;
   justify-content: center;
 }
