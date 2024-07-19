@@ -60,14 +60,16 @@
           Sponsor
         </h2>
 
-          <div class="p-d-flex p-flex-column p-my-6" style="text-align: center;">
+          <div class="p-d-flex p-flex-column" style="text-align: center;">
             <div>
-              <img :src="icon_linode" style="width: 223.5px; height: 61px;" alt="Linode"/>
+              <img :src="icon_akamai" style="width: 265px; height: 108px;" alt="Akamai"/>
             </div>
-            <span>Powered by Linode</span>
+            <span style="margin-top: 20px;">Powered by
+              <a target="_blank" href="https://www.akamai.com">Akamai</a>
+            </span>
           </div>
 
-        <h2 class="ft-title p-d-flex p-jc-center p-ai-center">
+        <h2 class="ft-title p-d-flex p-jc-center p-ai-center" style="margin-top: 3rem">
           Special Thanks
         </h2>
         <div class="p-d-flex p-grid p-jc-around thank-banner">
@@ -219,7 +221,7 @@ export default {
 
   data: function() {
     return {
-      icon_linode: require('./resource/linode.png'),
+      icon_akamai: require('./resource/akamai-logo-white.png'),
       icon_mse: require('./resource/mse.png'),
       icon_aops: require('./resource/aops.png')
     }
